@@ -37,7 +37,7 @@ public class Cell {
 	}
 	
 	public List<Cell> getGhostNeighbours(int size) {
-		System.out.println("calculando ghost de: "+ row + ";" + col);
+//		System.out.println("calculando ghost de: "+ row + ";" + col);
 		List<Cell> ret = new ArrayList<>();
 		/** up and not right */
 		if(row == 0 && col < size-1) {

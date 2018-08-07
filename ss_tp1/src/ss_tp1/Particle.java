@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 public class Particle {
-	static private long nextId = 1;
+	static private long nextId = 0;
 	static private double l;
 	private long id;
 	private double x;

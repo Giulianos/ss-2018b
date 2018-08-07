@@ -1,7 +1,10 @@
 package ss_tp1;
 
+import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -12,7 +15,7 @@ public class CellMethodIndex {
 	private static Scanner staticFile;
 	private static Scanner dinamicFile;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		int n = 7;
 		boolean periodic = true; 
 		double l = 15; /** longitud de un lado */
@@ -32,6 +35,8 @@ public class CellMethodIndex {
 			while(staticFile.hasNextDouble() && dinamicFile.hasNextLine()) {
 				particles.add(new Particle(dinamicFile.nextDouble(), dinamicFile.nextDouble(), staticFile.nextDouble()));
 			}
+			dinamicFile.close();
+			staticFile.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -80,7 +85,7 @@ public class CellMethodIndex {
 				particle.getGhostNeighbours().removeIf(p -> p.ghostDistanceTo(particle) > rc);
 				/** add new neighbours */
 				for(Particle neighbour : particle.getGhostNeighbours()) {
-					System.out.println("add relation" + particle.getId() + "-" + neighbour.getId());
+//					System.out.println("add relation" + particle.getId() + "-" + neighbour.getId());
 					neighbour.getNeighbours().add(particle);
 					particle.getNeighbours().add(neighbour);
 				}
@@ -89,13 +94,15 @@ public class CellMethodIndex {
 		printParticles(particles);
 	}
 	
-	public static void printParticles(Set<Particle> ps) {
+	public static void printParticles(Set<Particle> ps) throws IOException {
+		BufferedWriter writer = new BufferedWriter(new FileWriter("simulation.txt"));
 		for (Particle p : ps) {
-			System.out.println("[" + p);
+			writer.write("[" + p);
 			for (Particle neighbour : p.getNeighbours()) {
-				System.out.print(" " + neighbour);
+				writer.write(" " + neighbour);
 			}
-			System.out.print("]");
+			writer.write("]\n");
 		}
+		writer.close();
 	}
 }
