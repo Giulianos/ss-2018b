@@ -1,28 +1,42 @@
 package ss_tp1;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 
 public class CellMethodIndex {
+	private static Scanner staticFile;
+	private static Scanner dinamicFile;
+
 	public static void main(String[] args) {
 		int n = 7;
 		boolean periodic = true; 
 		double l = 15; /** longitud de un lado */
-		double rc = 5; /** radio de busqueda de vecinos */
-		int m = 5; /** celdas por lado */
+		double rc = Double.parseDouble(args[0]); /** radio de busqueda de vecinos */
+		int m = Integer.parseInt(args[1]); /** celdas por lado */
 		Set<Particle> particles = new HashSet<>(); 
 		
 		Map<Cell, Set<Particle>> cells = new HashMap<>();
 		
-		/**TODO: read from file*/
-		particles.add(new Particle(4.5,2.7,0.1));
-		particles.add(new Particle(14.1,3.6,0.1));
-		particles.add(new Particle(12.6,5.4,0.1));
-		particles.add(new Particle(4.5,8.7,0.1));
-		particles.add(new Particle(1.2,10.8,0.1));
-		particles.add(new Particle(7.5,14.4,0.1));
+		try {
+			staticFile = new Scanner(new FileReader("static.txt"));
+			dinamicFile = new Scanner(new FileReader("dinamic.txt"));
+			
+			n = staticFile.nextInt();
+			l = staticFile.nextDouble();
+			dinamicFile.nextInt();
+			while(staticFile.hasNextDouble() && dinamicFile.hasNextLine()) {
+				particles.add(new Particle(dinamicFile.nextDouble(), dinamicFile.nextDouble(), staticFile.nextDouble()));
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		Particle.setL(l);
 				
 		/** add each particle at corresponding cell*/
 		for(Particle p : particles) {
@@ -63,7 +77,7 @@ public class CellMethodIndex {
 						particle.getGhostNeighbours().addAll(ghostNeighbours);
 				}
 				/** ghostNeighbours now contains all ghost particles that need to be compared */			
-				particle.getGhostNeighbours().removeIf(p -> p.ghostDistanceTo(particle, l) > rc);
+				particle.getGhostNeighbours().removeIf(p -> p.ghostDistanceTo(particle) > rc);
 				/** add new neighbours */
 				for(Particle neighbour : particle.getGhostNeighbours()) {
 					System.out.println("add relation" + particle.getId() + "-" + neighbour.getId());
@@ -77,10 +91,11 @@ public class CellMethodIndex {
 	
 	public static void printParticles(Set<Particle> ps) {
 		for (Particle p : ps) {
-			System.out.println(p + " Neighbours:");
+			System.out.println("[" + p);
 			for (Particle neighbour : p.getNeighbours()) {
-				System.out.println(" -" + neighbour);
+				System.out.print(" " + neighbour);
 			}
+			System.out.print("]");
 		}
 	}
 }

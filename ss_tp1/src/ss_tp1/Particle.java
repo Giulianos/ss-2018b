@@ -7,6 +7,7 @@ import java.util.Set;
 
 public class Particle {
 	static private long nextId = 1;
+	static private double l;
 	private long id;
 	private double x;
 	private double y;
@@ -46,8 +47,12 @@ public class Particle {
 	public long getId() {
 		return id;
 	}
-	public double ghostDistanceTo(Particle particle, double l) {
-		System.out.println("Calculating distance between " + id + " and " + particle.id);
+	public static void setL(double l) {
+		Particle.l = l;
+	}
+	
+	public double ghostDistanceTo(Particle particle) {
+//		System.out.println("Calculating distance between " + id + " and " + particle.id);
 		double distX = Math.abs(x-particle.x);
 		double distY = Math.abs(y-particle.y);
 		distX = (distX < l - distX) ? distX : l-distX;
@@ -56,7 +61,7 @@ public class Particle {
 	}
 	@Override
 	public String toString() {
-		return "Particle (" + x + ", " + y + ", " + r + ")";
+		return Long.toString(id);
 	}
 	@Override
 	public int hashCode() {
