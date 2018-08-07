@@ -16,8 +16,7 @@ public class CellMethodIndex {
 	private static Scanner dinamicFile;
 
 	public static void main(String[] args) throws IOException {
-		int n = 7;
-		boolean periodic = true; 
+		boolean periodic = Boolean.parseBoolean(args[2]); 
 		double l = 15; /** longitud de un lado */
 		double rc = Double.parseDouble(args[0]); /** radio de busqueda de vecinos */
 		int m = Integer.parseInt(args[1]); /** celdas por lado */
