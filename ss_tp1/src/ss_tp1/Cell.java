@@ -36,6 +36,48 @@ public class Cell {
 		return ret;
 	}
 	
+	public List<Cell> getGhostNeighbours(int size) {
+		System.out.println("calculando ghost de: "+ row + ";" + col);
+		List<Cell> ret = new ArrayList<>();
+		/** up and not right */
+		if(row == 0 && col < size-1) {
+			ret.add(new Cell(size-1,col));
+			ret.add(new Cell(size-1,col+1));
+			System.out.println(" -agrego " + (size-1) + ";" + col);
+			System.out.println(" -agrego " + (size-1) + ";" + (col+1));
+		}
+		/** right, not up and not down */
+		if(row > 0 && row < size-1 && col == size-1) {
+			ret.add(new Cell(row-1,0));
+			ret.add(new Cell(row,0));
+			ret.add(new Cell(row+1,0));
+			System.out.println(" -agrego " + (row-1) + ";" + 0);
+			System.out.println(" -agrego " + row + ";" + 0);
+			System.out.println(" -agrego " + (row+1) + ";" + 0);
+		}
+		/** up and right */
+		if(row == 0 && col == size-1) {
+			ret.add(new Cell(size-1,col));
+			ret.add(new Cell(size-1,0));
+			ret.add(new Cell(row,0));
+			ret.add(new Cell(row+1,0));
+			System.out.println(" -agrego " + (size-1) + ";" + col);
+			System.out.println(" -agrego " + (size-1) + ";" + 0);
+			System.out.println(" -agrego " + row + ";" + 0);
+			System.out.println(" -agrego " + (row+1) + ";" + 0);
+		}
+		/** down and right */
+		if(row == size - 1 && col == size - 1) {
+			ret.add(new Cell(row-1,0));
+			ret.add(new Cell(row,0));
+			ret.add(new Cell(0,0));
+			System.out.println(" -agrego " + (row-1) + ";" + 0);
+			System.out.println(" -agrego " + row + ";" + 0);
+			System.out.println(" -agrego " + 0 + ";" + 0);
+		}
+		return ret;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

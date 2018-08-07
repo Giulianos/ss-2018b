@@ -6,12 +6,13 @@ import java.util.List;
 import java.util.Set;
 
 public class Particle {
-	static private long nextId = 0;
+	static private long nextId = 1;
 	private long id;
 	private double x;
 	private double y;
 	private double r;
 	private Set<Particle> neighbours;
+	private Set<Particle> ghostNeighbours;
 	public Particle(double x, double y, double r) {
 		super();
 		this.x = x;
@@ -19,6 +20,7 @@ public class Particle {
 		this.r = r;
 		this.id = nextId++;
 		this.neighbours = new HashSet<>();
+		this.ghostNeighbours = new HashSet<>();
 	}
 	public double getX() {
 		return x;
@@ -32,11 +34,25 @@ public class Particle {
 	public Set<Particle> getNeighbours() {
 		return neighbours;
 	}
+	public Set<Particle> getGhostNeighbours() {
+		return ghostNeighbours;
+	}
 	public Cell getCell(int m, double l) {
 		return new Cell((int)Math.floor(y*m/l), (int)Math.floor(x*m/l));
 	}
 	public double distanceTo(Particle particle) {
 		return Math.sqrt((x-particle.x)*(x-particle.x)+(y-particle.y)*(y-particle.y)) - r - particle.r;
+	}
+	public long getId() {
+		return id;
+	}
+	public double ghostDistanceTo(Particle particle, double l) {
+		System.out.println("Calculating distance between " + id + " and " + particle.id);
+		double distX = Math.abs(x-particle.x);
+		double distY = Math.abs(y-particle.y);
+		distX = (distX < l - distX) ? distX : l-distX;
+		distY = (distY < l - distY) ? distY : l-distY;
+		return Math.sqrt(distX*distX+distY*distY) - r - particle.r;
 	}
 	@Override
 	public String toString() {
