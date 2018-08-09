@@ -18,6 +18,8 @@ public class CellMethodIndex {
 	public static void main(String[] args) throws IOException {
 		int n;
 		boolean periodic = Boolean.parseBoolean(args[2]); 
+		boolean punctual = Boolean.parseBoolean(args[3]); /** Si vamos a considerar particulas puntuales o no */
+		double max_r = 0;
 		double l = 15; /** longitud de un lado */
 		double rc = Double.parseDouble(args[0]); /** radio de busqueda de vecinos */
 		int m = Integer.parseInt(args[1]); /** celdas por lado */
@@ -33,7 +35,11 @@ public class CellMethodIndex {
 			l = staticFile.nextDouble();
 			dinamicFile.nextInt();
 			while(staticFile.hasNextDouble() && dinamicFile.hasNextLine()) {
-				particles.add(new Particle(dinamicFile.nextDouble(), dinamicFile.nextDouble(), staticFile.nextDouble()));
+				double readX = dinamicFile.nextDouble();
+				double readY = dinamicFile.nextDouble();
+				double readR = staticFile.nextDouble();
+				particles.add(new Particle(readX, readY, readR));
+				max_r = (max_r < readR) ? readR : max_r;
 			}
 			dinamicFile.close();
 			staticFile.close();
@@ -42,6 +48,11 @@ public class CellMethodIndex {
 		}
 		
 		Particle.setL(l);
+		
+		if(!punctual && (l/m) < (rc + max_r)) {
+			m = (int)Math.ceil(l/(rc + max_r));
+			System.out.println("Se actualizó M para cumplir la condicion Rc+max_R < L/M");
+		}
 				
 		/** add each particle at corresponding cell*/
 		for(Particle p : particles) {
