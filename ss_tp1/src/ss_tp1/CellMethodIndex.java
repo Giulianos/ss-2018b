@@ -16,7 +16,6 @@ public class CellMethodIndex {
 	private static Scanner dinamicFile;
 
 	public static void main(String[] args) throws IOException {
-		int n;
 		boolean periodic = Boolean.parseBoolean(args[2]); 
 		boolean punctual = Boolean.parseBoolean(args[3]); /** Si vamos a considerar particulas puntuales o no */
 		double max_r = 0;
@@ -31,7 +30,7 @@ public class CellMethodIndex {
 			staticFile = new Scanner(new FileReader("static.txt"));
 			dinamicFile = new Scanner(new FileReader("dinamic.txt"));
 			
-			n = staticFile.nextInt();
+			staticFile.nextInt();
 			l = staticFile.nextDouble();
 			dinamicFile.nextInt();
 			while(staticFile.hasNextDouble() && dinamicFile.hasNextLine()) {

@@ -1,6 +1,5 @@
 package ss_tp1;
 
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.List;
 
