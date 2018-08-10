@@ -58,8 +58,12 @@ public class CellMethodIndex {
 		}
 
 
+        int quantity = 10;
+		for(int i = quantity; i > 0; i--) {
+		    update();
+            printParticles(particles);
+        }
 
-		printParticles(particles);
 	}
 
 	public static void calculateNeighbours() {
@@ -142,8 +146,14 @@ public class CellMethodIndex {
 		offLattice();
 	}
 
+    public static void printQuantity(Long n) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter("simulation.txt"));
+        writer.write(n.toString());
+        writer.close();
+    }
+
 	public static void printParticles(Set<Particle> ps) throws IOException {
-		BufferedWriter writer = new BufferedWriter(new FileWriter("simulation.txt"));
+		BufferedWriter writer = new BufferedWriter(new FileWriter("simulation.txt", true));
 		for (Particle p : ps) {
 			writer.write("[" + p);
 			for (Particle neighbour : p.getNeighbours()) {
