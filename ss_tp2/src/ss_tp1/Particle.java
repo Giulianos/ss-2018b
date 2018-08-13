@@ -27,75 +27,106 @@ public class Particle {
 		this.ghostNeighbours = new HashSet<>();
 		this.v_x = v_x;
 		this.v_y = v_y;
-        this.tita = Math.atan(v_y/v_x);
+        this.tita = Math.atan2(v_y,v_x);
 	}
+
+	public static void setL(double l) {
+		Particle.l = l;
+	}
+
 	public double getX() {
 		return x;
 	}
+
+    public void setX(double x) {
+	    while(x < 0) {
+	        x += l;
+        }
+        while(x > l) {
+	        x-=l;
+        }
+        this.x = x;
+	    if(Double.isNaN(this.x)) {
+	        throw new IllegalStateException();
+        }
+    }
+
 	public double getY() {
 		return y;
 	}
+
+    public void setY(double y) {
+	    while(y < 0) {
+            y += l;
+        }
+        while(y > l) {
+	        y-=l;
+        }
+        this.y = y;
+        if(Double.isNaN(this.y)) {
+            throw new IllegalStateException();
+        }
+    }
+
 	public double getR() {
 		return r;
 	}
-
-    public double getV_x() {
-        return v_x;
-    }
-
-    public double getV_y() {
-        return v_y;
-    }
-
-    public double getTita() {
-        return tita;
-    }
-
-    public void setNewTita(double newTita) {
-        this.newTita = newTita;
-    }
-
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
 
     public void setR(double r) {
         this.r = r;
     }
 
-    public void setTita(double tita) {
-        this.tita = tita;
+    public double getV_x() {
+        return v_x;
     }
 
     public void setV_x(double v_x) {
         this.v_x = v_x;
     }
 
+    public double getV_y() {
+        return v_y;
+    }
+
     public void setV_y(double v_y) {
         this.v_y = v_y;
+    }
+
+    public double getTita() {
+        return tita;
+    }
+
+    public void setTita(double tita) {
+        this.tita = tita;
+    }
+
+    public void setNewTita(double newTita) {
+        this.newTita = newTita;
     }
 
     public Set<Particle> getNeighbours() {
 		return neighbours;
 	}
+
 	public Set<Particle> getGhostNeighbours() {
 		return ghostNeighbours;
 	}
+
 	public Cell getCell(int m, double l) {
 		return new Cell((int)Math.floor(y*m/l), (int)Math.floor(x*m/l));
 	}
+
+	public void removeCurrentNeighbours() {
+        this.neighbours = new HashSet<>();
+        this.ghostNeighbours = new HashSet<>();
+    }
+
 	public double distanceTo(Particle particle) {
 		return Math.sqrt((x-particle.x)*(x-particle.x)+(y-particle.y)*(y-particle.y)) - r - particle.r;
 	}
+
 	public long getId() {
 		return id;
-	}
-	public static void setL(double l) {
-		Particle.l = l;
 	}
 
 	public void updateVelocity() {
@@ -112,9 +143,21 @@ public class Particle {
 		distY = (distY < l - distY) ? distY : l-distY;
 		return Math.sqrt(distX*distX+distY*distY) - r - particle.r;
 	}
+
+	private String getColor() {
+        /*double red   = 128 + 127 * Math.sin(tita);
+        double green = 128 + 127 * Math.sin(tita + 2*Math.PI / 3.); // + 60°
+        double blue  = 128 + 127 * Math.sin(tita + 4*Math.PI / 3.);
+
+        return Integer.toString((int)red) + " " + Integer.toString((int)green) + " " + Integer.toString((int)blue);
+        */
+
+        return Double.toString(tita<0 ? tita+Math.PI*2 : tita);
+    }
+
 	@Override
 	public String toString() {
-		return Long.toString(id);
+		return x + " " + y + " " + v_x + " " + v_y + " " + getColor();
 	}
 	@Override
 	public int hashCode() {

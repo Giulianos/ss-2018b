@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_ss_tp1" default="compile.module.ss_tp1">
+  <dirname property="module.ss_tp1.basedir" file="${ant.file.module_ss_tp1}"/>
+  
+  <property name="module.jdk.home.ss_tp1" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.ss_tp1" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.ss_tp1" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.ss_tp1" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="ss_tp1.output.dir" value="${module.ss_tp1.basedir}/out/production/ss_tp1"/>
+  <property name="ss_tp1.testoutput.dir" value="${module.ss_tp1.basedir}/out/test/ss_tp1"/>
+  
+  <path id="ss_tp1.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="ss_tp1.module.production.classpath">
+    <path refid="${module.jdk.classpath.ss_tp1}"/>
+  </path>
+  
+  <path id="ss_tp1.runtime.production.module.classpath">
+    <pathelement location="${ss_tp1.output.dir}"/>
+  </path>
+  
+  <path id="ss_tp1.module.classpath">
+    <path refid="${module.jdk.classpath.ss_tp1}"/>
+    <pathelement location="${ss_tp1.output.dir}"/>
+  </path>
+  
+  <path id="ss_tp1.runtime.module.classpath">
+    <pathelement location="${ss_tp1.testoutput.dir}"/>
+    <pathelement location="${ss_tp1.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.ss_tp1">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.ss_tp1">
+    <patternset refid="excluded.from.module.ss_tp1"/>
+  </patternset>
+  
+  <path id="ss_tp1.module.sourcepath">
+    <dirset dir="${module.ss_tp1.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.ss_tp1" depends="compile.module.ss_tp1.production,compile.module.ss_tp1.tests" description="Compile module ss_tp1"/>
+  
+  <target name="compile.module.ss_tp1.production" depends="register.custom.compilers" description="Compile module ss_tp1; production classes">
+    <mkdir dir="${ss_tp1.output.dir}"/>
+    <javac2 destdir="${ss_tp1.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.ss_tp1}/javac">
+      <compilerarg line="${compiler.args.ss_tp1}"/>
+      <bootclasspath refid="ss_tp1.module.bootclasspath"/>
+      <classpath refid="ss_tp1.module.production.classpath"/>
+      <src refid="ss_tp1.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.ss_tp1"/>
+    </javac2>
+    
+    <copy todir="${ss_tp1.output.dir}">
+      <fileset dir="${module.ss_tp1.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.ss_tp1.tests" depends="register.custom.compilers,compile.module.ss_tp1.production" description="compile module ss_tp1; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.ss_tp1" description="cleanup module">
+    <delete dir="${ss_tp1.output.dir}"/>
+    <delete dir="${ss_tp1.testoutput.dir}"/>
+  </target>
+</project>

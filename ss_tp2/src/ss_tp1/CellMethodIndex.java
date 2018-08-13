@@ -16,7 +16,7 @@ public class CellMethodIndex {
 	private static double l; /** longitud de un lado */
 	private static double rc; /** radio de busqueda de vecinos */
 	private static int m; /** celdas por lado */
-	private static double noise = 0.1;
+	private static double noiseAmplitude = 0.1;
 	private static Set<Particle> particles;
 
 	public static void main(String[] args) throws IOException {
@@ -58,10 +58,11 @@ public class CellMethodIndex {
 		}
 
 
-        int quantity = 10;
-		for(int i = quantity; i > 0; i--) {
-		    update();
-            printParticles(particles);
+        int quantity = 300;
+        double noise = new Random().nextDouble() * noiseAmplitude - noiseAmplitude/2;
+		for(int i = 0; i < quantity; i++) {
+		    update(noise);
+            printFrame(particles, i);
         }
 
 	}
@@ -80,6 +81,7 @@ public class CellMethodIndex {
 
 		for(Particle particle : particles) {
 			Cell particleCell = particle.getCell(m, l);
+			particle.removeCurrentNeighbours();
 
 			for (Particle particle2 : cells.get(particle.getCell(m, l))) {
 				if(particle.distanceTo(particle2) <= rc && !particle.equals(particle2)) {
@@ -118,10 +120,9 @@ public class CellMethodIndex {
 		}
 	}
 
-	public static void offLattice() {
+	public static void offLattice(double noise) {
 		double currentSinAVG;
 		double currentCosAVG;
-		double rand = new Random().nextDouble() * noise - noise/2;
 
 		for(Particle p : particles) {
 			currentSinAVG = 0;
@@ -130,9 +131,11 @@ public class CellMethodIndex {
 				currentSinAVG += Math.sin(neighbour.getTita());
 				currentCosAVG += Math.cos(neighbour.getTita());
 			}
-			currentCosAVG /= p.getNeighbours().size();
-			currentSinAVG /= p.getNeighbours().size();
-			p.setNewTita(Math.atan2(currentSinAVG,currentCosAVG) + rand);
+            currentSinAVG += Math.sin(p.getTita());
+            currentCosAVG += Math.cos(p.getTita());
+			currentCosAVG /= p.getNeighbours().size() + 1;
+			currentSinAVG /= p.getNeighbours().size() + 1;
+			p.setNewTita(Math.atan2(currentSinAVG,currentCosAVG) + noise);
 		}
 		for(Particle p : particles) {
 			p.updateVelocity();
@@ -141,25 +144,16 @@ public class CellMethodIndex {
 		}
 	}
 
-	public static void update() {
+	public static void update(double noise) {
 		calculateNeighbours();
-		offLattice();
+		offLattice(noise);
 	}
 
-    public static void printQuantity(Long n) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter("simulation.txt"));
-        writer.write(n.toString());
-        writer.close();
-    }
-
-	public static void printParticles(Set<Particle> ps) throws IOException {
-		BufferedWriter writer = new BufferedWriter(new FileWriter("simulation.txt", true));
+	public static void printFrame(Set<Particle> ps, int frameNumber) throws IOException {
+		BufferedWriter writer = new BufferedWriter(new FileWriter("simulation/frame_"+frameNumber+".txt"));
+		writer.write(ps.size()+"\n");
 		for (Particle p : ps) {
-			writer.write("[" + p);
-			for (Particle neighbour : p.getNeighbours()) {
-				writer.write(" " + neighbour);
-			}
-			writer.write("]\n");
+			writer.write("\n"+p);
 		}
 		writer.close();
 	}
