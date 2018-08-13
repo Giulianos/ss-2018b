@@ -20,7 +20,7 @@ for i in range(0, n):
     y = random.uniform(0, l)
     r = random.uniform(0.75*r1, r1) if randR == 1 else r1
     theta = random.uniform(0, 2*math.pi);
-    vx = 0.3 * math.cos(theta)
-    vy = 0.3 * math.sin(theta)
+    vx = 0.03 * math.cos(theta)
+    vy = 0.03 * math.sin(theta)
     static_file.write(str(r) + '\n')
     dinamic_file.write(str(x) + ' ' + str(y)+ ' ' + str(vy)+ ' ' + str(vy) + '\n')

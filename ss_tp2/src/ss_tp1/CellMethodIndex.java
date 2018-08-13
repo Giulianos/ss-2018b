@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.*;
 
 public class CellMethodIndex {
@@ -20,12 +21,12 @@ public class CellMethodIndex {
 	private static Set<Particle> particles;
 
 	public static void main(String[] args) throws IOException {
-		periodic = Boolean.parseBoolean(args[2]);
-		punctual = Boolean.parseBoolean(args[3]); /** Si vamos a considerar particulas puntuales o no */
+		periodic = true;
+		punctual = true; /** Si vamos a considerar particulas puntuales o no */
 		max_r = 0;
 		l = 15; /** longitud de un lado */
-		rc = Double.parseDouble(args[0]); /** radio de busqueda de vecinos */
-		m = Integer.parseInt(args[1]); /** celdas por lado */
+		rc = 1; /** radio de busqueda de vecinos */
+		m = (int)(l/rc); /** celdas por lado */
 		particles = new HashSet<>();
 		
 		try {
@@ -51,6 +52,7 @@ public class CellMethodIndex {
 		}
 		
 		Particle.setL(l);
+		Particle.setPunctual(true);
 		
 		if(!punctual && (l/m) < (rc + max_r)) {
 			m = (int)Math.ceil(l/(rc + max_r));
@@ -58,14 +60,17 @@ public class CellMethodIndex {
 		}
 
 
-        int quantity = 300;
+        int quantity = new Integer(args[0]);
+		noiseAmplitude = new Double(args[1]);
         double noise = new Random().nextDouble() * noiseAmplitude - noiseAmplitude/2;
+        long startTime = System.nanoTime();
 		for(int i = 0; i < quantity; i++) {
 		    update(noise);
             printFrame(particles, i);
         }
-
-	}
+        long endTime = System.nanoTime();
+        System.out.println("Algorithm took " + (endTime-startTime)/1000000 + "ms to run.");
+    }
 
 	public static void calculateNeighbours() {
 		Map<Cell, Set<Particle>> cells = new HashMap<>();

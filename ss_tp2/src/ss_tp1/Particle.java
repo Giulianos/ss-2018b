@@ -6,6 +6,7 @@ import java.util.Set;
 public class Particle {
 	static private long nextId = 0;
 	static private double l;
+	static private boolean punctual = false;
 	private long id;
 	private double x;
 	private double y;
@@ -37,6 +38,10 @@ public class Particle {
 	public double getX() {
 		return x;
 	}
+
+    public static void setPunctual(boolean punctual) {
+        Particle.punctual = punctual;
+    }
 
     public void setX(double x) {
 	    while(x < 0) {
@@ -122,7 +127,9 @@ public class Particle {
     }
 
 	public double distanceTo(Particle particle) {
-		return Math.sqrt((x-particle.x)*(x-particle.x)+(y-particle.y)*(y-particle.y)) - r - particle.r;
+	    if(!punctual)
+		    return Math.sqrt((x-particle.x)*(x-particle.x)+(y-particle.y)*(y-particle.y)) - r - particle.r;
+        return Math.sqrt((x-particle.x)*(x-particle.x)+(y-particle.y)*(y-particle.y));
 	}
 
 	public long getId() {
@@ -131,8 +138,8 @@ public class Particle {
 
 	public void updateVelocity() {
 	    this.tita = newTita;
-	    this.v_x = Math.cos(tita);
-        this.v_y = Math.sin(tita);
+	    this.v_x = 0.03*Math.cos(tita);
+        this.v_y = 0.03*Math.sin(tita);
     }
 
 	public double ghostDistanceTo(Particle particle) {
@@ -141,7 +148,9 @@ public class Particle {
 		double distY = Math.abs(y-particle.y);
 		distX = (distX < l - distX) ? distX : l-distX;
 		distY = (distY < l - distY) ? distY : l-distY;
-		return Math.sqrt(distX*distX+distY*distY) - r - particle.r;
+		if(!punctual)
+		    return Math.sqrt(distX*distX+distY*distY) - r - particle.r;
+		return Math.sqrt(distX*distX+distY*distY);
 	}
 
 	private String getColor() {
