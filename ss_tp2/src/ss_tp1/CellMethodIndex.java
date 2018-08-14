@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.Instant;
 import java.util.*;
 
 public class CellMethodIndex {
@@ -17,8 +16,9 @@ public class CellMethodIndex {
 	private static double l; /** longitud de un lado */
 	private static double rc; /** radio de busqueda de vecinos */
 	private static int m; /** celdas por lado */
-	private static double noiseAmplitude = 0.1;
+	private static double noiseAmplitude;
 	private static Set<Particle> particles;
+	private static double velocityAVG = 0;
 
 	public static void main(String[] args) throws IOException {
 		periodic = true;
@@ -128,6 +128,8 @@ public class CellMethodIndex {
 		double currentSinAVG;
 		double currentCosAVG;
         double noise;
+        double vx = 0;
+        double vy = 0;
 
 		for(Particle p : particles) {
             noise = new Random().nextDouble() * noiseAmplitude - noiseAmplitude/2;
@@ -147,7 +149,13 @@ public class CellMethodIndex {
 			p.updateVelocity();
 			p.setX(p.getX() + p.getV_x());
 			p.setY(p.getY() + p.getV_y());
+            vx += p.getV_x();
+            vy += p.getV_y();
 		}
+
+		velocityAVG = Math.pow(Math.pow(vx,2)+Math.pow(vy,2),0.5)/(particles.size()*0.03);
+
+		System.out.println("VelocityAVG: "+velocityAVG);
 	}
 
 	public static void update(double noiseAmplitude) {
