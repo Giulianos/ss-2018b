@@ -62,10 +62,9 @@ public class CellMethodIndex {
 
         int quantity = new Integer(args[0]);
 		noiseAmplitude = new Double(args[1]);
-        double noise = new Random().nextDouble() * noiseAmplitude - noiseAmplitude/2;
         long startTime = System.nanoTime();
 		for(int i = 0; i < quantity; i++) {
-		    update(noise);
+		    update(noiseAmplitude);
             printFrame(particles, i);
         }
         long endTime = System.nanoTime();
@@ -125,11 +124,13 @@ public class CellMethodIndex {
 		}
 	}
 
-	public static void offLattice(double noise) {
+	public static void offLattice(double noiseAmplitude) {
 		double currentSinAVG;
 		double currentCosAVG;
+        double noise;
 
 		for(Particle p : particles) {
+            noise = new Random().nextDouble() * noiseAmplitude - noiseAmplitude/2;
 			currentSinAVG = 0;
 			currentCosAVG = 0;
 			for(Particle neighbour : p.getNeighbours()) {
@@ -149,9 +150,9 @@ public class CellMethodIndex {
 		}
 	}
 
-	public static void update(double noise) {
+	public static void update(double noiseAmplitude) {
 		calculateNeighbours();
-		offLattice(noise);
+		offLattice(noiseAmplitude);
 	}
 
 	public static void printFrame(Set<Particle> ps, int frameNumber) throws IOException {
