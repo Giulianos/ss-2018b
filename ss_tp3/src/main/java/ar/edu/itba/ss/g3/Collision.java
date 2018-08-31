@@ -1,4 +1,4 @@
-package com.company;
+package ar.edu.itba.ss.g3;
 
 public class Collision {
     private Particle p1;

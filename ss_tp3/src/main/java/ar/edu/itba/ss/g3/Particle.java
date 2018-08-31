@@ -1,4 +1,4 @@
-package com.company;
+package ar.edu.itba.ss.g3;
 
 import java.util.Objects;
 
@@ -83,7 +83,6 @@ public class Particle {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Particle particle = (Particle) o;
-        // TODO: two particles are the same if their distance is 0.
         Double difX = this.x - particle.getX();
         Double difY = this.y - particle.getY();
         Double sumR = this.r + particle.getR();
