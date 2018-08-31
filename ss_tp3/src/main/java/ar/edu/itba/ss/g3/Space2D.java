@@ -78,7 +78,7 @@ public class Space2D {
     }
 
     public void nextWallCollision() {
-        Double time;
+        Double time = 0.0;
         if(nextCollisionTime == null) {
             nextCollisionTime = Double.MAX_VALUE;
         }
@@ -94,7 +94,7 @@ public class Space2D {
                 } else if(time == nextCollisionTime) {
                     nextCollisions.add(new Collision(p, Collision.WallType.RIGHT));
                 }
-            } else {
+            } else if(p.getVx() < 0){
                 time = (p.getR() - p.getX()) / p.getVx();
 
                 if(time < nextCollisionTime) {
@@ -115,7 +115,7 @@ public class Space2D {
                 } else if(time == nextCollisionTime) {
                     nextCollisions.add(new Collision(p, Collision.WallType.LEFT));
                 }
-            } else {
+            } else if(p.getVy() < 0){
                 time = (p.getR() - p.getY()) / p.getVy();
                 if(time < nextCollisionTime) {
                     nextCollisionTime = time;
@@ -125,7 +125,9 @@ public class Space2D {
                     nextCollisions.add(new Collision(p, Collision.WallType.LEFT));
                 }
             }
+ //           System.out.printf("Next wall collision time: %g    Time: %g\n",nextCollisionTime,time);
         }
+
     }
 
     public void nextParticleCollision() {
@@ -176,4 +178,8 @@ public class Space2D {
 		}
 		writer.close();
 	}
+
+    public Set<Particle> getParticles() {
+        return particles;
+    }
 }

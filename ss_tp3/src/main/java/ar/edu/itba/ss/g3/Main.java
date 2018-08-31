@@ -21,13 +21,14 @@ public class Main {
             Double x = random.nextDouble() * l;
             Double y = random.nextDouble() * l;
             Particle p = new Particle(x, y, vx, vy, 0.1, 0.005);
-            System.out.println(p);
+//            System.out.println(p);
             space.addParticle(p);
         }
 
         for(int i = 0; i < steps; i++ ) {
             while(space.brownianStep(0.5) == 0) {}
             space.printFrame(i);
+ //           System.out.println(space.getParticles());
         }
     }
 }
