@@ -1,5 +1,8 @@
 package ar.edu.itba.ss.g3;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -164,4 +167,13 @@ public class Space2D {
         aux.remove(p);
         return aux;
     }
+
+    public void printFrame(int frameNumber) throws IOException {
+		BufferedWriter writer = new BufferedWriter(new FileWriter("simulation/frame_"+frameNumber+".txt"));
+		writer.write(particles.size()+"\n");
+		for (Particle p : particles) {
+			writer.write("\n"+p);
+		}
+		writer.close();
+	}
 }

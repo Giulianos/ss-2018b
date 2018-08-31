@@ -1,10 +1,11 @@
 package ar.edu.itba.ss.g3;
 
+import java.io.IOException;
 import java.util.Random;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Double l = 50.0;
         Random random = new Random();
         Space2D space = new Space2D(l);
@@ -13,7 +14,7 @@ public class Main {
 
         space.addParticle(new Particle(l/2, l/2, 0.0, 0.0, 100.0, 0.05));
 
-        while(space.particleQuantity() < n - 1) {
+        while(space.particleQuantity() < n) {
             Double theta = random.nextDouble() * 2 * Math.PI;
             Double vx = 0.01 * Math.cos(theta);
             Double vy  = 0.01 * Math.sin(theta);
@@ -24,9 +25,9 @@ public class Main {
             space.addParticle(p);
         }
 
-        while(steps-- > 0) {
+        for(int i = 0; i < steps; i++ ) {
             while(space.brownianStep(0.5) == 0) {}
-            System.out.println("Time step generated");
+            space.printFrame(i);
         }
     }
 }

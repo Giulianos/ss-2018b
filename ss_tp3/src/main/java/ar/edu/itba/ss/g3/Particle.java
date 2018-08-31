@@ -71,11 +71,8 @@ public class Particle {
 
     @Override
     public String toString() {
-        return "Particle{" +
-                "x=" + x +
-                ", y=" + y +
-                ", r=" + r +
-                '}';
+        String color = ((r>0.005) ? "1" : "0");
+        return "" + x + "\t" + y + "\t" + r + "\t" + color;
     }
 
     @Override
