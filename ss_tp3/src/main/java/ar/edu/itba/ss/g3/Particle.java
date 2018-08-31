@@ -21,25 +21,13 @@ public class Particle {
         this.r = r;
     }
 
-    public Double getX() {
-        return x;
-    }
-
-    public void setX(Double x) {
-        this.x = x;
-    }
+    public Double getX() { return x; }
 
     public Double getY() {
         return y;
     }
 
-    public void setY(Double y) {
-        this.y = y;
-    }
-
-    public Double getVx() {
-        return vx;
-    }
+    public Double getVx() { return vx; }
 
     public void setVx(Double vx) {
         this.vx = vx;
@@ -57,17 +45,7 @@ public class Particle {
         return m;
     }
 
-    public void setM(Double m) {
-        this.m = m;
-    }
-
-    public Double getR() {
-        return r;
-    }
-
-    public void setR(Double r) {
-        this.r = r;
-    }
+    public Double getR() { return r; }
 
     @Override
     public String toString() {
@@ -80,11 +58,12 @@ public class Particle {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Particle particle = (Particle) o;
-        Double difX = this.x - particle.getX();
-        Double difY = this.y - particle.getY();
-        Double sumR = this.r + particle.getR();
-
-        return (difX*difX + difY*difY) <= (sumR*sumR);
+        return Objects.equals(getX(), particle.getX()) &&
+                Objects.equals(getY(), particle.getY()) &&
+                Objects.equals(getVx(), particle.getVx()) &&
+                Objects.equals(getVy(), particle.getVy()) &&
+                Objects.equals(getM(), particle.getM()) &&
+                Objects.equals(getR(), particle.getR());
     }
 
     @Override
@@ -93,7 +72,7 @@ public class Particle {
     }
 
     public void updatePosition(Double deltaT) {
-        x = x + vx * deltaT;
-        y = y + vy * deltaT;
+        x += vx * deltaT;
+        y += vy * deltaT;
     }
 }
