@@ -16,7 +16,7 @@ public class Space2D {
         this.sideLength = sideLength;
     }
 
-    public void brownianStep(Double maxDeltaT) {
+    public double brownianStep(Double maxDeltaT) {
         nextWallCollision();
         nextParticleCollision();
         Double tc = Math.min(nextCollisionTime, maxDeltaT);
@@ -29,24 +29,30 @@ public class Space2D {
          *  then just update the positions (no collision needs to be calculated)
          */
         if(nextCollisions != null && maxDeltaT < nextCollisionTime) {
-            return;
+            return maxDeltaT;
         }
 
         for(Collision collision : nextCollisions) {
             if(collision.getType() == Collision.CollisionType.PARTICLE) {
-                collisionOperator(collision.getP1(), collision.getP2());
+                particleCollision(collision.getP1(), collision.getP2());
             } else {
-                switch (collision.getWallType()) {
-                    case TOP:
-                    case BOTTOM:
-                        collision.getP1().setVy(-1 * collision.getP1().getVy());
-                        break;
-                    case RIGHT:
-                    case LEFT:
-                        collision.getP1().setVx(-1 * collision.getP1().getVx());
-                        break;
-                }
+                wallCollision(collision);
             }
+        }
+
+        return tc;
+    }
+
+    private void wallCollision(Collision collision) {
+        switch (collision.getWallType()) {
+            case TOP:
+            case BOTTOM:
+                collision.getP1().setVy(-1 * collision.getP1().getVy());
+                break;
+            case RIGHT:
+            case LEFT:
+                collision.getP1().setVx(-1 * collision.getP1().getVx());
+                break;
         }
     }
 
@@ -54,7 +60,7 @@ public class Space2D {
         return particles.size();
     }
 
-    public void collisionOperator(Particle p1, Particle p2) {
+    private void particleCollision(Particle p1, Particle p2) {
 
         double deltaX = p2.getX() - p1.getX();
         double deltaY = p2.getY() - p1.getY();
@@ -77,10 +83,12 @@ public class Space2D {
     }
 
     public void nextWallCollision() {
+
         Double time;
-        if(nextCollisionTime == null) {
-            nextCollisionTime = Double.MAX_VALUE;
-        }
+//        if(nextCollisionTime == null) {
+//            nextCollisionTime = Double.MAX_VALUE;
+//        }
+        nextCollisionTime = Double.MAX_VALUE;
         for(Particle p : particles) {
             if(p.getVx() > 0) {
                 /** Right Wall */

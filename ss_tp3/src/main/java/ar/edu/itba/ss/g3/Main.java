@@ -1,6 +1,7 @@
 package ar.edu.itba.ss.g3;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.util.Random;
 
 public class Main {
@@ -10,7 +11,7 @@ public class Main {
         Random random = new Random();
         Space2D space = new Space2D(l);
         Integer n = 200;
-        Integer steps = 2000;
+        Integer steps = 20;
 
         space.addParticle(new Particle(l/2, l/2, 0.0, 0.0, 100.0, 0.05));
 
@@ -22,19 +23,19 @@ public class Main {
             Double y = random.nextDouble() * l;
             Particle p = new Particle(x, y, vx, vy, 0.1, 0.005);
             space.addParticle(p);
-            System.out.println(space.particleQuantity());
         }
 
-        for(int i = 0; i < steps; i++ ) {
+        double nextCollision = 0;
+        double time = 0;
+
+        for(int i = 0; i < steps ; i ++){
             System.out.println(i);
-//            for(int j = 0 ; j < n ; j ++){
-//                Particle p = space.getParticles().get(j);
-//                System.out.println(j+"  "+p.getX()+"    "+p.getY()+"    "+p.getVx()+"   "+p.getVy());
-//            }
+            while((time += nextCollision) < 0.5*i){
+                nextCollision = space.brownianStep(0.5);
+                System.out.println(nextCollision);
+            }
             space.printFrame(i);
-            space.brownianStep(0.5);
-
- //           System.out.println(space.getParticles());
         }
+
     }
 }
