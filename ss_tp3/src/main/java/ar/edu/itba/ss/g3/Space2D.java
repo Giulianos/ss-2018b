@@ -7,166 +7,148 @@ import java.util.*;
 
 public class Space2D {
     private Set<Particle> particles;
-    private Double sideLength;
-    private Double nextCollisionTime;
-    private List<Collision> nextCollisions;
+    private double sideLength;
+    private Collision nextCollision;
+    private Integer stepCount = 0;
 
-    public Space2D(Double sideLength) {
+    public Space2D(double sideLength) {
         this.particles = new HashSet<>();
         this.sideLength = sideLength;
     }
 
-    public double brownianStep(Double maxDeltaT) {
-        nextWallCollision();
-        nextParticleCollision();
-        Double tc = Math.min(nextCollisionTime, maxDeltaT);
-
-        for(Particle p : particles) {
-            p.updatePosition(tc);
+    public double brownianStep() {
+        if(nextCollision == null) {
+            calculateNextCollision();
         }
+        double tc = nextCollision.getTimeToCollision();
 
-        /** If the considered time step is smaller than the time step till next collision
-         *  then just update the positions (no collision needs to be calculated)
-         */
-        if(nextCollisions != null && maxDeltaT < nextCollisionTime) {
-            return maxDeltaT;
-        }
+        updatePositions(tc);
 
-        for(Collision collision : nextCollisions) {
-            if(collision.getType() == Collision.CollisionType.PARTICLE) {
-                particleCollision(collision.getP1(), collision.getP2());
-            } else {
-                wallCollision(collision);
-            }
-        }
+        collisionOperator();
 
         return tc;
     }
 
+    public void updatePositions(double time) {
+        for(Particle p : particles) {
+            p.updatePosition(time);
+        }
+    }
+
+    /**
+     * Updates velocity of particles involved in collision
+     */
+    public void collisionOperator() {
+        if(nextCollision.getType() == Collision.CollisionType.PARTICLE) {
+            particleCollision(nextCollision);
+        } else {
+            wallCollision(nextCollision);
+        }
+
+        nextCollision = null;
+    }
+
+    /**
+     * Updates velocity for a particle colliding against a wall
+     * @param collision
+     */
     private void wallCollision(Collision collision) {
         switch (collision.getWallType()) {
-            case TOP:
-            case BOTTOM:
-                collision.getP1().setVy(-1 * collision.getP1().getVy());
+            case VERTICAL:
+                collision.getP1().setVy(-collision.getP1().getVy());
                 break;
-            case RIGHT:
-            case LEFT:
-                collision.getP1().setVx(-1 * collision.getP1().getVx());
+            case HORIZONTAL:
+                collision.getP1().setVx(-collision.getP1().getVx());
                 break;
         }
     }
+
+    /**
+     * Updates velocity for particles colliding to each other
+     * @param collision
+     */
+    public void particleCollision(Collision collision) {
+        Particle p1 = collision.getP1();
+        Particle p2 = collision.getP2();
+
+        p1.incrementVelocity(collision.getJx()/p1.getM(), collision.getJy()/p1.getM());
+        p2.incrementVelocity(collision.getJx()/p2.getM(), collision.getJy()/p2.getM());
+    }
+
+    public double nextCollisionTime() {
+        return nextCollision == null ? Double.MAX_VALUE : nextCollision.getTimeToCollision();
+    }
+
 
     public Integer particleQuantity() {
         return particles.size();
     }
 
-    private void particleCollision(Particle p1, Particle p2) {
+    /**
+     * Calculates time left for next collision
+     */
+    public void calculateNextCollision() {
+        Collision nextCollision = null;
 
-        double deltaX = p2.getX() - p1.getX();
-        double deltaY = p2.getY() - p1.getY();
+        double currentHorizTime = Double.MAX_VALUE;
+        double currentVertTime = Double.MAX_VALUE;
+        double currentMinTime;
 
-        double sigma = p1.getR() + p2.getR();
-
-        double deltaVx = p2.getVx() - p1.getVx();
-        double deltaVy = p2.getVy() - p1.getVy();
-
-        double vr = deltaVx*deltaX + deltaVy*deltaY;
-
-        double j = 2*p1.getM()*p2.getM()*(vr)/(sigma*(p1.getM()+p2.getM()));
-        double jx = j*deltaX/sigma;
-        double jy = j*deltaY/sigma;
-
-        p1.setVx(p1.getVx() + jx / p1.getM());
-        p1.setVy(p1.getVy() + jy / p1.getM());
-        p2.setVx(p2.getVx() + jx / p2.getM());
-        p2.setVy(p2.getVy() + jy / p2.getM());
-    }
-
-    public void nextWallCollision() {
-
-        Double time;
-//        if(nextCollisionTime == null) {
-//            nextCollisionTime = Double.MAX_VALUE;
-//        }
-        nextCollisionTime = Double.MAX_VALUE;
         for(Particle p : particles) {
+            /* Calculate wall collision */
             if(p.getVx() > 0) {
-                /** Right Wall */
-                time = (sideLength - p.getR() - p.getX()) / p.getVx();
-                if(time < nextCollisionTime) {
-                    nextCollisionTime = time;
-                    nextCollisions = new LinkedList<>();
-                    nextCollisions.add(new Collision(p, Collision.WallType.RIGHT));
-                } else if(time == nextCollisionTime) {
-                    nextCollisions.add(new Collision(p, Collision.WallType.RIGHT));
-                }
-            } else if(p.getVx() < 0){
-                time = (p.getR() - p.getX()) / p.getVx();
-
-                if(time < nextCollisionTime) {
-                    nextCollisionTime = time;
-                    nextCollisions = new LinkedList<>();
-                    nextCollisions.add(new Collision(p, Collision.WallType.LEFT));
-                } else if(time == nextCollisionTime) {
-                    nextCollisions.add(new Collision(p, Collision.WallType.LEFT));
-                }
+                currentHorizTime = (sideLength - p.getR() - p.getX()) / p.getVx();
+            } else if(p.getVx() < 0) {
+                currentHorizTime = (p.getR() - p.getX()) / p.getVx();
             }
             if(p.getVy() > 0) {
-                /** Top wall */
-                time = (sideLength - p.getR() - p.getY()) / p.getVy();
-                if(time < nextCollisionTime) {
-                    nextCollisionTime = time;
-                    nextCollisions = new LinkedList<>();
-                    nextCollisions.add(new Collision(p, Collision.WallType.TOP));
-                } else if(time == nextCollisionTime) {
-                    nextCollisions.add(new Collision(p, Collision.WallType.TOP));
-                }
+                currentVertTime = (sideLength - p.getR() - p.getY()) / p.getVy();
             } else if(p.getVy() < 0){
-                time = (p.getR() - p.getY()) / p.getVy();
-                if(time < nextCollisionTime) {
-                    nextCollisionTime = time;
-                    nextCollisions = new LinkedList<>();
-                    nextCollisions.add(new Collision(p, Collision.WallType.BOTTOM));
-                } else if(time == nextCollisionTime) {
-                    nextCollisions.add(new Collision(p, Collision.WallType.BOTTOM));
-                }
+                currentVertTime = (p.getR() - p.getY()) / p.getVy();
             }
+            currentMinTime = currentHorizTime < currentVertTime ? currentHorizTime : currentVertTime;
+            if(nextCollision == null || currentMinTime < nextCollision.getTimeToCollision()) {
+                nextCollision = new Collision(p, currentVertTime<currentHorizTime ? Collision.WallType.VERTICAL : Collision.WallType.HORIZONTAL, currentMinTime);
+            }
+            continue;
+            /* Calculate collision against neighbours
+            for(Particle n : getNeighbours(p)) {
+                if(p.getId() >= n.getId()) {
+                    continue;
+                }
+                double collisionTime = timeToCollide(p, n);
+                if(collisionTime < nextCollision.getTimeToCollision()) {
+                    nextCollision = new Collision(p, n, collisionTime);
+                }
+            }*/
         }
-
+        this.nextCollision = nextCollision;
     }
 
-    public void nextParticleCollision() {
-        Set<Particle> neighbours;
-        Double time;
-        for(Particle p : particles) {
-            neighbours = getNeighbours(p);
-            for(Particle neighbour : neighbours) {
-                Double deltaX = neighbour.getX() - p.getX();
-                Double deltaY = neighbour.getY() - p.getY();
+    public static double timeToCollide(Particle a, Particle b) {
+        double sigma = a.getR() + b.getR();
+        double deltaVX = b.getVx() - a.getVx();
+        double deltaVY = b.getVy() - a.getVy();
 
-                Double deltaVx = neighbour.getVx() - p.getVx();
-                Double deltaVy = neighbour.getVy() - p.getVy();
+        double deltaX = b.getX() - a.getX();
+        double deltaY = b.getY() - a.getY();
 
-                Double vr = deltaVx*deltaX + deltaVy*deltaY;
-                Double vv = deltaVx*deltaVx + deltaVy*deltaVy;
-                Double rr = deltaX*deltaX + deltaY*deltaY;
+        double vr = deltaVX * deltaX + deltaVY * deltaY;
 
-                Double sigma = neighbour.getR() + p.getR();
-
-                Double d = vr*vr - vv*(rr - sigma*sigma);
-
-                if(vr < 0 && d >= 0) {
-                    time = -1 * (vr + Math.sqrt(d))/vv;
-                    if(time < nextCollisionTime) {
-                        nextCollisionTime = time;
-                        nextCollisions = new LinkedList<>();
-                        nextCollisions.add(new Collision(p, neighbour));
-                    } else if(time == nextCollisionTime) {
-                        nextCollisions.add(new Collision(p, neighbour));
-                    }
-                }
-            }
+        if (vr >= 0) {
+            return Double.MAX_VALUE;
         }
+
+        double vv = Math.pow(deltaVX, 2) + Math.pow(deltaVY, 2);
+        double rr = Math.pow(deltaX, 2) + Math.pow(deltaY, 2);
+
+        double d = Math.pow(vr, 2) - vv * (rr - Math.pow(sigma, 2));
+
+        if (d < 0) {
+            return Double.MAX_VALUE;
+        }
+
+        return -(vr + Math.sqrt(d)) / vv;
     }
 
     public void addParticle(Particle p) {
@@ -202,12 +184,15 @@ public class Space2D {
         return aux;
     }
 
+
+
     public void printFrame(int frameNumber) throws IOException {
 		BufferedWriter writer = new BufferedWriter(new FileWriter("simulation/frame_"+frameNumber+".txt"));
 		writer.write(particles.size()+"\n");
 		for (Particle p : particles) {
 			writer.write("\n"+p);
 		}
+
 		writer.close();
 	}
 

@@ -4,48 +4,61 @@ import java.util.Objects;
 
 public class Particle {
 
-    private Double x;
-    private Double y;
-    private Double vx;
-    private Double vy;
+    private static Integer nextID = 0;
 
-    private Double m;
-    private Double r;
+    private double x;
+    private double y;
+    private double vx;
+    private double vy;
 
-    public Particle(Double x, Double y, Double vx, Double vy, Double m, Double r) {
+    private double m;
+    private double r;
+
+    private Integer id;
+
+    public Particle(double x, double y, double vx, double vy, double m, double r) {
         this.x = x;
         this.y = y;
         this.vx = vx;
         this.vy = vy;
         this.m = m;
         this.r = r;
+        this.id = nextID++;
     }
 
-    public Double getX() { return x; }
+    public double getX() { return x; }
 
-    public Double getY() {
+    public double getY() {
         return y;
     }
 
-    public Double getVx() { return vx; }
+    public double getVx() { return vx; }
 
-    public void setVx(Double vx) {
+    public void setVx(double vx) {
         this.vx = vx;
     }
 
-    public Double getVy() {
+    public double getVy() {
         return vy;
     }
 
-    public void setVy(Double vy) {
+    public void setVy(double vy) {
         this.vy = vy;
     }
 
-    public Double getM() {
+    public double getM() {
         return m;
     }
 
-    public Double getR() { return r; }
+    public double getR() { return r; }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public double distanceTo(Particle p) {
+        return Math.sqrt(Math.pow(x-p.x, 2) + Math.pow(y-p.y, 2));
+    }
 
     @Override
     public String toString() {
@@ -58,12 +71,7 @@ public class Particle {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Particle particle = (Particle) o;
-        return Objects.equals(getX(), particle.getX()) &&
-                Objects.equals(getY(), particle.getY()) &&
-                Objects.equals(getVx(), particle.getVx()) &&
-                Objects.equals(getVy(), particle.getVy()) &&
-                Objects.equals(getM(), particle.getM()) &&
-                Objects.equals(getR(), particle.getR());
+        return distanceTo(particle) < 0.0;
     }
 
     @Override
@@ -71,8 +79,13 @@ public class Particle {
         return Objects.hash(x, y);
     }
 
-    public void updatePosition(Double deltaT) {
+    public void updatePosition(double deltaT) {
         x += vx * deltaT;
         y += vy * deltaT;
+    }
+
+    public void incrementVelocity(double incX, double incY) {
+        vx *= incX;
+        vy += incY;
     }
 }
