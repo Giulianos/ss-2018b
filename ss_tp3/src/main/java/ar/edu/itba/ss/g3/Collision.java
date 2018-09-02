@@ -1,29 +1,13 @@
 package ar.edu.itba.ss.g3;
 
 public class Collision {
-    private Particle p1;
-    private Particle p2;
-    private CollisionType type;
-    private WallType wallType;
-    private double timeToCollision;
-    private Double j;
+    final Particle p1;
+    final Particle p2;
+    final double seconds;
+    WallType wallType;
+    Double j;
 
-    public enum CollisionType { PARTICLE, WALL };
-    public enum WallType { VERTICAL, HORIZONTAL };
-
-    public Collision(Particle p1, Particle p2, double timeToCollision) {
-        this.p1 = p1;
-        this.p2 = p2;
-        this.timeToCollision = timeToCollision;
-        this.type = CollisionType.PARTICLE;
-    }
-
-    public Collision(Particle p1, WallType wallType, double timeToCollision) {
-        this.p1 = p1;
-        this.type = CollisionType.WALL;
-        this.timeToCollision = timeToCollision;
-        this.wallType = wallType;
-    }
+    public enum WallType { VERTICAL, HORIZONTAL }
 
     public Particle getP1() {
         return p1;
@@ -33,19 +17,48 @@ public class Collision {
         return p2;
     }
 
-    public CollisionType getType() {
-        return type;
+    public double getSeconds() {
+        return seconds;
     }
 
-    public WallType getWallType() {
-        return wallType;
+    public boolean isWallType() {
+        return wallType != null;
     }
 
-    public double getTimeToCollision() {
-        return timeToCollision;
+    public boolean horizontalWallCollition() {
+        return wallType == WallType.HORIZONTAL;
     }
 
-    private double getJ() {
+    public boolean verticalWallCollition() {
+        return wallType == WallType.VERTICAL;
+    }
+
+    public Collision(Particle p1, Particle p2, double collisionTime) {
+        this.p1 = p1;
+        this.p2 = p2;
+        this.seconds = collisionTime;
+        this.wallType = null;
+        this.j = null;
+        if(seconds<0) {
+            throw new IllegalStateException();
+        }
+    }
+
+    public Collision(Particle p1, double collisionTime, WallType wallType) {
+        this.p1 = p1;
+        this.p2 = null;
+        this.seconds = collisionTime;
+        this.wallType = wallType;
+        this.j = null;
+        if(collisionTime<0) {
+            throw new IllegalStateException();
+        }
+    }
+
+    public double getJ() {
+        if (isWallType()) {
+            throw new IllegalArgumentException();
+        }
         if (j != null)
             return j;
         j = 2 * p1.getM() * p2.getM() * Collision.getVR(p1, p2);
@@ -83,5 +96,4 @@ public class Collision {
     public static double getSigma(Particle a, Particle b) {
         return a.getR() + b.getR();
     }
-
 }

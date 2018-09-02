@@ -7,125 +7,143 @@ import java.util.*;
 
 public class Space2D {
     private Set<Particle> particles;
-    private double sideLength;
+    private Particle bigParticle;
+    private double L;
     private Collision nextCollision;
-    private Integer stepCount = 0;
 
-    public Space2D(double sideLength) {
-        this.particles = new HashSet<>();
-        this.sideLength = sideLength;
-    }
-
-    public double brownianStep() {
-        if(nextCollision == null) {
-            calculateNextCollision();
-        }
-        double tc = nextCollision.getTimeToCollision();
-
-        updatePositions(tc);
-
-        collisionOperator();
-
-        return tc;
-    }
-
-    public void updatePositions(double time) {
-        for(Particle p : particles) {
-            p.updatePosition(time);
-        }
+    public Space2D(double L) {
+        particles = new HashSet<>();
+        this.L = L;
     }
 
     /**
-     * Updates velocity of particles involved in collision
+     * Checks whether p is over another particle
+     * @param p
+     * @return true if it's superimposed, false otherwise
      */
-    public void collisionOperator() {
-        if(nextCollision.getType() == Collision.CollisionType.PARTICLE) {
-            particleCollision(nextCollision);
+    private boolean isSuperimposed(Particle p) {
+        for (Particle particle : particles) {
+            if (Math.sqrt(Math.pow(particle.getX() - p.getX(), 2)
+                    + Math.pow(particle.getY() - p.getY(), 2)) < (particle.getR() + p.getR()))
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Adds p1 particle to the space, if it overlaps with another
+     * particle, it's not added. If its the big particle, it always replaces
+     * the current big particle.
+     * @param p The particle to add
+     * @param isBig If it is the big particle
+     * @return
+     */
+    public boolean addParticle(Particle p, boolean isBig) {
+        if(isBig) {
+            particles.remove(bigParticle);
+            bigParticle = p;
+            particles.add(bigParticle);
+            return true;
+        }
+
+        if(isSuperimposed(p))
+            return false;
+
+        particles.add(p);
+        return true;
+    }
+
+    public void runOvito(double seconds) throws IOException {
+        double secondsLeft = seconds;
+        final int FPS = 25;
+        double frameTimeStep = 1.0/FPS;
+        long totalFrames = (long)Math.ceil(seconds)*FPS;
+        int frame = 0;
+
+        while (secondsLeft > 0) {
+            Collision nextCrash = calculateNextCollision();
+            if (nextCrash.getSeconds() > secondsLeft) {
+                return;
+            }
+            updatePositions(nextCrash.getSeconds());
+            double currentTime = seconds - secondsLeft + nextCrash.getSeconds();
+            int currentFrame = (int) Math.floor(currentTime / frameTimeStep);
+            while (frame < currentFrame) {
+                printOvitoFrame(frame, currentTime - frame * frameTimeStep);
+                frame++;
+                System.out.println("Simulation status: " + 100.0*(1.0*frame/totalFrames) + "%");
+            }
+            crash(nextCrash);
+            secondsLeft -= nextCrash.getSeconds();
+        }
+    }
+
+    private void updatePositions(double deltaT) {
+        for (Particle particle : particles) {
+            particle.updatePosition(deltaT);
+        }
+    }
+
+    private void crash(Collision collision) {
+        if (collision.isWallType()) {
+            if (collision.horizontalWallCollition()) {
+                collision.getP1().swapDirectionX();
+            } else {
+                collision.getP1().swapDirectionY();
+            }
         } else {
-            wallCollision(nextCollision);
+            collision.getP1().increaseVx(collision.getJx() / collision.getP1().getM());
+            collision.getP2().increaseVx(-collision.getJx() / collision.getP2().getM());
+            collision.getP1().increaseVy(collision.getJy() / collision.getP1().getM());
+            collision.getP2().increaseVy(-collision.getJy() / collision.getP2().getM());
         }
 
-        nextCollision = null;
     }
 
-    /**
-     * Updates velocity for a particle colliding against a wall
-     * @param collision
-     */
-    private void wallCollision(Collision collision) {
-        switch (collision.getWallType()) {
-            case VERTICAL:
-                collision.getP1().setVy(-collision.getP1().getVy());
-                break;
-            case HORIZONTAL:
-                collision.getP1().setVx(-collision.getP1().getVx());
-                break;
-        }
-    }
+    private Collision calculateNextCollision() {
+        Collision minCrash = null;
 
-    /**
-     * Updates velocity for particles colliding to each other
-     * @param collision
-     */
-    public void particleCollision(Collision collision) {
-        Particle p1 = collision.getP1();
-        Particle p2 = collision.getP2();
+        for (Particle a : particles) {
 
-        p1.incrementVelocity(collision.getJx()/p1.getM(), collision.getJy()/p1.getM());
-        p2.incrementVelocity(collision.getJx()/p2.getM(), collision.getJy()/p2.getM());
-    }
+            double crashVerticalWall = Double.MAX_VALUE;
+            double crashHorizontalWall = Double.MAX_VALUE;
 
-    public double nextCollisionTime() {
-        return nextCollision == null ? Double.MAX_VALUE : nextCollision.getTimeToCollision();
-    }
-
-
-    public Integer particleQuantity() {
-        return particles.size();
-    }
-
-    /**
-     * Calculates time left for next collision
-     */
-    public void calculateNextCollision() {
-        Collision nextCollision = null;
-
-        double currentHorizTime = Double.MAX_VALUE;
-        double currentVertTime = Double.MAX_VALUE;
-        double currentMinTime;
-
-        for(Particle p : particles) {
-            /* Calculate wall collision */
-            if(p.getVx() > 0) {
-                currentHorizTime = (sideLength - p.getR() - p.getX()) / p.getVx();
-            } else if(p.getVx() < 0) {
-                currentHorizTime = (p.getR() - p.getX()) / p.getVx();
+            if (a.getVx() > 0) {
+                crashHorizontalWall = (this.L - a.getR() - a.getX()) / a.getVx();
+            } else if (a.getVx() < 0) {
+                crashHorizontalWall = (0 + a.getR() - a.getX()) / a.getVx();
             }
-            if(p.getVy() > 0) {
-                currentVertTime = (sideLength - p.getR() - p.getY()) / p.getVy();
-            } else if(p.getVy() < 0){
-                currentVertTime = (p.getR() - p.getY()) / p.getVy();
+
+            if (a.getVy() > 0) {
+                crashVerticalWall = (this.L - a.getR() - a.getY()) / a.getVy();
+            } else if (a.getVy() < 0) {
+                crashVerticalWall = (0 + a.getR() - a.getY()) / a.getVy();
             }
-            currentMinTime = currentHorizTime < currentVertTime ? currentHorizTime : currentVertTime;
-            if(nextCollision == null || currentMinTime < nextCollision.getTimeToCollision()) {
-                nextCollision = new Collision(p, currentVertTime<currentHorizTime ? Collision.WallType.VERTICAL : Collision.WallType.HORIZONTAL, currentMinTime);
+
+            double timeToCrash = Math.min(crashHorizontalWall, crashVerticalWall);
+
+            if (minCrash == null || timeToCrash < minCrash.getSeconds()) {
+                minCrash = new Collision(a, timeToCrash,
+                        crashHorizontalWall < crashVerticalWall ? Collision.WallType.HORIZONTAL : Collision.WallType.VERTICAL);
             }
-            continue;
-            /* Calculate collision against neighbours
-            for(Particle n : getNeighbours(p)) {
-                if(p.getId() >= n.getId()) {
+
+            for (Particle b : particles) {
+                if (a.getId() >= b.getId()) {
                     continue;
                 }
-                double collisionTime = timeToCollide(p, n);
-                if(collisionTime < nextCollision.getTimeToCollision()) {
-                    nextCollision = new Collision(p, n, collisionTime);
+                timeToCrash = timeToCrash(a, b);
+                if (minCrash == null || timeToCrash < minCrash.getSeconds()) {
+                    minCrash = new Collision(a, b, timeToCrash);
                 }
-            }*/
+            }
         }
-        this.nextCollision = nextCollision;
+        if(minCrash.getSeconds() < 0) {
+            throw new IllegalStateException();
+        }
+        return minCrash;
     }
 
-    public static double timeToCollide(Particle a, Particle b) {
+    public static double timeToCrash(Particle a, Particle b) {
         double sigma = a.getR() + b.getR();
         double deltaVX = b.getVx() - a.getVx();
         double deltaVY = b.getVy() - a.getVy();
@@ -151,52 +169,24 @@ public class Space2D {
         return -(vr + Math.sqrt(d)) / vv;
     }
 
-    public void addParticle(Particle p) {
-        if(isSuperimposed(p) || isOnEdge(p)){
-            return;
+    public void printOvitoFrame(int frameNumber, double delta) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter("simulation/frame_"+frameNumber+".txt"));
+        int n = particles.size();
+        writer.write(n+"\n");
+        double maxSpeed = 0;
+        for (Particle particle : particles) {
+            double aux = particle.getAbsoluteSpeed();
+            if (aux > maxSpeed)
+                maxSpeed = aux;
         }
-        particles.add(p);
-    }
-
-    private boolean isSuperimposed(Particle current){
-        for(Particle p: particles){
-            if(Math.pow((p.getX() - current.getX()),2) + Math.pow((p.getY() - current.getY()),2) <= Math.pow((p.getR() + current.getR()),2)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isOnEdge(Particle current){
-        if((current.getX() <= current.getR()) || (current.getX() >= (sideLength - current.getR()))){
-            return true;
+        for (Particle movingParticle : particles) {
+            double x = movingParticle.getX() - (movingParticle.getVx() * delta);
+            double y = movingParticle.getY() - (movingParticle.getVy() * delta);
+            double speedAux = movingParticle.getAbsoluteSpeed() / maxSpeed;
+            String type = movingParticle.getR()>0.005 ? "1" : "0";
+            writer.write("\n" + x + " " + y + " " + movingParticle.getR() + " " + type);
         }
 
-        if((current.getY() <= current.getR()) || (current.getY() >= (sideLength - current.getR()))){
-            return true;
-        }
-        return false;
-    }
-
-    private Set<Particle> getNeighbours(Particle p) {
-        Set<Particle> aux = new HashSet<>(particles);
-        aux.remove(p);
-        return aux;
-    }
-
-
-
-    public void printFrame(int frameNumber) throws IOException {
-		BufferedWriter writer = new BufferedWriter(new FileWriter("simulation/frame_"+frameNumber+".txt"));
-		writer.write(particles.size()+"\n");
-		for (Particle p : particles) {
-			writer.write("\n"+p);
-		}
-
-		writer.close();
-	}
-
-    public ArrayList<Particle> getParticles() {
-        return new ArrayList(particles);
+        writer.close();
     }
 }
