@@ -14,7 +14,6 @@ public class Main {
             System.err.println("  [M]: mass of big particle");
             System.err.println("  [T]: simulation time");
             System.err.println("  [FPS]: frames per second for ovito output");
-            System.
             return;
         }
 
@@ -23,6 +22,7 @@ public class Main {
 
         /* Generate simulation with ovito output */
         space.runOvito(Double.valueOf(args[3]), Integer.valueOf(args[4]));
+        //space.runSimulation(Double.valueOf(args[3]));
     }
 
     public static Space2D setupSpace(double l, int n, double bigParticleMass) {
@@ -30,7 +30,7 @@ public class Main {
         Space2D space = new Space2D(l);
 
         /* Simulation parameters */
-        Double maxSpeed = 0.01;
+        Double maxSpeed = 0.1;
 
         /* Add big particle to space */
         Particle bigParticle = new Particle(l / 2, l / 2, 0, 0, 0.05, bigParticleMass);
@@ -44,8 +44,8 @@ public class Main {
                 double y = Math.random() * (l - 2 * 0.005) + 0.005;
                 double speed = Math.random() * maxSpeed;
                 double theta = Math.random() * 2 * Math.PI;
-                double speedX = Math.random() * speed * Math.cos(theta);
-                double speedY = Math.random() * speed * Math.sin(theta);
+                double speedX = speed * Math.cos(theta);
+                double speedY = speed * Math.sin(theta);
                 p = new Particle(x, y, speedX, speedY, 0.005, 0.1);
             } while (!space.addParticle(p, false));
         }

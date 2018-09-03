@@ -78,6 +78,27 @@ public class Space2D {
         }
     }
 
+
+    public void runSimulation(double endTime) throws IOException {
+        double time=0;
+        double checkpoint = 1;
+        int crashed =0;
+        while (time < endTime) {
+            Collision nextCrash = calculateNextCollision();
+            updatePositions(nextCrash.getSeconds());
+
+            crashed++;
+            time += nextCrash.getSeconds();
+            if(time > checkpoint){
+                   System.out.println(crashed+" in "+checkpoint+" seconds");
+                crashed = 0;
+                checkpoint++;
+            }
+            crash(nextCrash);
+        }
+    }
+
+
     private void updatePositions(double deltaT) {
         for (Particle particle : particles) {
             particle.updatePosition(deltaT);
@@ -87,9 +108,9 @@ public class Space2D {
     private void crash(Collision collision) {
         if (collision.isWallType()) {
             if (collision.horizontalWallCollition()) {
-                collision.getP1().swapDirectionX();
-            } else {
                 collision.getP1().swapDirectionY();
+            } else {
+                collision.getP1().swapDirectionX();
             }
         } else {
             collision.getP1().increaseVx(collision.getJx() / collision.getP1().getM());
@@ -109,15 +130,15 @@ public class Space2D {
             double crashHorizontalWall = Double.MAX_VALUE;
 
             if (a.getVx() > 0) {
-                crashHorizontalWall = (this.L - a.getR() - a.getX()) / a.getVx();
+                crashVerticalWall = (this.L - a.getR() - a.getX()) / a.getVx();
             } else if (a.getVx() < 0) {
-                crashHorizontalWall = (0 + a.getR() - a.getX()) / a.getVx();
+                crashVerticalWall = (0 + a.getR() - a.getX()) / a.getVx();
             }
 
             if (a.getVy() > 0) {
-                crashVerticalWall = (this.L - a.getR() - a.getY()) / a.getVy();
+                crashHorizontalWall = (this.L - a.getR() - a.getY()) / a.getVy();
             } else if (a.getVy() < 0) {
-                crashVerticalWall = (0 + a.getR() - a.getY()) / a.getVy();
+                crashHorizontalWall = (0 + a.getR() - a.getY()) / a.getVy();
             }
 
             double timeToCrash = Math.min(crashHorizontalWall, crashVerticalWall);
