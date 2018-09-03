@@ -53,9 +53,9 @@ public class Space2D {
         return true;
     }
 
-    public void runOvito(double seconds) throws IOException {
+    public void runOvito(double seconds, int fps) throws IOException {
         double secondsLeft = seconds;
-        final int FPS = 25;
+        final int FPS = fps;
         double frameTimeStep = 1.0/FPS;
         long totalFrames = (long)Math.ceil(seconds)*FPS;
         int frame = 0;

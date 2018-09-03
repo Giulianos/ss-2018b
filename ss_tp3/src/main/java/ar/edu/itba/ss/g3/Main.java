@@ -7,27 +7,33 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         /* Check arguments */
-        if(args.length < 3) {
-            System.err.println("usage: java -jar program.jar [L] [N] [Time]");
+        if(args.length < 5) {
+            System.err.println("usage: java -jar program.jar [L] [N] [M] [T] [FPS]");
+            System.err.println("  [L]: side length of simulation space");
+            System.err.println("  [N]: number of particles (big particle included)");
+            System.err.println("  [M]: mass of big particle");
+            System.err.println("  [T]: simulation time");
+            System.err.println("  [FPS]: frames per second for ovito output");
+            System.
             return;
         }
 
         /* Setup space with provided parameters */
-        Space2D space = setupSpace(Double.valueOf(args[0]), Integer.valueOf(args[1]));
+        Space2D space = setupSpace(Double.valueOf(args[0]), Integer.valueOf(args[1]), Double.valueOf(args[2]));
 
         /* Generate simulation with ovito output */
-        space.runOvito(Double.valueOf(args[2]));
+        space.runOvito(Double.valueOf(args[3]), Integer.valueOf(args[4]));
     }
 
-    public static Space2D setupSpace(double l, int n) {
+    public static Space2D setupSpace(double l, int n, double bigParticleMass) {
         Random random = new Random();
         Space2D space = new Space2D(l);
 
         /* Simulation parameters */
-        Double speed = 0.01;
+        Double maxSpeed = 0.01;
 
         /* Add big particle to space */
-        Particle bigParticle = new Particle(l / 2, l / 2, 0, 0, 0.05, 1.0);
+        Particle bigParticle = new Particle(l / 2, l / 2, 0, 0, 0.05, bigParticleMass);
         space.addParticle(bigParticle, true);
 
         /* Generate small particles */
@@ -36,6 +42,7 @@ public class Main {
             do {
                 double x = Math.random() * (l - 2 * 0.005) + 0.005;
                 double y = Math.random() * (l - 2 * 0.005) + 0.005;
+                double speed = Math.random() * maxSpeed;
                 double theta = Math.random() * 2 * Math.PI;
                 double speedX = Math.random() * speed * Math.cos(theta);
                 double speedY = Math.random() * speed * Math.sin(theta);
