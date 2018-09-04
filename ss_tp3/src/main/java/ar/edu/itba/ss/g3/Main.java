@@ -21,8 +21,9 @@ public class Main {
         Space2D space = setupSpace(Double.valueOf(args[0]), Integer.valueOf(args[1]), Double.valueOf(args[2]));
 
         /* Generate simulation with ovito output */
-        space.runOvito(Double.valueOf(args[3]), Integer.valueOf(args[4]));
+        //space.runOvito(Double.valueOf(args[3]), Integer.valueOf(args[4]));
         //space.runSimulation(Double.valueOf(args[3]));
+        space.runSimulationDCM(100.0);
     }
 
     public static Space2D setupSpace(double l, int n, double bigParticleMass) {

@@ -9,6 +9,7 @@ public class Particle {
     private double y;
     private double vx;
     private double vy;
+    private boolean collidedAgainstWall = false;
     private final double m;
 
     public Particle(double x, double y, double vx, double vy, double r, double m) {
@@ -55,14 +56,27 @@ public class Particle {
         this.y += this.vy * deltaT;
     }
 
+    public double getXat(double deltaT) {
+        return this.x + this.vx*deltaT;
+    }
+
+    public double getYat(double deltaT) {
+        return this.y + this.vy*deltaT;
+    }
+
     public void swapDirectionX() {
         this.vx *= (-1);
-
+        collidedAgainstWall = true;
     }
 
     public void swapDirectionY() {
         this.vy *= (-1);
+        collidedAgainstWall = true;
 
+    }
+
+    public boolean didCollideAgainstWall() {
+        return collidedAgainstWall;
     }
 
     public void increaseVx(double inc) {

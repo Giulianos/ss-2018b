@@ -98,6 +98,23 @@ public class Space2D {
         }
     }
 
+    public void runSimulationDCM(double endTime) throws IOException {
+        double time=0.0;
+        double checkpoint = 0.0;
+        while (time < endTime && !bigParticle.didCollideAgainstWall()) {
+            Collision nextCrash = calculateNextCollision();
+            if((time + nextCrash.getSeconds()) > checkpoint) {
+                double x = 0.25 - bigParticle.getXat(checkpoint-time);
+                double y = 0.25 - bigParticle.getYat(checkpoint-time);
+                System.out.println((x*x + y*y));
+                checkpoint+=1.0;
+            }
+            updatePositions(nextCrash.getSeconds());
+            time += nextCrash.getSeconds();
+            crash(nextCrash);
+        }
+    }
+
 
     private void updatePositions(double deltaT) {
         for (Particle particle : particles) {
