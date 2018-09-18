@@ -1,6 +1,7 @@
 package ss.g3;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 public class Space {
@@ -9,6 +10,13 @@ public class Space {
 
     public Space() {
         this.bodies = new HashSet<>();
+        Random r = new Random();
+        Body sun = new Body(r.nextDouble(),r.nextDouble(),0.0,0.0,1988500e24);
+        Body earth = new Body(r.nextDouble(),r.nextDouble(),0.0,0.0,5.97219e24);
+        Body jupiter = new Body(r.nextDouble(),r.nextDouble(),0.0,0.0,1898.13e24);
+        Body saturn = new Body(r.nextDouble(),r.nextDouble(),0.0,0.0,5.6834e26);
+        Body spaceship = new Body(r.nextDouble(),r.nextDouble(),0.0,0.0,721.9);
+
     }
 
     public void calculateForces(){
