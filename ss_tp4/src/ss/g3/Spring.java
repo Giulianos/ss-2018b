@@ -8,7 +8,6 @@ import ss.g3.integrators.Integrator;
 import ss.g3.integrators.Verlet;
 
 public class Spring {
-    // TODO: change velocity value
     private Body body = new Body(1.0, 0.0, 0.7142857143, 0.0, 70.0);
     private Double k = 10000.0;
     private Double gamma = 100.0;

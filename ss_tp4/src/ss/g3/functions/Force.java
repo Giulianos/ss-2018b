@@ -13,4 +13,12 @@ public class Force {
     public Double evaluate(Double r, Double r1) {
         return -k*r - gamma*r1;
     }
+
+    public Double getGamma() {
+        return gamma;
+    }
+
+    public Double getK() {
+        return k;
+    }
 }
