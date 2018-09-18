@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         Spring spring = new Spring();
 
-//        spring.simulateReal(0.001, 5.0);
+//        spring.simulateVerlet(0.001, 5.0);
         spring.simulateError(new Verlet(),0.001, 5.0);
     }
 }

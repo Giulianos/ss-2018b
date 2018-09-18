@@ -83,8 +83,9 @@ public class Spring {
         Double time = 0.0;
         while(time < totalTime) {
             body = integrator.calculate(body, dt, f, a);
-            double aux = Math.pow(body.getX()-real.calculate(body,dt,f,a).getX(),2)/(time/dt);
-            System.out.println(time + "\t" + aux);
+            double auxX = Math.pow(body.getX()-real.calculate(body,dt,f,a).getX(),2)/(time/dt);
+            double auxY = Math.pow(body.getY()-real.calculate(body,dt,f,a).getY(),2)/(time/dt);
+            System.out.println(time + "\t" + auxX + "\t" +auxY);
             time+=dt;
         }
     }

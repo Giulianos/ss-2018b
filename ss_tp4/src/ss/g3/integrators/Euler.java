@@ -7,12 +7,13 @@ import ss.g3.functions.Force;
 public class Euler implements Integrator {
     @Override
     public Body calculate(Body b, Double dt, Force f, Acceleration a) {
-        // Double v = b.getVx() + dt * f.evaluate(b.getX(), b.getVx()) / b.getM();
-        // Double r = b.getX() + dt * b.getVx() + Math.pow(dt, 2) * f.evaluate(b.getX(), b.getVx()) / (2*b.getM());
 
-        Double v = b.getVx() + dt * f.evaluate(b.getX(), b.getVx()) / b.getM();
-        Double r = b.getX() + dt * v + Math.pow(dt, 2) * f.evaluate(b.getX(), b.getVx())/(2*b.getM());
+        Double vx = b.getVx() + dt * f.evaluate(b.getX(), b.getVx()) / b.getM();
+        Double rx = b.getX() + dt * vx + Math.pow(dt, 2) * f.evaluate(b.getX(), b.getVx())/(2*b.getM());
 
-        return new Body(r, 0.0, v, 0.0, b.getM());
+        Double vy = b.getVy() + dt * f.evaluate(b.getY(), b.getVy()) / b.getM();
+        Double ry = b.getY() + dt * vy + Math.pow(dt, 2) * f.evaluate(b.getY(), b.getVy())/(2*b.getM());
+
+        return new Body(rx,ry, vx, vy, b.getM());
     }
 }

@@ -7,10 +7,14 @@ import ss.g3.functions.Force;
 public class Verlet implements Integrator {
     @Override
     public Body calculate(Body b, Double dt, Force f, Acceleration a) {
-        Double r = b.getX() + dt * b.getVx() + Math.pow(dt, 2) * f.evaluate(b.getX(), b.getVx()) / b.getM();
-        Double v2 = b.getVx() + a.evaluate(b.getX(), b.getVx())*(dt/2);
-        Double v = v2 + a.evaluate(r, v2)*(dt/2);
+        Double rx = b.getX() + dt * b.getVx() + Math.pow(dt, 2) * f.evaluate(b.getX(), b.getVx()) / b.getM();
+        Double vx2 = b.getVx() + a.evaluate(b.getX(), b.getVx())*(dt/2);
+        Double vx = vx2 + a.evaluate(rx, vx2)*(dt/2);
 
-        return new Body(r, 0.0, v, 0.0, b.getM());
+        Double ry = b.getY() + dt * b.getVy() + Math.pow(dt, 2) * f.evaluate(b.getY(), b.getVy()) / b.getM();
+        Double vy2 = b.getVy() + a.evaluate(b.getY(), b.getVy())*(dt/2);
+        Double vy = vy2 + a.evaluate(ry, vy2)*(dt/2);
+
+        return new Body(rx, ry, vx, vy, b.getM());
     }
 }
