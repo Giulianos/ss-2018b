@@ -2,20 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1d612931-930b-49c1-abc2-3ea4a3a50073" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/ss_tp3_idea/.idea/description.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ss_tp3_idea/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ss_tp3_idea/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ss_tp3_idea/.idea/project-template.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ss_tp3_idea/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ss_tp3_idea/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ss_tp3_idea/out/production/ss_tp3/com/company/Collision$CollisionType.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ss_tp3_idea/out/production/ss_tp3/com/company/Collision$WallType.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ss_tp3_idea/out/production/ss_tp3/com/company/Collision.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ss_tp3_idea/out/production/ss_tp3/com/company/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ss_tp3_idea/out/production/ss_tp3/com/company/Particle.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ss_tp3_idea/out/production/ss_tp3/com/company/Space2D$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ss_tp3_idea/out/production/ss_tp3/com/company/Space2D.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ss_tp3_idea/ss_tp3.iml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/ss_tp4/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ss_tp4/params.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ss_tp4/src/META-INF/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ss_tp4/src/ss/g3/Body.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ss_tp4/src/ss/g3/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ss_tp4/src/ss/g3/Space.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ss_tp4/src/ss/g3/Spring.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ss_tp4/src/ss/g3/functions/Acceleration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ss_tp4/src/ss/g3/functions/Distance.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ss_tp4/src/ss/g3/functions/Force.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ss_tp4/src/ss/g3/integrators/Beeman.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ss_tp4/src/ss/g3/integrators/Euler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ss_tp4/src/ss/g3/integrators/GearPredictorCorrector.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ss_tp4/src/ss/g3/integrators/Integrator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ss_tp4/src/ss/g3/integrators/Verlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ss_tp4/ss_tp4.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ss_tp4/ss_tp4.iml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -49,9 +51,19 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
-      <pane id="ProjectPane" />
       <pane id="AndroidView" />
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="ss" type="b2602c69:ProjectViewProjectNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -127,14 +139,15 @@
       <updated>1536671795605</updated>
       <workItem from="1536671797101" duration="141000" />
       <workItem from="1536671961421" duration="65000" />
+      <workItem from="1537284043828" duration="300000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="206000" />
+    <option name="totallyTimeSpent" value="506000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1440" height="805" extended-state="6" />
+    <frame x="0" y="23" width="1440" height="805" extended-state="0" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -144,19 +157,20 @@
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="3" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24964234" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2532189" />
       <window_info anchor="right" id="Database" order="3" />
+      <window_info anchor="right" id="SciView" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
       <window_info anchor="right" id="Theme Preview" order="3" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
