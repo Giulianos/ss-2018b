@@ -24,7 +24,7 @@ public class Spring {
     }
 
     void simulateBeeman(Double dt, Double totalTime) {
-        Integrator integrator = new  Beeman();
+        Integrator integrator = new Beeman();
         Force f = new Force(k, gamma);
         Acceleration a = new Acceleration(k, gamma, body.getM());
 
@@ -49,6 +49,19 @@ public class Spring {
         }
     }
 
+    void simulateReal(Double dt, Double totalTime) {
+        Integrator integrator = new Real();
+        Force f = new Force(k, gamma);
+        Acceleration a = new Acceleration(k, gamma, body.getM());
+
+        Double time = 0.0;
+        while(time < totalTime) {
+            body = integrator.calculate(body, dt, f, a);
+            System.out.println(time + "\t" + body);
+            time+=dt;
+        }
+    }
+
     void simulateVerlet(Double dt, Double totalTime) {
         Integrator integrator = new Verlet();
         Force f = new Force(k, gamma);
@@ -58,6 +71,20 @@ public class Spring {
         while(time < totalTime) {
             body = integrator.calculate(body, dt, f, a);
             System.out.println(time + "\t" + body);
+            time+=dt;
+        }
+    }
+
+    void simulateError(Integrator integrator, Double dt, Double totalTime){
+        Integrator real = new Real();
+        Force f = new Force(k, gamma);
+        Acceleration a = new Acceleration(k, gamma, body.getM());
+
+        Double time = 0.0;
+        while(time < totalTime) {
+            body = integrator.calculate(body, dt, f, a);
+            double aux = Math.pow(body.getX()-real.calculate(body,dt,f,a).getX(),2)/(time/dt);
+            System.out.println(time + "\t" + aux);
             time+=dt;
         }
     }
