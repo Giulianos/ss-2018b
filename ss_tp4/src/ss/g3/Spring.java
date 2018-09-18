@@ -5,9 +5,15 @@ import ss.g3.functions.Force;
 import ss.g3.integrators.*;
 
 public class Spring {
-    private Body body = new Body(1.0, 0.0, 0.7142857143, 0.0, 70.0);
-    private Double k = 10000.0;
-    private Double gamma = 100.0;
+    private Body body;
+    private Double k;
+    private Double gamma;
+
+    public Spring(double mass, double k, double gamma, double x0, double y0, double vx0, double vy0) {
+        body = new Body(x0, y0, vx0, vy0, mass);
+        this.k = k;
+        this.gamma = gamma;
+    }
 
 
     void simulateEuler(Double dt, Double totalTime) {
