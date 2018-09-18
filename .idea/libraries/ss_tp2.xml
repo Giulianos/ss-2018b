@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="ss_tp2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/ss_tp2/ss_tp1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ss_tp2/cell_index.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
