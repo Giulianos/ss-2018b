@@ -21,8 +21,12 @@ public class Space {
     public Space() {
         this.bodies = new HashSet<>();
         bodies.add(new Body(1000*0.0, 0.0, 0.0,0.0,1988500e24, "sun"));
-        bodies.add(new Body(1.443667096759952E+11, -4.358205294442200E+10, // position (m)
+        bodies.add(new Body(1.443667096759952E+11, -4.358205294442200E+10,
                 8.134925514034244E+03,  2.840370427523522E+04, 5.97219E+24, "earth"));
+        bodies.add(new Body(1.051808117769951E+11,  7.552752037839167E+11, -1.310827390034170E+04,
+                2.413222412600538E+03, 1898.13E+24, "jupiter"));
+        bodies.add(new Body(-1.075922360420873E+12,  8.540977704606439E+11,
+                -6.538404943163649E+03, -7.592712627964003E+03, 5.6834E+26, "saturn"));
      }
 
     public void simulateSpace(Double dt, Double totalTime) {
