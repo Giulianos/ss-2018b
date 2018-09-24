@@ -1,19 +1,28 @@
 package ss.g3.integrators;
 
-import ss.g3.functions.Acceleration;
-import ss.g3.Body;
-import ss.g3.functions.Force;
+import ss.g3.types.Body;
+import ss.g3.forces.Force;
+import ss.g3.types.Vector;
 
 public class Euler implements Integrator {
     @Override
-    public Body calculate(Body b, Double dt, Force f, Acceleration a) {
+    public Body calculate(Body b, Double dt, Force f) {
 
-        Double vx = b.getVx() + dt * f.evaluate(b.getX(), b.getVx()) / b.getM();
-        Double rx = b.getX() + dt * vx + Math.pow(dt, 2) * f.evaluate(b.getX(), b.getVx())/(2*b.getM());
+        Vector bodyPosition = b.getPosition();
+        Vector bodyVelocity = b.getVelocity();
+        Vector evaluatedForce = f.evaluate(bodyPosition, bodyVelocity);
 
-        Double vy = b.getVy() + dt * f.evaluate(b.getY(), b.getVy()) / b.getM();
-        Double ry = b.getY() + dt * vy + Math.pow(dt, 2) * f.evaluate(b.getY(), b.getVy())/(2*b.getM());
+        Vector v = evaluatedForce
+                    .multiply(dt/b.getM())
+                    .add(bodyVelocity);
 
-        return new Body(rx,ry, vx, vy, b.getM());
+        Vector r = evaluatedForce
+                    .multiply(dt*dt/(2*b.getM()))
+                    .add(
+                            v.multiply(dt)
+                    )
+                    .add(bodyPosition);
+
+        return new Body(r, v, b.getM(), b.getTag());
     }
 }

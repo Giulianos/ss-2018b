@@ -1,33 +1,33 @@
 package ss.g3.integrators;
 
-import ss.g3.Body;
-import ss.g3.functions.Acceleration;
-import ss.g3.functions.Force;
+import ss.g3.types.Body;
+import ss.g3.forces.Force;
+import ss.g3.types.Vector;
 
 public class GearPredictorCorrector implements Integrator {
-    @Override
-    public Body calculate(Body b, Double dt, Force f, Acceleration a) {
 
-        Double rxCorrected[] = predictNcorrect(b,dt,a,true);
-        Double ryCorrected[] = predictNcorrect(b,dt,a,false);
+    public Body calculate(Body b, Double dt, Force f) {
 
-        return new Body(rxCorrected[0],ryCorrected[0],rxCorrected[1],ryCorrected[1],b.getM());
+        Double rxCorrected[] = predictNcorrect(b,dt,f,true);
+        Double ryCorrected[] = predictNcorrect(b,dt,f,false);
+
+        return new Body(rxCorrected[0],ryCorrected[0],rxCorrected[1],ryCorrected[1],b.getM(), b.getTag());
     }
 
-    private Double[] predictNcorrect(Body b, Double dt, Acceleration a, boolean axis){
+    private Double[] predictNcorrect(Body b, Double dt, Force f, boolean axis){
         Double rPredicted[] = new Double[6];
         Double rCorrected[];
 
         if(axis) {
-            rPredicted[0] = b.getX();
-            rPredicted[1] = b.getVx();
+            rPredicted[0] = b.getPosition().x;
+            rPredicted[1] = b.getVelocity().x;
         }else{
-            rPredicted[0] = b.getY();
-            rPredicted[1] = b.getVy();
+            rPredicted[0] = b.getPosition().y;
+            rPredicted[1] = b.getVelocity().y;
         }
 
         for(int i = 2; i < rPredicted.length; i++){
-            rPredicted[i] = a.evaluate(rPredicted[i - 2], rPredicted[i - 1]);
+            rPredicted[i] = f.evaluate(new Vector(rPredicted[i - 2], 0.0), new Vector(rPredicted[i - 1], 0.0)).divide(b.getM()).x;
         }
 
         rCorrected = rPredicted.clone();

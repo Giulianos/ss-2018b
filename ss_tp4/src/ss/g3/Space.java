@@ -1,5 +1,15 @@
 package ss.g3;
 
+import ss.g3.forces.Force;
+import ss.g3.forces.GForce;
+import ss.g3.forces.NullForce;
+import ss.g3.forces.SumForce;
+import ss.g3.integrators.Beeman;
+import ss.g3.integrators.Euler;
+import ss.g3.integrators.GearPredictorCorrector;
+import ss.g3.integrators.Integrator;
+import ss.g3.types.Body;
+
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -10,34 +20,59 @@ public class Space {
 
     public Space() {
         this.bodies = new HashSet<>();
-        Random r = new Random();
-        Body sun = new Body(r.nextDouble(),r.nextDouble(),0.0,0.0,1988500e24);
-        Body earth = new Body(r.nextDouble(),r.nextDouble(),0.0,0.0,5.97219e24);
-        Body jupiter = new Body(r.nextDouble(),r.nextDouble(),0.0,0.0,1898.13e24);
-        Body saturn = new Body(r.nextDouble(),r.nextDouble(),0.0,0.0,5.6834e26);
-        Body spaceship = new Body(r.nextDouble(),r.nextDouble(),0.0,0.0,721.9);
+        bodies.add(new Body(1000*0.0, 0.0, 0.0,0.0,1988500e24, "sun"));
+        bodies.add(new Body(1.443667096759952E+11, -4.358205294442200E+10, // position (m)
+                8.134925514034244E+03,  2.840370427523522E+04, 5.97219E+24, "earth"));
+     }
 
-    }
+    public void simulateSpace(Double dt, Double totalTime) {
+        Integrator integrator = new Beeman();
+        Double framesBetween = 86400.0/dt;
 
-    public void calculateForces(){
-        double fn;
-        double fx;
-        double fy;
-        double dist;
-
-        for(Body b1: bodies){
-            for(Body b2: bodies){
-                if(!b1.equals(b2)){
-                    dist = distanceBetween(b1,b2);
-                    fn = g * b1.getM() * b2.getM() / Math.pow(dist,2);
-                    fx = fn * (b2.getX()-b1.getX())/ dist;
-                    fy = fn * (b2.getY()-b1.getY())/dist;
+        Double time = 0.0;
+        while(time < totalTime) {
+            Set<Body> updatedBodies = new HashSet<>();
+            Body currentBody;
+            for(Body b : bodies) {
+                if(b.getTag() != "sun") {
+                    Set<Force> forces = calculateForces(b);
+                    currentBody = integrator.calculate(b, dt, new SumForce(forces));
+                    updatedBodies.add(currentBody);
+                } else {
+                    updatedBodies.add(b);
                 }
             }
+            bodies = updatedBodies;
+            if(framesBetween <= 0.0) {
+                printBodies();
+                System.err.println("Completed: " + (time / totalTime) * 100 + "%");
+                framesBetween = 86400.0/dt;
+            }
+            framesBetween-=1.0;
+            time+=dt;
         }
     }
 
-    private double distanceBetween(Body b1, Body b2) {
-        return Math.sqrt(Math.pow(b2.getX()-b1.getX(),2)+Math.pow(b2.getY()-b1.getY(),2));
+    public Set<Force> calculateForces(Body b){
+        Set<Force> forces = new HashSet<>();
+        for(Body b2 : bodies) {
+            if(!b.equals(b2)) {
+                forces.add(new GForce(b2, b));
+            }
+        }
+
+        return forces;
+    }
+
+    public void printBodies() {
+        System.out.println(bodies.size());
+        System.out.println("some comment");
+        for(Body b : bodies) {
+            System.out.println(b);
+        }
+    }//83.813.080
+
+    private Double kmDayToMSec(Double kmDay) {
+        return 0.01157*kmDay;
     }
 }

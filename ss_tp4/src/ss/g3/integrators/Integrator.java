@@ -1,9 +1,8 @@
 package ss.g3.integrators;
 
-import ss.g3.Body;
-import ss.g3.functions.Acceleration;
-import ss.g3.functions.Force;
+import ss.g3.types.Body;
+import ss.g3.forces.Force;
 
 public interface Integrator {
-    public Body calculate(Body b, Double dt, Force f, Acceleration a);
+    public Body calculate(Body b, Double dt, Force f);
 }

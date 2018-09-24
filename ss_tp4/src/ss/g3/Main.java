@@ -1,5 +1,4 @@
 package ss.g3;
-import ss.g3.integrators.Verlet;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,8 +15,8 @@ public class Main {
     private static Double vy0 = null;
     private static Double dt = null;
 
-    public static void parse() throws IOException {
-        FileReader input = new FileReader("/Users/florenciacavallin/Documents/4rto-1cuatri/SS/tp/ss/ss_tp4/params.txt");
+    public static void parse(String argsFile) throws IOException {
+        FileReader input = new FileReader(argsFile);
         BufferedReader bufRead = new BufferedReader(input);
         String myLine;
         int i = 0;
@@ -46,10 +45,31 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        parse();
+        Space space = new Space();
+        if(args[0].equals("space")) {
+            space.simulateSpace(Double.parseDouble(args[1]), Double.parseDouble(args[2]));
+            return;
+        }
+
+        parse(args[0]);
         Spring spring = new Spring(mass,k,gamma,x0,y0,vx0,vy0);
 
-//        spring.simulateVerlet(0.001, 5.0);
-        spring.simulateError(new Verlet(),dt, tf);
+        switch(args[1]) {
+            case "verlet":
+                spring.simulateVerlet(dt, tf);
+                break;
+            case "beeman":
+                spring.simulateBeeman(dt, tf);
+                break;
+            case "gear-predictor":
+                spring.simulateGearPredictorCorrector(dt, tf);
+                break;
+            case "euler":
+                spring.simulateEuler(dt, tf);
+                break;
+            default:
+                System.out.println("INVALID/UNSPECIFIED INTEGRATION METHOD");
+        }
+        //spring.simulateError(new Verlet(),dt, tf);
     }
 }
