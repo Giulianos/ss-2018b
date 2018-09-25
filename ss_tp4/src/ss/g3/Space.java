@@ -1,17 +1,11 @@
 package ss.g3;
-
 import ss.g3.forces.Force;
 import ss.g3.forces.GForce;
-import ss.g3.forces.NullForce;
 import ss.g3.forces.SumForce;
 import ss.g3.integrators.Beeman;
-import ss.g3.integrators.Euler;
-import ss.g3.integrators.GearPredictorCorrector;
 import ss.g3.integrators.Integrator;
 import ss.g3.types.Body;
-
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 public class Space {

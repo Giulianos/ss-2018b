@@ -1,5 +1,9 @@
 package ss.g3;
 
+import ss.g3.integrators.Beeman;
+import ss.g3.integrators.GearPredictorCorrector;
+import ss.g3.integrators.Verlet;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -53,23 +57,29 @@ public class Main {
 
         parse(args[0]);
         Spring spring = new Spring(mass,k,gamma,x0,y0,vx0,vy0);
+//
+//        switch(args[1]) {
+//            case "verlet":
+//                spring.simulateVerlet(dt, tf);
+//                break;
+//            case "beeman":
+//                spring.simulateBeeman(dt, tf);
+//                break;
+//            case "gear-predictor":
+//                spring.simulateGearPredictorCorrector(dt, tf);
+//                break;
+//            case "euler":
+//                spring.simulateEuler(dt, tf);
+//                break;
+//            case "real":
+//                spring.simulateReal(dt, tf);
+//                break;
+//            default:
+//                System.out.println("INVALID/UNSPECIFIED INTEGRATION METHOD");
+//        }
+       spring.simulateError(new Verlet(),dt, tf);
+       spring.simulateError(new Beeman(),dt, tf);
+       spring.simulateError(new GearPredictorCorrector(),dt, tf);
 
-        switch(args[1]) {
-            case "verlet":
-                spring.simulateVerlet(dt, tf);
-                break;
-            case "beeman":
-                spring.simulateBeeman(dt, tf);
-                break;
-            case "gear-predictor":
-                spring.simulateGearPredictorCorrector(dt, tf);
-                break;
-            case "euler":
-                spring.simulateEuler(dt, tf);
-                break;
-            default:
-                System.out.println("INVALID/UNSPECIFIED INTEGRATION METHOD");
-        }
-        //spring.simulateError(new Verlet(),dt, tf);
     }
 }

@@ -56,6 +56,7 @@ public class Body {
     @Override
     public String toString() {
         //return (tag != null ? tag : " ") + ", " + position.x.toString() + ", " + position.y.toString();
-        return stringToNum() + ", " + position.x.toString() + ", " + position.y.toString();
+//        return stringToNum() + ", " + position.x.toString() + ", " + position.y.toString();
+        return position.x.toString();
     }
 }
