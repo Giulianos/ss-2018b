@@ -1,0 +1,11 @@
+diameter = 1.0
+width = 10.0
+hight = 20.0
+friction = 1.5
+minRadius = 0.02
+maxRadius = 0.03
+N = 10
+gravity = 9.81
+mass = 0.01
+kn = 1e5
+tf = 60
