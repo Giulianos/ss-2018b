@@ -15,19 +15,18 @@ public class Spring {
     private static int N;
     private static double mass;
 
-    public Spring( Container container,double gravity,double min, double max, int N, double mass) {
-        this.space = new Space(container,initParticles(),gravity);
+    public Spring( Container container,double gravity,double min, double max, int N, double mass, double dt) {
+        this.space = new Space(container,initParticles(),gravity,dt);
         this.radiusInterval = new Vector(min,max);
         this.N = N;
         this.mass = mass;
     }
-
+    // generar algun algoritmo para llenar el contenedor de forma mas eficiente y rapida
     public Set<Body> initParticles(){
 
         Set<Body> bodies = new HashSet<>();
 
         Random r = new Random();
-
         while(bodies.size() < N){
             Vector position = new Vector(r.nextDouble(),r.nextDouble());
             Vector velocity = new Vector(0.0,0.0);

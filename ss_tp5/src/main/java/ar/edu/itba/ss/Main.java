@@ -15,7 +15,7 @@ public class Main {
     public static void main( String[] args ) throws IOException {
         parse(args[0]);
         Container box = new Box(friction,diameter,hight,width);
-        spring = new Spring(box,gravity,minRadius,maxRadius,N,mass);
+        spring = new Spring(box,gravity,minRadius,maxRadius,N,mass,dt);
     }
 
     public static void parse(String argsFile) throws IOException {

@@ -7,12 +7,16 @@ public class Body {
     private Vector velocity;
     private double mass;
     private double radius;
+    private static int quantity = 0;
+    private int id;
 
     public Body(Vector position, Vector velocity, double mass, double radius) {
         this.position = position;
         this.velocity = velocity;
         this.mass = mass;
         this.radius = radius;
+        this.id = quantity;
+        quantity++;
     }
 
     public Body(Vector position, Vector velocity, double mass, String s) {
@@ -54,5 +58,15 @@ public class Body {
 
     public String getTag() {
         return "";
+    }
+
+    public static boolean bodiesInTouch(Body b1, Body b2){
+        if(b1 == b2){
+            return false;
+        }
+        double distance = Vector.distanceBetween(b1.position, b2.position);
+        double minDistance = b1.radius + b2.radius;
+        double delta = 1e5;
+        return distance < minDistance + delta;
     }
 }
