@@ -1,5 +1,4 @@
 package ss.g3.integrators;
-
 import ss.g3.types.Body;
 import ss.g3.forces.Force;
 import ss.g3.types.Vector;
@@ -8,45 +7,50 @@ public class GearPredictorCorrector implements Integrator {
 
     public Body calculate(Body b, Double dt, Force f) {
 
-        Double rxCorrected[] = predictNcorrect(b,dt,f,true);
-        Double ryCorrected[] = predictNcorrect(b,dt,f,false);
+        Vector[] rs = new Vector[6];
+        rs[0] = b.getPosition();
+        rs[1] = b.getVelocity();
 
-        return new Body(rxCorrected[0],ryCorrected[0],rxCorrected[1],ryCorrected[1],b.getM(), b.getTag());
-    }
-
-    private Double[] predictNcorrect(Body b, Double dt, Force f, boolean axis){
-        Double rPredicted[] = new Double[6];
-        Double rCorrected[];
-
-        if(axis) {
-            rPredicted[0] = b.getPosition().x;
-            rPredicted[1] = b.getVelocity().x;
-        }else{
-            rPredicted[0] = b.getPosition().y;
-            rPredicted[1] = b.getVelocity().y;
+        for(int i = 2; i < rs.length ; i++) {
+            rs[i] = f.evaluate(rs[i-2],rs[i-1]).divide(b.getM());
         }
 
-        for(int i = 2; i < rPredicted.length; i++){
-            rPredicted[i] = f.evaluate(new Vector(rPredicted[i - 2], 0.0), new Vector(rPredicted[i - 1], 0.0)).divide(b.getM()).x;
-        }
+        Vector[] rPredicted = new Vector[6];
 
-        rCorrected = rPredicted.clone();
+        for(int i = 0; i < rPredicted.length; i++){
 
-        for(int i = 0; i < rCorrected.length; i++){
-            for(int j = i+1, h = 1; j < rPredicted.length; j++, h++){
-                rCorrected[i] += rPredicted[j] * Math.pow(dt,h) / factorial(h);
+            rPredicted[i] = new Vector(0.0,0.0);
+
+            for(int j = i, k = 0; j < rs.length ; j++, k++){
+
+                rPredicted[i] = rPredicted[i].add(
+                        rs[j].multiply(
+                                Math.pow(dt,k)
+                        ).divide(
+                                factorial(k)
+                        )
+                );
             }
         }
 
-        Double dR2 = (rCorrected[2] - rPredicted[2]) * Math.pow(dt, 2) / factorial(2);
+        Vector dR2 = rs[2].add(rPredicted[2].multiply(-1.0)).multiply(dt*dt).divide(2.0);
 
         Double alpha[] = {3.0/20,251.0/360,1.0,11.0/18,1.0/6,1.0/60};
 
-        for(int i = 0 ; i < rCorrected.length ; i++){
-            rCorrected[i] += alpha[i] * dR2 * (factorial(i)/Math.pow(dt,i));
+        Vector[] rCorrected = new Vector[6];
+
+        for(int i = 0; i < rCorrected.length; i++){
+            rCorrected[i] = new Vector(0.0,0.0).add(
+                    rPredicted[i]
+            ).add(
+                    dR2.multiply(
+                            alpha[i]*Math.pow(dt,i)/factorial(i)
+                    )
+            );
         }
 
-        return rCorrected;
+        return new Body(rCorrected[0],rCorrected[1],b.getM(),b.getTag());
+
     }
 
     private double factorial(int number) {
@@ -55,5 +59,9 @@ public class GearPredictorCorrector implements Integrator {
             res *= i;
         }
         return res;
+    }
+
+    public String toString(){
+        return "gear";
     }
 }

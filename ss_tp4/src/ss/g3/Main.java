@@ -1,8 +1,7 @@
 package ss.g3;
 
-import ss.g3.integrators.Beeman;
-import ss.g3.integrators.GearPredictorCorrector;
-import ss.g3.integrators.Verlet;
+import ss.g3.integrators.*;
+import ss.g3.types.Vector;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -18,6 +17,8 @@ public class Main {
     private static Double vx0 = null;
     private static Double vy0 = null;
     private static Double dt = null;
+    private static Integrator integrator = null;
+    private static Boolean error = null;
 
     public static void parse(String argsFile) throws IOException {
         FileReader input = new FileReader(argsFile);
@@ -37,49 +38,52 @@ public class Main {
                 case "vx0" : vx0 = Double.parseDouble(aux[1]); break;
                 case "vy0" : vy0 = Double.parseDouble(aux[1]); break;
                 case "dt" : dt = Double.parseDouble(aux[1]); break;
+                case "integrator" : integrator = getIntegrator(aux[1]) ; break;
+                case "error" : error = Boolean.parseBoolean(aux[1]); break;
                 default:
-                    System.out.println("NOT VALID INPUT IN PARAMS.TXT");
+                    throw new RuntimeException("NOT VALID INPUT IN PARAMS.TXT");
             }
             i++;
         }
 
-        if(i<9){
-            System.out.println("THERE ARE PARAMETERS MISSING");
+        if(i<11){
+            throw new RuntimeException("THERE ARE PARAMETERS MISSING");
+        }
+    }
+
+    private static Integrator getIntegrator(String integrator) {
+        switch (integrator){
+            case "verlet":
+                return new Verlet();
+            case "beeman":
+                return new Beeman();
+            case "gear":
+                return new GearPredictorCorrector();
+            case "real":
+                return new Real();
+            case "euler":
+                return new Euler();
+                default:
+                    return null;
         }
     }
 
     public static void main(String[] args) throws IOException {
-        Space space = new Space();
+
+
         if(args[0].equals("space")) {
+            Space space = new Space();
             space.simulateSpace(Double.parseDouble(args[1]), Double.parseDouble(args[2]));
             return;
         }
 
         parse(args[0]);
         Spring spring = new Spring(mass,k,gamma,x0,y0,vx0,vy0);
-//
-//        switch(args[1]) {
-//            case "verlet":
-//                spring.simulateVerlet(dt, tf);
-//                break;
-//            case "beeman":
-//                spring.simulateBeeman(dt, tf);
-//                break;
-//            case "gear-predictor":
-//                spring.simulateGearPredictorCorrector(dt, tf);
-//                break;
-//            case "euler":
-//                spring.simulateEuler(dt, tf);
-//                break;
-//            case "real":
-//                spring.simulateReal(dt, tf);
-//                break;
-//            default:
-//                System.out.println("INVALID/UNSPECIFIED INTEGRATION METHOD");
-//        }
-       spring.simulateError(new Verlet(),dt, tf);
-       spring.simulateError(new Beeman(),dt, tf);
-       spring.simulateError(new GearPredictorCorrector(),dt, tf);
 
+        if(error){
+            spring.simulateError(dt,tf,integrator);
+        }else{
+            spring.simulation(dt,tf,integrator);
+        }
     }
 }

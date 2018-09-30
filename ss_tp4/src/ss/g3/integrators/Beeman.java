@@ -7,6 +7,7 @@ import ss.g3.types.Vector;
 public class Beeman implements Integrator {
     @Override
     public Body calculate(Body b, Double dt, Force f) {
+
         Integrator euler = new Euler();
         Body b2 = euler.calculate(b, -dt, f);
 
@@ -34,7 +35,7 @@ public class Beeman implements Integrator {
                             a.multiply(3*dt/2)
                     )
                     .add(
-                            a2.multiply(-dt*2)
+                            a2.multiply(-dt/2)
                     );
 
         Vector a3 = f.evaluate(r, vp).divide(b.getM());
@@ -44,12 +45,16 @@ public class Beeman implements Integrator {
                             a3.multiply(dt/3)
                     )
                     .add(
-                            a.multiply(dt*5/6)
+                            a.multiply(5*dt/6)
                     )
                     .add(
                             a2.multiply(-dt/6)
                     );
 
-        return new Body(r, vc, b.getM(), b.getTag());
+      return new Body(r, vc, b.getM(), b.getTag());
+    }
+
+    public String toString(){
+        return "beeman";
     }
 }

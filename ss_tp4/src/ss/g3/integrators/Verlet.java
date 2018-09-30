@@ -7,6 +7,7 @@ import ss.g3.types.Vector;
 public class Verlet implements Integrator {
     @Override
     public Body calculate(Body b, Double dt, Force f) {
+
         Vector bodyPosition = b.getPosition();
         Vector bodyVelocity = b.getVelocity();
         Vector evaluatedForce = f.evaluate(bodyPosition, bodyVelocity);
@@ -14,8 +15,7 @@ public class Verlet implements Integrator {
         Vector r = evaluatedForce
                     .multiply(dt*dt/b.getM())
                     .add(
-                            bodyVelocity
-                                .multiply(dt)
+                            bodyVelocity.multiply(dt)
                     )
                     .add(bodyPosition);
 
@@ -30,5 +30,9 @@ public class Verlet implements Integrator {
                     .add(v2);
 
         return new Body(r, v, b.getM(), b.getTag());
+    }
+
+    public String toString(){
+        return "verlet";
     }
 }

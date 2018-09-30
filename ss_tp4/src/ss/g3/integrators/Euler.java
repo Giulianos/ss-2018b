@@ -12,17 +12,13 @@ public class Euler implements Integrator {
         Vector bodyVelocity = b.getVelocity();
         Vector evaluatedForce = f.evaluate(bodyPosition, bodyVelocity);
 
-        Vector v = evaluatedForce
-                    .multiply(dt/b.getM())
-                    .add(bodyVelocity);
-
-        Vector r = evaluatedForce
-                    .multiply(dt*dt/(2*b.getM()))
-                    .add(
-                            v.multiply(dt)
-                    )
-                    .add(bodyPosition);
+        Vector v = evaluatedForce.multiply(dt).divide(b.getM()).add(bodyVelocity);
+        Vector r = evaluatedForce.multiply(dt*dt).divide(2*b.getM()).add(v.multiply(dt)).add(bodyPosition);
 
         return new Body(r, v, b.getM(), b.getTag());
+    }
+
+    public String toString(){
+        return "euler";
     }
 }
