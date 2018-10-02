@@ -51,19 +51,19 @@ public class Space
         return bodies.size()/container.getArea();
     }
 
-    private Vector updatePeriodic(Body body, Vector position){
+    private Body updatePeriodic(Body body, Vector position){
         double aux = body.getPosition().y + position.y;
         if(aux <= 0){
-            body.setPosition(new Vector(body.getPosition().x,aux + l));
-            body.setVelocity(new Vector(0.0,0.0));
+            return new Body(new Vector(body.getPosition().x,aux + l),new Vector(0.0,0.0),body.getMass(),body.getRadius());
         }
-        return new Vector(body.getPosition().x,aux);
+        return new Body(new Vector(body.getPosition().x,aux),body.getVelocity(),body.getMass(),body.getRadius());
     }
 
     private void udateParticle(Body b, Force f, double dt){
         Body newb = integrator.calculate(b,dt,f);
-        newb.setPosition(updatePeriodic(newb,newb.getPosition()));
+        newb = updatePeriodic(newb,newb.getPosition());
         b.setPosition(newb.getPosition());
+        b.setVelocity(newb.getPosition());
     }
     // usar cellIndexMethod u otro algoritmo para no recorrer todas las particulas para ver si esta en contacto con body
     public void bruteForce(){
