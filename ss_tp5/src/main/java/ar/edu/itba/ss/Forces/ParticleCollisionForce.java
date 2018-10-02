@@ -33,5 +33,6 @@ public class ParticleCollisionForce implements Force{
         Vector ft = new Vector(Math.signum(fn.x),Math.signum(fn.y)).multiply(-friction*fn.norm2());
 
         return ft.add(fn);
+
     }
 }

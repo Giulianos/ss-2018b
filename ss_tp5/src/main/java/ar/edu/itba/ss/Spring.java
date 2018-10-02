@@ -7,6 +7,8 @@ import ar.edu.itba.ss.Particles.Vector;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
@@ -28,7 +30,8 @@ public class Spring {
         this.tf = tf;
         this.dt = dt;
         this.box = container;
-        this.space = new Space(container,initParticles(),gravity,dt,friction,kn);
+        Set<Body> bodies = initParticles();
+        this.space = new Space(container,bodies,gravity,dt,friction,kn);
         simulation();
     }
     // generar algun algoritmo para llenar el contenedor de forma mas eficiente y rapida
@@ -38,7 +41,7 @@ public class Spring {
 
         Random r = new Random();
         while(bodies.size() < N){
-            Vector position = new Vector(r.nextDouble(),r.nextDouble());
+            Vector position = new Vector(r.nextDouble(),r.nextDouble()*3);
             Vector velocity = new Vector(0.0,0.0);
             double radius = r.nextDouble()*(radiusInterval.y-radiusInterval.x)+radiusInterval.x;
             Body body = new Body(position,velocity,radius,mass);
@@ -51,30 +54,25 @@ public class Spring {
     }
 
     public void simulation(){
+        BufferedWriter writer=initalizeBW("/Users/florenciacavallin/Documents/4rto-2cuatri/SS/ss/ss_tp5/simulation/sim_"+LocalDateTime.now());
+        appendToFile(writer,Integer.toString(space.getBodies().size())+"\n"+"\n");
         double time = 0.0;
-        int i = 0;
         while(time < tf){
             space.bruteForce();
-            printBodies(i);
-            i++;
+            printBodies(writer);
             time += dt;
         }
+        closeBW(writer);
     }
 
-    public void printBodies(int i){
-        BufferedWriter writer=initalizeBW("/Users/florenciacavallin/Documents/4rto-2cuatri/SS/ss/ss_tp5simulation/"+"frame_"+i);
+    public void printBodies(BufferedWriter writer){
 
         Set<Body> bodies = space.getBodies();
-
-        System.out.println(bodies.size());
-        appendToFile(writer,Integer.toString(bodies.size())+"\n"+"\n");
-        System.out.println();
 
         for(Body body: bodies){
             System.out.println(bodies);
             appendToFile(writer,body.toString());
         }
-        closeBW(writer);
     }
 
     private BufferedWriter initalizeBW(String outPath) {

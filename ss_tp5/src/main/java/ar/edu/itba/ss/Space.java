@@ -62,7 +62,7 @@ public class Space
 
     private void udateParticle(Body b, Force f, double dt){
         Body newb = integrator.calculate(b,dt,f);
-        newb.setPosition(updatePeriodic(b,newb.getPosition()));
+        newb.setPosition(updatePeriodic(newb,newb.getPosition()));
         b.setPosition(newb.getPosition());
     }
     // usar cellIndexMethod u otro algoritmo para no recorrer todas las particulas para ver si esta en contacto con body

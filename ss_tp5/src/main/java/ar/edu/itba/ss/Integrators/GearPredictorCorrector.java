@@ -50,7 +50,7 @@ public class GearPredictorCorrector implements Integrator {
             );
         }
 
-        return new Body(rCorrected[0],rCorrected[1],b.getMass(),b.getTag());
+        return new Body(rCorrected[0],rCorrected[1],b.getMass(),b.getRadius());
 
     }
 

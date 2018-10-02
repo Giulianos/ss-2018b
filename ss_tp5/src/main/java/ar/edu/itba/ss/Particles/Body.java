@@ -20,8 +20,6 @@ public class Body {
         quantity++;
     }
 
-    public Body(Vector position, Vector velocity, double mass, String s) {
-    }
 
     public static boolean bodyInTouch(Set<Body> bodies, Body body) {
         for(Body b: bodies){
