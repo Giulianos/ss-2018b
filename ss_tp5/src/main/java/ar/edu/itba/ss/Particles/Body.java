@@ -1,6 +1,7 @@
 package ar.edu.itba.ss.Particles;
 
 import java.util.Objects;
+import java.util.Set;
 
 public class Body {
     private Vector position;
@@ -20,6 +21,15 @@ public class Body {
     }
 
     public Body(Vector position, Vector velocity, double mass, String s) {
+    }
+
+    public static boolean bodyInTouch(Set<Body> bodies, Body body) {
+        for(Body b: bodies){
+            if(!body.equals(b) && Body.bodiesInTouch(b,body)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public Vector getPosition() {
@@ -43,14 +53,6 @@ public class Body {
     public void setVelocity(Vector velocity) { this.velocity = velocity; }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Body body = (Body) o;
-        return Vector.distanceBetween(this.position, body.position) > this.radius+ body.radius;
-    }
-
-    @Override
     public int hashCode() {
 
         return Objects.hash(getPosition(), getVelocity(), getMass(), getRadius());
@@ -66,7 +68,22 @@ public class Body {
         }
         double distance = Vector.distanceBetween(b1.position, b2.position);
         double minDistance = b1.radius + b2.radius;
-        double delta = 1e5;
-        return distance < minDistance + delta;
+        return distance < minDistance;
+    }
+
+    public String toString(){
+        return this.getPosition().x +"\t"+this.getPosition().y+"\n";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Body body = (Body) o;
+        return Double.compare(body.getMass(), getMass()) == 0 &&
+                Double.compare(body.getRadius(), getRadius()) == 0 &&
+                id == body.id &&
+                Objects.equals(getPosition(), body.getPosition()) &&
+                Objects.equals(getVelocity(), body.getVelocity());
     }
 }

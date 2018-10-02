@@ -1,10 +1,13 @@
 package ar.edu.itba.ss.Containers;
 
 import ar.edu.itba.ss.Particles.Body;
+import ar.edu.itba.ss.Particles.Vector;
 
 public abstract class Container {
-    private double friction;
-    private double od;
+    protected double friction;
+    protected double od;
+    protected Body leftPoint;
+    protected Body rightPoint;
 
     public Container(double friction, double od) {
         this.friction = friction;
@@ -26,6 +29,8 @@ public abstract class Container {
 
     public abstract double getTotalLength();
 
-    public abstract boolean touchesWall(Body body);
+    public abstract Vector touchesWall(Body body);
+
+    public abstract Body touchesEdge(Body body);
 
 }

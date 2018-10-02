@@ -1,8 +1,7 @@
 package ar.edu.itba.ss;
 
 import ar.edu.itba.ss.Containers.Container;
-import ar.edu.itba.ss.Forces.Force;
-import ar.edu.itba.ss.Forces.SumForce;
+import ar.edu.itba.ss.Forces.*;
 import ar.edu.itba.ss.Integrators.GearPredictorCorrector;
 import ar.edu.itba.ss.Integrators.Integrator;
 import ar.edu.itba.ss.Particles.Body;
@@ -20,13 +19,16 @@ public class Space
     private double l;
     private double dt;
 
-    public Space(Container container, Set<Body> bodies, double gravity, double dt) {
+    public Space(Container container, Set<Body> bodies, double gravity, double dt, double friction, double kn) {
         this.container = container;
         this.bodies = bodies;
         this.gravity = gravity;
         this.l = container.getTotalLength()*1.1;
         this.integrator = new GearPredictorCorrector();
         this.dt = dt;
+        GForce.setGravity(gravity);
+        ParticleCollisionForce.setKn(kn);
+        ParticleCollisionForce.setFriction(friction);
     }
 
     public double calculatePressure(double depth){
@@ -64,18 +66,30 @@ public class Space
         b.setPosition(newb.getPosition());
     }
     // usar cellIndexMethod u otro algoritmo para no recorrer todas las particulas para ver si esta en contacto con body
-    private void bruteForce(){
+    public void bruteForce(){
         for(Body body: bodies){
             Set<Force> forces = new HashSet<>();
-            // forces.add();    agregar la fuerza que le ejerce la gravedad a body
+            forces.add(new GForce(body));
             for(Body other: bodies){
                 if(Body.bodiesInTouch(body,other)){
-                    // forces.add();   agregar la fuerza que hace other sobre body
+                    forces.add(new ParticleCollisionForce(body,other));
                 }
             }
-            // forces.add();    agregar la fuerza que le ejercen las paredes a body si esta en contacto con alguna
+            Vector wall = container.touchesWall(body);
+            if(wall != null){
+                forces.add(new WallCollisionForce(body,wall));
+            }
+            Body edge = container.touchesEdge(body);
+            if(edge != null ){
+                forces.add(new ParticleCollisionForce(edge,body));
+            }
             udateParticle(body,new SumForce(forces),dt);
         }
     }
+
+    public Set<Body> getBodies() {
+        return this.bodies;
+    }
+
 
 }
