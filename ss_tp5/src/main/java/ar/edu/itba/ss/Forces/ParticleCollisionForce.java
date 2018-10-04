@@ -4,10 +4,10 @@ import ar.edu.itba.ss.Particles.Body;
 import ar.edu.itba.ss.Particles.Vector;
 
 public class ParticleCollisionForce implements Force{
-    protected static double kn;
-    protected static double kt;
-    protected static double friction;
-    protected Body b1;
+    private static double kn;
+    private static double gamma;
+    private static double friction;
+    private Body b1;
     private Body b2;
 
     public ParticleCollisionForce(Body b1, Body b2) {
@@ -17,7 +17,6 @@ public class ParticleCollisionForce implements Force{
 
     public static void setKn(double kn) {
         ParticleCollisionForce.kn = kn;
-        ParticleCollisionForce.kt = 2*kn;
     }
 
     public static void setFriction(double friction) {
@@ -26,11 +25,19 @@ public class ParticleCollisionForce implements Force{
 
     @Override
     public Vector evaluate(Vector position, Vector velocity) {
+        Vector distance = b1.getPosition().diff(b2.getPosition());
 
-        Vector aux = b1.getPosition().add(b2.getPosition().multiply(-1.0));
-        Vector fn = aux.divide(aux.norm2()).multiply(-1*kn*( b2.getRadius() + b1.getRadius() - Vector.distanceBetween(b1.getPosition(),b2.getPosition())));
+        // Directions
+        Vector en = distance.direction(); // Normal to contact
+        Vector et = en.rotate(Math.PI/2); // Tangent to contact
 
-        Vector ft = new Vector(Math.signum(fn.x),Math.signum(fn.y)).multiply(-friction*fn.norm2());
+        // Geometric variables
+        Double epsilon = b1.getRadius() + b2.getRadius() - distance.norm2();
+        Double relativeVelocity = b1.getVelocity().diff(b2.getVelocity()).dot(et); // Relative velocity in tangent direction
+
+        // Forces
+        Vector fn = en.multiply((-kn - gamma)*epsilon);
+        Vector ft = et.multiply(-friction * fn.norm2() * Math.signum(relativeVelocity));
 
         return ft.add(fn);
 
