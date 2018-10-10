@@ -1,6 +1,6 @@
 package ar.edu.itba.ss.Forces;
 
-import ar.edu.itba.ss.Particles.Vector;
+import ar.edu.itba.ss.Types.Vector;
 
 import java.util.Set;
 

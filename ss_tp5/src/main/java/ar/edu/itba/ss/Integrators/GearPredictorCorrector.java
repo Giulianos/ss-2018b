@@ -2,7 +2,7 @@ package ar.edu.itba.ss.Integrators;
 
 import ar.edu.itba.ss.Particles.Body;
 import ar.edu.itba.ss.Forces.Force;
-import ar.edu.itba.ss.Particles.Vector;
+import ar.edu.itba.ss.Types.Vector;
 
 public class GearPredictorCorrector implements Integrator {
 

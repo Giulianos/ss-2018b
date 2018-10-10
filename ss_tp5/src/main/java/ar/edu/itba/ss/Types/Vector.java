@@ -1,8 +1,8 @@
-package ar.edu.itba.ss.Particles;
+package ar.edu.itba.ss.Types;
 
 import java.util.function.UnaryOperator;
 
-public class Vector implements Cloneable{
+public class Vector implements Cloneable {
     public Double x;
     public Double y;
     private Double norm2 = null;
@@ -52,6 +52,10 @@ public class Vector implements Cloneable{
             return (this.norm2=Math.sqrt(x*x + y*y));
         }
         return this.norm2;
+    }
+
+    public Double distanceTo(Vector v2) {
+        return diff(v2).norm2();
     }
 
     public Vector apply(UnaryOperator<Double> operator) {

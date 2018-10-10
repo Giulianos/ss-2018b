@@ -2,20 +2,42 @@ package ar.edu.itba.ss;
 
 import ar.edu.itba.ss.Containers.Box;
 import ar.edu.itba.ss.Containers.Container;
+import ar.edu.itba.ss.Observers.OVITOObserver;
+import ar.edu.itba.ss.Observers.SpaceObserver;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
 public class Main {
-    private static Double diameter, width, hight, friction, minRadius, maxRadius, gravity, mass, kn, dt, tf;
+    private static Double diameter, width, height, friction, minRadius, maxRadius, mass, kn, dt, tf;
     private static int N;
-    private static Spring spring;
 
-    public static void main( String[] args ) throws IOException {
-        parse(args[0]);
-        Container box = new Box(friction,diameter,hight,width);
-        spring = new Spring(box,gravity,minRadius,maxRadius,N,mass,dt,friction,kn,tf);
+    public static void main( String[] args ) throws Exception {
+        // Parse arguments
+        parse("params.txt");
+        Logger.log("Arguments parsed!");
+
+        // Create observer
+        SpaceObserver observer = new OVITOObserver("ovito_out/ovito.xyz", tf);
+        Logger.log("Observer created!");
+
+        // Create space
+        Space space = new Space(width, height, diameter, N);
+        Logger.log("Space created!");
+
+        // Attach observer to space
+        space.attachObserver(observer);
+        Logger.log("Observer attached to space!");
+
+        // Create simulator
+        Simulator simulator = new Simulator(space, observer, dt);
+        Logger.log("Simulator created!");
+
+        // Simulate
+        Logger.log("Simulating...");
+        simulator.simulate();
+
     }
 
     public static void parse(String argsFile) throws IOException {
@@ -29,12 +51,11 @@ public class Main {
             switch (aux[0]){
                 case "diameter" : diameter = Double.parseDouble(aux[1]); break;
                 case "width" : width = Double.parseDouble(aux[1]); break;
-                case "hight" : hight = Double.parseDouble(aux[1]); break;
+                case "height" : height = Double.parseDouble(aux[1]); break;
                 case "friction" : friction = Double.parseDouble(aux[1]); break;
                 case "minradius" : minRadius = Double.parseDouble(aux[1]); break;
                 case "maxradius" : maxRadius = Double.parseDouble(aux[1]); break;
                 case "n" : N = Integer.parseInt(aux[1]); break;
-                case "gravity" : gravity = Double.parseDouble(aux[1]); break;
                 case "mass" : mass = Double.parseDouble(aux[1]); break;
                 case "kn" :
                     kn = Double.parseDouble(aux[1]);
@@ -49,7 +70,7 @@ public class Main {
             i++;
         }
 
-        if(i<11){
+        if(i<10){
             throw new RuntimeException("THERE ARE PARAMETERS MISSING");
         }
     }

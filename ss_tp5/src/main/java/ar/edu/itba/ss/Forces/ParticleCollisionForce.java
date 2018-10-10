@@ -1,12 +1,12 @@
 package ar.edu.itba.ss.Forces;
 
 import ar.edu.itba.ss.Particles.Body;
-import ar.edu.itba.ss.Particles.Vector;
+import ar.edu.itba.ss.Types.Vector;
 
 public class ParticleCollisionForce implements Force{
-    private static double kn;
-    private static double gamma;
-    private static double friction;
+    private static Double kn = 1e5;
+    private static Double gamma = 0.0;
+    private static Double friction = 0.7;
     private Body b1;
     private Body b2;
 
@@ -15,11 +15,15 @@ public class ParticleCollisionForce implements Force{
         this.b2 = b2;
     }
 
-    public static void setKn(double kn) {
+    public static void setKn(Double kn) {
         ParticleCollisionForce.kn = kn;
     }
 
-    public static void setFriction(double friction) {
+    public static void setGamma(Double gamma) {
+        ParticleCollisionForce.gamma = gamma;
+    }
+
+    public static void setFriction(Double friction) {
         ParticleCollisionForce.friction = friction;
     }
 

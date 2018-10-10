@@ -1,36 +1,37 @@
 package ar.edu.itba.ss.Containers;
 
 import ar.edu.itba.ss.Particles.Body;
-import ar.edu.itba.ss.Particles.Vector;
+import ar.edu.itba.ss.Types.Collision;
 
-public abstract class Container {
-    protected double friction;
-    protected double od;
-    protected Body leftPoint;
-    protected Body rightPoint;
+import java.util.Set;
 
-    public Container(double friction, double od) {
-        this.friction = friction;
-        this.od = od;
-    }
+public interface Container {
 
-    public double getFriction() {
-        return friction;
-    }
+    /**
+     * Calculates collisions between body and
+     * the container's walls.
+     * @param body
+     * @return a collision if there's one, null otherwise
+     */
+    public Set<Collision> getWallCollision(Body body);
 
-    public abstract double getArea();
+    /**
+     * The bodies that represent opening edges
+     * @return A set with the bodies
+     */
+    public Set<Body> getOpeningBodies();
 
-    public abstract double getDiameterAt(double depth);
+    /**
+     * The width of the container at
+     * the specified depth
+     * @param depth
+     * @return The width of the container
+     */
+    public Double getWidth(Double depth);
 
-
-    public double getOpeningDiameter() {
-        return od;
-    }
-
-    public abstract double getTotalLength();
-
-    public abstract Vector touchesWall(Body body);
-
-    public abstract Body touchesEdge(Body body);
-
+    /**
+     * The height of the container
+     * @return
+     */
+    public Double getHeight();
 }

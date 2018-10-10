@@ -1,17 +1,19 @@
 package ar.edu.itba.ss.Particles;
 
+import ar.edu.itba.ss.Types.Vector;
+
 import java.util.Objects;
 import java.util.Set;
 
-public class Body {
+public class Body implements Cloneable {
     private Vector position;
     private Vector velocity;
-    private double mass;
-    private double radius;
-    private static int quantity = 0;
-    private int id;
+    private Double mass;
+    private Double radius;
+    private static Integer quantity = 0;
+    private Integer id;
 
-    public Body(Vector position, Vector velocity, double mass, double radius) {
+    public Body(Vector position, Vector velocity, Double mass, Double radius) {
         this.position = position;
         this.velocity = velocity;
         this.mass = mass;
@@ -20,14 +22,11 @@ public class Body {
         quantity++;
     }
 
-
-    public static boolean bodyInTouch(Set<Body> bodies, Body body) {
-        for(Body b: bodies){
-            if(!body.equals(b) && Body.bodiesInTouch(b,body)){
-                return true;
-            }
-        }
-        return false;
+    public Body(Double x, Double y, Double vx, Double vy, Double mass, Double radius) {
+        this.position =  new Vector(x, y);
+        this.velocity = new Vector(vx, vy);
+        this.mass = mass;
+        this.radius = radius;
     }
 
     public Vector getPosition() {
@@ -50,6 +49,12 @@ public class Body {
 
     public void setVelocity(Vector velocity) { this.velocity = velocity; }
 
+    public Body clone() {
+        Body ret = new Body(position, velocity, mass, radius);
+        ret.id = id;
+        return ret;
+    }
+
     @Override
     public int hashCode() {
 
@@ -60,17 +65,21 @@ public class Body {
         return "";
     }
 
-    public static boolean bodiesInTouch(Body b1, Body b2){
-        if(b1 == b2){
+    public boolean touches(Body b){
+        if(b == this){
             return false;
         }
-        double distance = Vector.distanceBetween(b1.position, b2.position);
-        double minDistance = b1.radius + b2.radius;
+        Double distance = position.distanceTo(b.position);
+        double minDistance = radius + b.radius;
         return distance < minDistance;
     }
 
     public String toString(){
-        return this.getPosition().x +"\t"+this.getPosition().y+"\n";
+        return this.getPosition().x +"\t"+this.getPosition().y + "\t" + this.getRadius();
+    }
+
+    public Boolean isFixed() {
+        return false;
     }
 
     @Override

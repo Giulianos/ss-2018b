@@ -1,95 +1,145 @@
 package ar.edu.itba.ss;
 
+import ar.edu.itba.ss.Containers.Box;
 import ar.edu.itba.ss.Containers.Container;
 import ar.edu.itba.ss.Forces.*;
 import ar.edu.itba.ss.Integrators.GearPredictorCorrector;
 import ar.edu.itba.ss.Integrators.Integrator;
+import ar.edu.itba.ss.Observers.SpaceObserver;
 import ar.edu.itba.ss.Particles.Body;
-import ar.edu.itba.ss.Particles.Vector;
+import ar.edu.itba.ss.Types.Collision;
+import ar.edu.itba.ss.Types.Vector;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
-public class Space
-{
+public class Space {
     private Container container;
     private Set<Body> bodies;
     private Integrator integrator;
-    private double gravity;
-    private double l;
-    private double dt;
+    private SpaceObserver observer;
+    private Double elapsedTime = 0.0;
 
-    public Space(Container container, Set<Body> bodies, double gravity, double dt, double friction, double kn) {
-        this.container = container;
-        this.bodies = bodies;
-        this.gravity = gravity;
-        this.l = container.getTotalLength()*1.1;
+    public Space(Double width, Double height, Double diameter, Integer particleQuantity) {
+        // Create container
+        this.container = new Box(diameter, height, width);
+
+        // Create bodies set
+        this.bodies = new HashSet<>();
+
+        // Insert ooening edge bodies into set
+        this.bodies.addAll(this.container.getOpeningBodies());
+
+        // Insert bodies
+        insertBodies(particleQuantity);
+
+        // Create integrator
         this.integrator = new GearPredictorCorrector();
-        this.dt = dt;
-        GForce.setGravity(gravity);
-        ParticleCollisionForce.setKn(kn);
-        ParticleCollisionForce.setFriction(friction);
     }
 
-    public double calculatePressure(double depth){
-        return 1.0-Math.exp(-4.0* container.getFriction()*depth/container.getDiameterAt(depth));
+    public void attachObserver(SpaceObserver observer) {
+        this.observer = observer;
+
+        // Inject initial data to observer
+        observer.injectData(bodies, container, elapsedTime);
     }
 
-    public double beverlooFlow(){
-        return density() * Math.sqrt(gravity) * Math.pow(container.getOpeningDiameter() - averageRadius(),1.5);
-    }
+    public void simulationStep(Double dt) {
+        Set<Body> updatedBodies = new HashSet<>();
 
-    private double averageRadius() {
-        double average = 0.0;
-        for(Body body : bodies){
-            average += body.getRadius();
-        }
-        return average/ bodies.size();
-    }
+        for(Body body : bodies) {
+            // If the body is fixed, just skip it
+            if(body.isFixed()) {
+                updatedBodies.add(body);
+                continue;
+            }
 
-    private double density() {
-        return bodies.size()/container.getArea();
-    }
-
-    private Body updatePeriodic(Body body, Vector position){
-        double aux = body.getPosition().y + position.y;
-        if(aux <= 0){
-            return new Body(new Vector(body.getPosition().x,aux + l),new Vector(0.0,0.0),body.getMass(),body.getRadius());
-        }
-        return new Body(new Vector(body.getPosition().x,aux),body.getVelocity(),body.getMass(),body.getRadius());
-    }
-
-    private void udateParticle(Body b, Force f, double dt){
-        Body newb = integrator.calculate(b,dt,f);
-        newb = updatePeriodic(newb,newb.getPosition());
-        b.setPosition(newb.getPosition());
-        b.setVelocity(newb.getPosition());
-    }
-    // usar cellIndexMethod u otro algoritmo para no recorrer todas las particulas para ver si esta en contacto con body
-    public void bruteForce(){
-        for(Body body: bodies){
-            Set<Force> forces = new HashSet<>();
-            forces.add(new GForce(body));
-            for(Body other: bodies){
-                if(Body.bodiesInTouch(body,other)){
-                    forces.add(new ParticleCollisionForce(body,other));
+            Set<Force> appliedForces = new HashSet<>();
+            // Check collisions against neighbours
+            for(Body neighbour : getNeighbours(body)) {
+                // Check if touching
+                if(body.touches(neighbour)) {
+                    appliedForces.add(new ParticleCollisionForce(body, neighbour));
                 }
             }
-            Vector wall = container.touchesWall(body);
-            if(wall != null){
-                forces.add(new WallCollisionForce(body,wall));
+
+            // Check collisions against walls
+            Set<Collision> wallCollisions = container.getWallCollision(body);
+            if(wallCollisions.size() > 0) {
+                wallCollisions.parallelStream()
+                        .map(collision -> new WallCollisionForce(body, collision))
+                        .forEach(appliedForces::add);
             }
-            Body edge = container.touchesEdge(body);
-            if(edge != null ){
-                forces.add(new ParticleCollisionForce(edge,body));
-            }
-            udateParticle(body,new SumForce(forces),dt);
+
+            // Add gravity force
+            appliedForces.add(new GForce(body));
+
+            // Sum forces
+            Force appliedForce = new SumForce(appliedForces);
+
+            // Integrate
+            Body updatedBody = integrator.calculate(body, dt, appliedForce);
+
+            // Add body to set of updated bodies
+            updatedBodies.add(updatedBody);
+        }
+
+        // Replace bodies with updatedBodies
+        this.bodies = updatedBodies;
+
+        // Move particles to top when falling more
+        // than 10% of container height past the opening
+        updatePeriodic();
+
+        // Update time
+        this.elapsedTime += dt;
+
+        // Update observer
+        if(observer != null) {
+            observer.injectData(bodies, container, elapsedTime);
         }
     }
 
-    public Set<Body> getBodies() {
-        return this.bodies;
+    private Set<Body> getNeighbours(Body body) {
+        // Naive implementation
+        // TODO: use cell index
+        Set<Body> neighbours = new HashSet<>(bodies);
+        neighbours.remove(body);
+        return neighbours;
     }
 
+    private void insertBodies(Integer quantity) {
+        // TODO: parametrize rand ranges
+        Logger.log("Trying to add "+ quantity +" particles!");
+        Random rand = new Random();
+        Integer currentQuantity = 0;
+        while(currentQuantity < quantity) {
+            Body newBody = new Body(
+                rand.nextDouble()*container.getWidth(0.0),
+                rand.nextDouble()*container.getHeight(),
+                0.0,
+                0.0,
+                0.01,
+                rand.nextDouble()*0.01+0.02
+            );
+            // Check that newBody doesn't touch any other body
+            if(bodies.stream().noneMatch(newBody::touches)) {
+                bodies.add(newBody);
+                Logger.log("One particle added!");
+                currentQuantity++;
+            }
+        }
+    }
 
+    private void updatePeriodic() {
+        for(Body b : bodies) {
+            if(b.isFixed()) {
+                break;
+            }
+            if(b.getPosition().y < container.getHeight()*(-0.1)) {
+                b.setPosition(new Vector(b.getPosition().x, container.getHeight()));
+            }
+        }
+    }
 }
