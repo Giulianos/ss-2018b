@@ -5,7 +5,7 @@ import ar.edu.itba.ss.Types.Vector;
 
 public class ParticleCollisionForce implements Force{
     private static Double kn = 1e5;
-    private static Double gamma = 0.0;
+    private static Double gamma = 100.0;
     private static Double friction = 0.1;
     private Body b1;
     private Body b2;
