@@ -72,6 +72,13 @@ public class Box implements Container {
         Double x = body.getPosition().x;
         Double y = body.getPosition().y;
         Double r = body.getRadius();
+        Double x1 = width/2-openingDiameter/2;
+        Double x2 = width/2+openingDiameter/2;
+
+        if(x-r > x1 && x+r < x2) {
+            return null;
+        }
+
         if(type == WallCollisionType.VERTICAL) {
             if(x-r <= 0.0) {
                 return r-x;
@@ -91,13 +98,21 @@ public class Box implements Container {
         // Check if there is a collision against a vertical wall
         Double superPosition = wallCollisionSuperposition(body, WallCollisionType.VERTICAL);
         if(superPosition !=  null) {
-            wallCollision.add(new Collision(wallCollisionPosition(body, WallCollisionType.VERTICAL), superPosition));
+            Vector position = wallCollisionPosition(body, WallCollisionType.VERTICAL);
+            if(position == null) {
+                throw new IllegalStateException();
+            }
+            wallCollision.add(new Collision(position, superPosition));
         }
 
         // Check if there is a collision against a horizontal wall
         superPosition = wallCollisionSuperposition(body, WallCollisionType.HORIZONTAL);
         if(superPosition != null) {
-            wallCollision.add(new Collision(wallCollisionPosition(body, WallCollisionType.HORIZONTAL), superPosition));
+            Vector position = wallCollisionPosition(body, WallCollisionType.HORIZONTAL);
+            if(position == null) {
+                throw new IllegalStateException();
+            }
+            wallCollision.add(new Collision(position, superPosition));
         }
 
         return wallCollision;

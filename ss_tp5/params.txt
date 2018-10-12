@@ -1,10 +1,10 @@
 diameter = 0.1
 width = 1
 height = 3
-friction = 0.7
+friction = 0.1
 minradius = 0.02
 maxradius = 0.03
-n = 1
+n = 10
 mass = 0.01
 kn = 1e5
 tf = 5.0

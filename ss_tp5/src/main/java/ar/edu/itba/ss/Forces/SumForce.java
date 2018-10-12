@@ -14,6 +14,7 @@ public class SumForce implements Force {
     @Override
     public Vector evaluate(Vector position, Vector velocity) {
         Vector ret = new Vector(0.0, 0.0);
+
         for(Force f : forces) {
             Vector evalForce = f.evaluate(position, velocity);
             ret = ret.add(evalForce);

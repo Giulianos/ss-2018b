@@ -3,6 +3,7 @@ package ar.edu.itba.ss;
 import ar.edu.itba.ss.Containers.Box;
 import ar.edu.itba.ss.Containers.Container;
 import ar.edu.itba.ss.Forces.*;
+import ar.edu.itba.ss.Integrators.Beeman;
 import ar.edu.itba.ss.Integrators.GearPredictorCorrector;
 import ar.edu.itba.ss.Integrators.Integrator;
 import ar.edu.itba.ss.Observers.SpaceObserver;
@@ -35,7 +36,7 @@ public class Space {
         insertBodies(particleQuantity);
 
         // Create integrator
-        this.integrator = new GearPredictorCorrector();
+        this.integrator = new Beeman();
     }
 
     public void attachObserver(SpaceObserver observer) {
@@ -139,6 +140,8 @@ public class Space {
             }
             if(b.getPosition().y < container.getHeight()*(-0.1)) {
                 b.setPosition(new Vector(b.getPosition().x, container.getHeight()));
+                b.setVelocity(new Vector(0.0, 0.0));
+                Logger.log("Updated body position!");
             }
         }
     }

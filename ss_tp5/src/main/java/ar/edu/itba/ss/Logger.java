@@ -5,7 +5,12 @@ public class Logger {
         INFO, WARNING, ERROR
     }
 
+    private static Boolean disabled = false;
+
     static public void log(String msg, LogType type) {
+        if(!disabled) {
+            return;
+        }
         String label;
         String caller = Thread.currentThread().getStackTrace()[3].getClassName();
         switch(type) {
