@@ -7,6 +7,8 @@ public class Vector implements Cloneable {
     public Double y;
     private Double norm2 = null;
 
+    private static final Vector nullVector = new Vector(0.0, 0.0);
+
     public Vector(Double x, Double y) {
         this.x = x;
         this.y = y;
@@ -71,8 +73,7 @@ public class Vector implements Cloneable {
         return "(" + x + ", " + y + ")";
     }
 
-    public static double distanceBetween(Vector v1, Vector v2){
-        return Math.sqrt(Math.pow(v2.x - v1.x,2)+Math.pow(v1.y - v2.y,2));
-
+    public static Vector getNullVector() {
+        return nullVector;
     }
 }

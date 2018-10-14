@@ -14,9 +14,13 @@ public class Simulator {
     }
 
     public void simulate() throws Exception {
+        Long timeStart = System.currentTimeMillis();
         while(!observer.simulationMustEnd()) {
            space.simulationStep(timeStep);
            observer.observe();
         }
+        Long timeTaken = System.currentTimeMillis() - timeStart;
+        Logger.log("Time taken: "+ timeTaken + "ms", Logger.LogType.TIMING);
+        space.finishExectutor();
     }
 }

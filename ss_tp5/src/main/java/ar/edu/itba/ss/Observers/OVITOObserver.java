@@ -16,11 +16,17 @@ public class OVITOObserver implements SpaceObserver {
     private Container container;
     private Double time;
 
-    private Long progress = 0l;
+    // Time variables
+    private Double dt;
+    private Double lastObservation;
 
-    public OVITOObserver(String filename, Double totalTime) throws IOException{
+    private Long progress = null;
+
+    public OVITOObserver(String filename, Double totalTime, Double FPS) throws IOException{
         this.writer = new BufferedWriter(new FileWriter(filename));
         this.totalTime = totalTime;
+        this.dt = 1.0/FPS;
+        this.lastObservation = null;
     }
 
     public void closeFile() throws IOException {
@@ -36,17 +42,20 @@ public class OVITOObserver implements SpaceObserver {
 
     @Override
     public void observe() throws IOException {
-        writer.write(bodies.size() - 2 + "\n\n");
-        for(Body b : bodies) {
-            if(!b.isFixed()) {
-                writer.write(b + "\n");
+        if(lastObservation == null || time-lastObservation > dt) {
+            lastObservation = time;
+            writer.write(bodies.size() - 2 + "\n\n");
+            for (Body b : bodies) {
+                if (!b.isFixed()) {
+                    writer.write(b + "\n");
+                }
             }
         }
     }
 
     @Override
     public Boolean simulationMustEnd() {
-        if(progress != Math.round((time/totalTime) * 100)) {
+        if(progress == null || progress != Math.round((time/totalTime) * 100)) {
             progress = Math.round((time/totalTime) * 100);
             System.out.println("Progress: " + progress + "%");
         }

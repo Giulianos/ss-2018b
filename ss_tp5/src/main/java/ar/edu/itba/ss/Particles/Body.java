@@ -1,40 +1,73 @@
 package ar.edu.itba.ss.Particles;
 
+import ar.edu.itba.ss.CellIndex.Locatable;
 import ar.edu.itba.ss.Types.Vector;
 
 import java.util.Objects;
 import java.util.Set;
 
-public class Body implements Cloneable {
-    private Vector position;
-    private Vector velocity;
+public class Body implements Locatable {
+    private static Integer nextID = 0;
+
+    // Position vectors
+    private Vector previousPosition;
+    private Vector currentPosition;
+    private Vector futurePosition;
+
+    // Velocity vectors
+    private Vector previousVelocity;
+    private Vector currentVelocity;
+    private Vector futureVelocity;
+
+    // Acceleration vectors
+    private Vector previousAcceleration;
+    private Vector currentAcceleration;
+    private Vector futureAcceleration;
+
+    // State info
+    private Double dtBetweenStates;
+    private Boolean shouldResetMovement = false;
+
+    // Properties
     private Double mass;
     private Double radius;
-    private static Integer quantity = 0;
     private Integer id;
 
+
+    // Constructors
     public Body(Vector position, Vector velocity, Double mass, Double radius) {
-        this.position = position;
-        this.velocity = velocity;
+        this.currentPosition = position;
+        this.currentVelocity = velocity;
         this.mass = mass;
         this.radius = radius;
-        this.id = quantity;
-        quantity++;
+        this.id = nextID++;
     }
 
     public Body(Double x, Double y, Double vx, Double vy, Double mass, Double radius) {
-        this.position =  new Vector(x, y);
-        this.velocity = new Vector(vx, vy);
+        this.currentPosition =  new Vector(x, y);
+        this.previousPosition = this.currentPosition;
+        this.currentVelocity = new Vector(vx, vy);
+        this.previousVelocity = this.currentVelocity;
+        this.currentAcceleration = Vector.getNullVector();
+        this.previousAcceleration = this.currentAcceleration;
         this.mass = mass;
         this.radius = radius;
+        this.id = nextID++;
     }
 
+
+    // Getters and setters
+    @Override
     public Vector getPosition() {
-        return position;
+        return currentPosition;
     }
 
     public Vector getVelocity() {
-        return velocity;
+        return currentVelocity;
+    }
+
+    public Vector getAcceleration() {
+        return currentAcceleration;
     }
 
     public double getMass() {
@@ -45,31 +78,93 @@ public class Body implements Cloneable {
         return radius;
     }
 
-    public void setPosition(Vector position) { this.position = position; }
-
-    public void setVelocity(Vector velocity) { this.velocity = velocity; }
-
-    public Body clone() {
-        Body ret = new Body(position, velocity, mass, radius);
-        ret.id = id;
-        return ret;
+    public Vector getPreviousPosition() {
+        return previousPosition;
     }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(getPosition(), getVelocity(), getMass(), getRadius());
+    public Vector getPreviousVelocity() {
+        return previousVelocity;
     }
 
-    public String getTag() {
-        return "";
+    public Vector getPreviousAcceleration() {
+        return previousAcceleration;
+    }
+
+    public Vector getFuturePosition() {
+        return futurePosition;
+    }
+
+    public Vector getFutureVelocity() {
+        return futureVelocity;
+    }
+
+    public Vector getFutureAcceleration() {
+        return futureAcceleration;
+    }
+
+    public Double getDtBetweenStates() {
+        return dtBetweenStates;
+    }
+
+    public void setPosition(Vector position) { this.futurePosition = position; }
+
+    public void setVelocity(Vector velocity) { this.futureVelocity = velocity; }
+
+    public void setAcceleration(Vector acceleration) {
+        this.futureAcceleration = acceleration;
+    }
+
+    public void setDtBetweenStates(Double dtBetweenStates) {
+        this.dtBetweenStates = dtBetweenStates;
+    }
+
+    // Other methods
+    public void update() {
+        if(this.futurePosition == null || this.futureVelocity == null || this.futureAcceleration == null) {
+            throw new IllegalStateException("Updating body without future state!");
+        }
+
+        // Update position
+        this.previousPosition = this.currentPosition;
+        this.currentPosition = this.futurePosition;
+        this.futurePosition = null;
+
+        if(shouldResetMovement) {
+            // Update velocity
+            this.previousVelocity = Vector.getNullVector();
+            this.currentVelocity = Vector.getNullVector();
+            this.futureVelocity = null;
+
+            // Update acceleration
+            this.previousAcceleration = Vector.getNullVector();
+            this.currentAcceleration = Vector.getNullVector();
+            this.futureAcceleration = null;
+
+            shouldResetMovement = false;
+
+            return;
+        }
+
+        // Update velocity
+        this.previousVelocity = this.currentVelocity;
+        this.currentVelocity = this.futureVelocity;
+        this.futureVelocity = null;
+
+        // Update acceleration
+        this.previousAcceleration = this.currentAcceleration;
+        this.currentAcceleration = this.futureAcceleration;
+        this.futureAcceleration = null;
+    }
+
+    public void shouldResetMovement() {
+        this.shouldResetMovement = true;
     }
 
     public boolean touches(Body b){
         if(b == this){
             return false;
         }
-        Double distance = position.distanceTo(b.position);
+        Double distance = currentPosition.distanceTo(b.currentPosition);
         double minDistance = radius + b.radius;
         return distance < minDistance;
     }
@@ -82,15 +177,21 @@ public class Body implements Cloneable {
         return false;
     }
 
+
+    // HashCode and Equals
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getPosition(), getVelocity(), getMass(), getRadius());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Body body = (Body) o;
-        return Double.compare(body.getMass(), getMass()) == 0 &&
-                Double.compare(body.getRadius(), getRadius()) == 0 &&
-                id == body.id &&
-                Objects.equals(getPosition(), body.getPosition()) &&
-                Objects.equals(getVelocity(), body.getVelocity());
+
+        return id.equals(body.id);
     }
 }

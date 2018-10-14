@@ -11,9 +11,9 @@ public interface Container {
      * Calculates collisions between body and
      * the container's walls.
      * @param body
-     * @return a collision if there's one, null otherwise
+     * @return a set of bodies to collide with
      */
-    public Set<Collision> getWallCollision(Body body);
+    public Set<Body> getWallCollision(Body body);
 
     /**
      * The bodies that represent opening edges
@@ -34,4 +34,11 @@ public interface Container {
      * @return
      */
     public Double getHeight();
+
+    /**
+     * Returns whether the body touches any wall
+     * @param b
+     * @return True if touches a wall, false otherwise
+     */
+    public Boolean touchesWall(Body b);
 }

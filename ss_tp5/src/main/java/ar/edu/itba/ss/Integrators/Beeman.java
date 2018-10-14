@@ -6,56 +6,27 @@ import ar.edu.itba.ss.Types.Vector;
 
 public class Beeman implements Integrator {
     @Override
-    public Body calculate(Body b, Double dt, Force f) {
+    public void calculate(Body b, Double dt, Force f) {
 
-        Integrator euler = new Euler();
-        Body b2 = euler.calculate(b, -dt, f);
+        Vector rCurrent = b.getPosition();
+        Vector vCurrent = b.getVelocity();
+        Vector aCurrent = b.getAcceleration();
+        Vector aPrevious = b.getPreviousAcceleration();
+        Vector aFuture = f.evaluate(rCurrent, vCurrent);
 
-        Vector rB = b.getPosition();
-        Vector vB = b.getVelocity();
-        Vector rB2 = b2.getPosition();
-        Vector vB2 = b2.getVelocity();
+        Vector rFuture = rCurrent.add(
+          vCurrent.multiply(dt).add(
+                  aCurrent.multiply(2.0/3.0).diff(aPrevious.multiply(1.0/1.6)).multiply(dt*dt)
+          )
+        );
 
-        Vector a = f.evaluate(rB, vB).divide(b.getMass());
-        Vector a2 = f.evaluate(rB2, vB2).divide(b.getMass());
+        Vector vFuture = vCurrent.add(
+                aFuture.multiply(1.0/3.0).add(aCurrent.multiply(5.0/6.0)).diff(aPrevious.multiply(1.0/6.0)).multiply(dt)
+        );
 
-        Vector r = rB
-                .add(
-                        vB.multiply(dt)
-                )
-                .add(
-                        a.multiply(2*dt*dt/3)
-                )
-                .add(
-                        a2.multiply(-dt*dt/6)
-                );
-
-        Vector vp = vB
-                .add(
-                        a.multiply(3*dt/2)
-                )
-                .add(
-                        a2.multiply(-dt/2)
-                );
-
-        Vector a3 = f.evaluate(r, vp).divide(b.getMass());
-
-        Vector vc = vB
-                .add(
-                        a3.multiply(dt/3)
-                )
-                .add(
-                        a.multiply(5*dt/6)
-                )
-                .add(
-                        a2.multiply(-dt/6)
-                );
-
-
-        Body updated = b.clone();
-        b.setPosition(r);
-        b.setVelocity(vc);
-        return updated;
+        b.setPosition(rFuture);
+        b.setVelocity(vFuture);
+        b.setAcceleration(aFuture);
     }
 
     public String toString(){

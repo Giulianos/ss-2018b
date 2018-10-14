@@ -68,54 +68,23 @@ public class Box implements Container {
         return null;
     }
 
-    private Double wallCollisionSuperposition(Body body, WallCollisionType type) {
-        Double x = body.getPosition().x;
-        Double y = body.getPosition().y;
-        Double r = body.getRadius();
-        Double x1 = width/2-openingDiameter/2;
-        Double x2 = width/2+openingDiameter/2;
-
-        if(x-r > x1 && x+r < x2) {
-            return null;
-        }
-
-        if(type == WallCollisionType.VERTICAL) {
-            if(x-r <= 0.0) {
-                return r-x;
-            } else if(x+r >= width) {
-                return r-(x-width);
-            }
-        } else if(y-r <= 0.0) {
-            return r-y;
-        }
-        return null;
-    }
-
     @Override
-    public Set<Collision> getWallCollision(Body body) {
-        Set<Collision> wallCollision = new HashSet<>();
+    public Set<Body> getWallCollision(Body body) {
+        Set<Body> bodies = new HashSet<>();
 
         // Check if there is a collision against a vertical wall
-        Double superPosition = wallCollisionSuperposition(body, WallCollisionType.VERTICAL);
-        if(superPosition !=  null) {
-            Vector position = wallCollisionPosition(body, WallCollisionType.VERTICAL);
-            if(position == null) {
-                throw new IllegalStateException();
-            }
-            wallCollision.add(new Collision(position, superPosition));
+        Vector position = wallCollisionPosition(body, WallCollisionType.VERTICAL);
+        if(position != null) {
+            bodies.add(new Body(position, Vector.getNullVector(), 0.0, 0.0));
         }
 
         // Check if there is a collision against a horizontal wall
-        superPosition = wallCollisionSuperposition(body, WallCollisionType.HORIZONTAL);
-        if(superPosition != null) {
-            Vector position = wallCollisionPosition(body, WallCollisionType.HORIZONTAL);
-            if(position == null) {
-                throw new IllegalStateException();
-            }
-            wallCollision.add(new Collision(position, superPosition));
+        position = wallCollisionPosition(body, WallCollisionType.HORIZONTAL);
+        if(position != null) {
+            bodies.add(new Body(position, Vector.getNullVector(), 0.0, 0.0));
         }
 
-        return wallCollision;
+        return bodies;
     }
 
     @Override
@@ -131,5 +100,22 @@ public class Box implements Container {
     @Override
     public Double getHeight() {
         return this.height;
+    }
+
+    @Override
+    public Boolean touchesWall(Body b) {
+        // Check if there is a collision against a vertical wall
+        Vector position = wallCollisionPosition(b, WallCollisionType.VERTICAL);
+        if(position != null) {
+            return true;
+        }
+
+        // Check if there is a collision against a horizontal wall
+        position = wallCollisionPosition(b, WallCollisionType.HORIZONTAL);
+        if(position != null) {
+           return true;
+        }
+
+        return false;
     }
 }

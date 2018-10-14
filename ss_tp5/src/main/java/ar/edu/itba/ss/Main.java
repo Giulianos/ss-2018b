@@ -19,7 +19,7 @@ public class Main {
         Logger.log("Arguments parsed!");
 
         // Create observer
-        SpaceObserver observer = new OVITOObserver("ovito_out/ovito.xyz", tf);
+        SpaceObserver observer = new OVITOObserver("ovito_out/ovito.xyz", tf, 25.0);
         Logger.log("Observer created!");
 
         // Create space
@@ -61,7 +61,7 @@ public class Main {
                     kn = Double.parseDouble(aux[1]);
                     double m = (minRadius+maxRadius)/2;
                     // dt es el paso de la simulación
-                    dt = 0.00001;
+                    dt = 0.00003;
                     break;
                 case "tf" : tf = Double.parseDouble(aux[1]); break;
                 default:

@@ -1,26 +1,35 @@
 package ar.edu.itba.ss;
 
+import ar.edu.itba.ss.CellIndex.Grid;
 import ar.edu.itba.ss.Containers.Box;
 import ar.edu.itba.ss.Containers.Container;
 import ar.edu.itba.ss.Forces.*;
 import ar.edu.itba.ss.Integrators.Beeman;
-import ar.edu.itba.ss.Integrators.GearPredictorCorrector;
 import ar.edu.itba.ss.Integrators.Integrator;
 import ar.edu.itba.ss.Observers.SpaceObserver;
 import ar.edu.itba.ss.Particles.Body;
-import ar.edu.itba.ss.Types.Collision;
 import ar.edu.itba.ss.Types.Vector;
 
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class Space {
+
+    // Space domain
     private Container container;
     private Set<Body> bodies;
+    private Double elapsedTime = 0.0;
+
+    // Utilities
     private Integrator integrator;
     private SpaceObserver observer;
-    private Double elapsedTime = 0.0;
+    private Grid<Body> grid;
+
+    // Concurrency
+     ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     public Space(Double width, Double height, Double diameter, Integer particleQuantity) {
         // Create container
@@ -29,11 +38,17 @@ public class Space {
         // Create bodies set
         this.bodies = new HashSet<>();
 
-        // Insert ooening edge bodies into set
+        // Insert opening edge bodies into set
         this.bodies.addAll(this.container.getOpeningBodies());
 
         // Insert bodies
         insertBodies(particleQuantity);
+
+        // Create Grid
+        this.grid = new Grid<>(0.03);
+
+        // Add particles to grid
+        this.grid.injectElements(bodies);
 
         // Create integrator
         this.integrator = new Beeman();
@@ -46,52 +61,25 @@ public class Space {
         observer.injectData(bodies, container, elapsedTime);
     }
 
-    public void simulationStep(Double dt) {
-        Set<Body> updatedBodies = new HashSet<>();
+    public void simulationStep(Double dt) throws InterruptedException {
+        Long startTime = System.currentTimeMillis();
+
+        List<Callable<Object>> tasks = new ArrayList<>(bodies.size());
+
+        // Update grid before simulating
+        this.grid.updateGrid();
 
         for(Body body : bodies) {
-            // If the body is fixed, just skip it
-            if(body.isFixed()) {
-                updatedBodies.add(body);
-                continue;
-            }
-
-            Set<Force> appliedForces = new HashSet<>();
-            // Check collisions against neighbours
-            for(Body neighbour : getNeighbours(body)) {
-                // Check if touching
-                if(body.touches(neighbour)) {
-                    appliedForces.add(new ParticleCollisionForce(body, neighbour));
-                }
-            }
-
-            // Check collisions against walls
-            Set<Collision> wallCollisions = container.getWallCollision(body);
-            if(wallCollisions.size() > 0) {
-                wallCollisions.parallelStream()
-                        .map(collision -> new WallCollisionForce(body, collision))
-                        .forEach(appliedForces::add);
-            }
-
-            // Add gravity force
-            appliedForces.add(new GForce(body));
-
-            // Sum forces
-            Force appliedForce = new SumForce(appliedForces);
-
-            // Integrate
-            Body updatedBody = integrator.calculate(body, dt, appliedForce);
-
-            // Add body to set of updated bodies
-            updatedBodies.add(updatedBody);
+            tasks.add((() -> {
+                singularSimulationStep(body, dt);
+                return null;
+            }));
         }
 
-        // Replace bodies with updatedBodies
-        this.bodies = updatedBodies;
+        executorService.invokeAll(tasks);
 
-        // Move particles to top when falling more
-        // than 10% of container height past the opening
-        updatePeriodic();
+        // Update bodies state
+        bodies.forEach(Body::update);
 
         // Update time
         this.elapsedTime += dt;
@@ -100,14 +88,54 @@ public class Space {
         if(observer != null) {
             observer.injectData(bodies, container, elapsedTime);
         }
+
+        Logger.log("Time taken for 1 step: " + (System.currentTimeMillis()-startTime) + "ms");
+    }
+
+    private void singularSimulationStep(Body body, Double dt) {
+        // Set dt on particle
+        body.setDtBetweenStates(dt);
+
+        // If the body is fixed, just skip it
+        if(body.isFixed()) {
+            return;
+        }
+
+        Set<Force> appliedForces = new HashSet<>();
+        // Check collisions against neighbours
+        for(Body neighbour : getNeighbours(body)) {
+            // Check if touching
+            if(body.touches(neighbour)) {
+                appliedForces.add(new ParticleCollisionForce(body, neighbour));
+            }
+        }
+
+        // Check collisions against walls
+        Set<Body> wallCollisions = container.getWallCollision(body);
+        if(wallCollisions.size() > 0) {
+            wallCollisions.parallelStream()
+                    .map(wallBody -> new ParticleCollisionForce(body, wallBody))
+                    .forEach(appliedForces::add);
+        }
+
+        // Add gravity force
+        appliedForces.add(new GForce(body));
+
+        // Sum forces
+        Force appliedForce = new SumForce(appliedForces);
+
+        // Integrate
+        integrator.calculate(body, dt, appliedForce);
+
+        // Update periodic
+        updatePeriodic(body);
     }
 
     private Set<Body> getNeighbours(Body body) {
-        // Naive implementation
-        // TODO: use cell index
-        Set<Body> neighbours = new HashSet<>(bodies);
+        return grid.getNeighbours(body);
+        /*Set<Body> neighbours = new HashSet<>(bodies);
         neighbours.remove(body);
-        return neighbours;
+        return neighbours; */
     }
 
     private void insertBodies(Integer quantity) {
@@ -125,24 +153,27 @@ public class Space {
                 rand.nextDouble()*0.01+0.02
             );
             // Check that newBody doesn't touch any other body
-            if(bodies.stream().noneMatch(newBody::touches)) {
+            if(bodies.stream().noneMatch(newBody::touches) && !container.touchesWall(newBody)) {
                 bodies.add(newBody);
-                Logger.log("One particle added!");
+                Logger.log("Particle "+currentQuantity+"/"+quantity+" added!");
                 currentQuantity++;
             }
         }
     }
 
-    private void updatePeriodic() {
-        for(Body b : bodies) {
-            if(b.isFixed()) {
-                break;
-            }
-            if(b.getPosition().y < container.getHeight()*(-0.1)) {
-                b.setPosition(new Vector(b.getPosition().x, container.getHeight()));
-                b.setVelocity(new Vector(0.0, 0.0));
-                Logger.log("Updated body position!");
-            }
+    private void updatePeriodic(Body b) {
+        if(b.isFixed()) {
+            return;
         }
+        if(b.getPosition().y < container.getHeight()*(-0.1)) {
+            b.setPosition(new Vector(b.getPosition().x, container.getHeight()));
+            b.shouldResetMovement();
+            Logger.log("Updated body position!");
+        }
+    }
+
+    public void finishExectutor() throws InterruptedException {
+        //executorService.shutdown();
+        //executorService.awaitTermination(10, TimeUnit.SECONDS);
     }
 }

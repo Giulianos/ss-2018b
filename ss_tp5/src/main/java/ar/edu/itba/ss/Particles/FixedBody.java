@@ -16,4 +16,28 @@ public class FixedBody extends Body {
     public Boolean isFixed() {
         return true;
     }
+
+    @Override
+    public void update() {
+    }
+
+    @Override
+    public Vector getPreviousPosition() {
+        return getPosition();
+    }
+
+    @Override
+    public Vector getPreviousVelocity() {
+        return getVelocity();
+    }
+
+    @Override
+    public Vector getFuturePosition() {
+        return getPosition();
+    }
+
+    @Override
+    public Vector getFutureVelocity() {
+        return getVelocity();
+    }
 }
