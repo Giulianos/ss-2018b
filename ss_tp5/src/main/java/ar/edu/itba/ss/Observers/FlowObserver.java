@@ -53,7 +53,7 @@ public class FlowObserver implements SpaceObserver {
         currentTranslatedParticles += translatedParticles;
         elapsedTime += 0.00001;
         if(currentTranslatedParticles > particleWindow) {
-            writer.write(time + "\t" + currentTranslatedParticles/elapsedTime);
+            writer.write(time + "\t" + currentTranslatedParticles/elapsedTime+"\n");
             currentTranslatedParticles = 0;
             elapsedTime = 0.0;
         }
@@ -69,5 +69,10 @@ public class FlowObserver implements SpaceObserver {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void finalizeObserver() throws IOException {
+        writer.close();
     }
 }

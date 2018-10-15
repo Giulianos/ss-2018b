@@ -21,7 +21,7 @@ public class EnergyObserver implements SpaceObserver {
 
     // Time variables
     private Double dt;
-    private Double lastObservation;
+    private Double lastObservation = null;
 
     private Long progress = null;
 
@@ -56,7 +56,7 @@ public class EnergyObserver implements SpaceObserver {
 
         if(lastObservation == null || time-lastObservation > dt) {
             lastObservation = time;
-            writer.write(time + "\t" + energy);
+            writer.write(time + "\t" + energy + "\n");
         }
     }
 
@@ -75,5 +75,10 @@ public class EnergyObserver implements SpaceObserver {
     private Double getEnergy(Body b) {
         double speedMod = Math.sqrt(b.getVelocityX()*b.getVelocityX() + b.getVelocityY()*b.getVelocityY());
         return (1.0/2.0)*b.getMass()*Math.pow(speedMod, 2);
+    }
+
+    @Override
+    public void finalizeObserver() throws IOException {
+        writer.close();
     }
 }
