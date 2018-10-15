@@ -2,31 +2,41 @@ package ar.edu.itba.ss.Integrators;
 
 import ar.edu.itba.ss.Forces.Force;
 import ar.edu.itba.ss.Particles.Body;
-import ar.edu.itba.ss.Types.Vector;
 
 public class Beeman implements Integrator {
     @Override
     public void calculate(Body b, Double dt, Force f) {
 
-        Vector rCurrent = b.getPosition();
-        Vector vCurrent = b.getVelocity();
-        Vector aCurrent = b.getAcceleration();
-        Vector aPrevious = b.getPreviousAcceleration();
-        Vector aFuture = f.evaluate(rCurrent, vCurrent);
+        f.evaluate();
 
-        Vector rFuture = rCurrent.add(
-          vCurrent.multiply(dt).add(
-                  aCurrent.multiply(2.0/3.0).diff(aPrevious.multiply(1.0/1.6)).multiply(dt*dt)
-          )
-        );
+        Double x = b.getPositionX();
+        Double y = b.getPositionY();
 
-        Vector vFuture = vCurrent.add(
-                aFuture.multiply(1.0/3.0).add(aCurrent.multiply(5.0/6.0)).diff(aPrevious.multiply(1.0/6.0)).multiply(dt)
-        );
+        Double vx = b.getVelocityX();
+        Double vy = b.getVelocityY();
 
-        b.setPosition(rFuture);
-        b.setVelocity(vFuture);
-        b.setAcceleration(aFuture);
+        Double ax = b.getAccelerationX();
+        Double ay = b.getAccelerationY();
+
+        Double axP = b.getPreviousAccelerationX();
+        Double ayP = b.getPreviousAccelerationY();
+
+        Double axF = f.getX()/b.getMass();
+        Double ayF = f.getY()/b.getMass();
+
+        Double xF = x + vx*dt + (2.0/3.0)*ax*dt*dt - (1.0/6.0)*axP*dt*dt;
+        Double yF = y + vy*dt + (2.0/3.0)*ay*dt*dt - (1.0/6.0)*ayP*dt*dt;
+
+        Double vxF = vx + (1.0/3.0)*axF*dt + (5.0/6.0)*ax*dt - (1.0/6.0)*axP*dt;
+        Double vyF = vy + (1.0/3.0)*ayF*dt + (5.0/6.0)*ay*dt - (1.0/6.0)*ayP*dt;
+
+        b.setPositionX(xF);
+        b.setVelocityX(vxF);
+        b.setAccelerationX(axF);
+
+        b.setPositionY(yF);
+        b.setVelocityY(vyF);
+        b.setAccelerationY(ayF);
     }
 
     public String toString(){

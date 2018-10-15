@@ -8,7 +8,6 @@ import ar.edu.itba.ss.Integrators.Beeman;
 import ar.edu.itba.ss.Integrators.Integrator;
 import ar.edu.itba.ss.Observers.SpaceObserver;
 import ar.edu.itba.ss.Particles.Body;
-import ar.edu.itba.ss.Types.Vector;
 
 import java.util.*;
 import java.util.concurrent.Callable;
@@ -89,12 +88,12 @@ public class Space {
             observer.injectData(bodies, container, elapsedTime);
         }
 
-        Logger.log("Time taken for 1 step: " + (System.currentTimeMillis()-startTime) + "ms");
+        // System.out.println("Time taken for 1 step: " + (System.currentTimeMillis()-startTime) + "ms");
     }
 
     private void singularSimulationStep(Body body, Double dt) {
         // Set dt on particle
-        body.setDtBetweenStates(dt);
+        body.setDtBetweenStates(dt);//
 
         // If the body is fixed, just skip it
         if(body.isFixed()) {
@@ -133,9 +132,9 @@ public class Space {
 
     private Set<Body> getNeighbours(Body body) {
         return grid.getNeighbours(body);
-        /*Set<Body> neighbours = new HashSet<>(bodies);
-        neighbours.remove(body);
-        return neighbours; */
+        // Set<Body> neighbours = new HashSet<>(bodies);
+        // neighbours.remove(body);
+        // return neighbours;
     }
 
     private void insertBodies(Integer quantity) {
@@ -150,7 +149,7 @@ public class Space {
                 0.0,
                 0.0,
                 0.01,
-                rand.nextDouble()*0.01+0.02
+                (rand.nextDouble()*0.01+0.02)/2.0
             );
             // Check that newBody doesn't touch any other body
             if(bodies.stream().noneMatch(newBody::touches) && !container.touchesWall(newBody)) {
@@ -165,15 +164,15 @@ public class Space {
         if(b.isFixed()) {
             return;
         }
-        if(b.getPosition().y < container.getHeight()*(-0.1)) {
-            b.setPosition(new Vector(b.getPosition().x, container.getHeight()));
+        if(b.getPositionY() < container.getHeight()*(-0.1)) {
+            b.setPositionY(container.getHeight());
             b.shouldResetMovement();
-            Logger.log("Updated body position!");
+            // Logger.log("Updated body position!");
         }
     }
 
     public void finishExectutor() throws InterruptedException {
-        //executorService.shutdown();
-        //executorService.awaitTermination(10, TimeUnit.SECONDS);
+        executorService.shutdown();
+        executorService.awaitTermination(10, TimeUnit.SECONDS);
     }
 }

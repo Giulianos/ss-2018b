@@ -1,12 +1,6 @@
 package ar.edu.itba.ss.Particles;
 
-import ar.edu.itba.ss.Types.Vector;
-
 public class FixedBody extends Body {
-
-    public FixedBody(Vector position, Vector velocity, Double mass, Double radius) {
-        super(position, velocity, mass, radius);
-    }
 
     public FixedBody(Double x, Double y, Double vx, Double vy, Double mass, Double radius) {
         super(x, y, vx, vy, mass, radius);
@@ -22,22 +16,42 @@ public class FixedBody extends Body {
     }
 
     @Override
-    public Vector getPreviousPosition() {
-        return getPosition();
+    public Double getPreviousPositionX() {
+        return getPositionX();
     }
 
     @Override
-    public Vector getPreviousVelocity() {
-        return getVelocity();
+    public Double getPreviousVelocityX() {
+        return getVelocityX();
     }
 
     @Override
-    public Vector getFuturePosition() {
-        return getPosition();
+    public Double getFuturePositionX() {
+        return getPositionX();
     }
 
     @Override
-    public Vector getFutureVelocity() {
-        return getVelocity();
+    public Double getFutureVelocityX() {
+        return getVelocityX();
+    }
+
+    @Override
+    public Double getPreviousPositionY() {
+        return getPositionY();
+    }
+
+    @Override
+    public Double getPreviousVelocityY() {
+        return getVelocityY();
+    }
+
+    @Override
+    public Double getFuturePositionY() {
+        return getPositionY();
+    }
+
+    @Override
+    public Double getFutureVelocityY() {
+        return getVelocityY();
     }
 }

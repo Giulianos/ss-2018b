@@ -1,7 +1,5 @@
 package ar.edu.itba.ss.CellIndex;
 
-import ar.edu.itba.ss.Types.Vector;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,8 +42,8 @@ public class Cell<T extends Locatable> {
         Double endX = (column + 1) * length;;
         Double startY = row * length;
         Double endY = (row + 1) * length;
-        Double x = element.getPosition().x;
-        Double y = element.getPosition().y;
+        Double x = element.getPositionX();
+        Double y = element.getPositionY();
 
         return (x<endX) && (x>=startX) && (y<endY) && (y>=startY);
     }

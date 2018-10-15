@@ -1,7 +1,5 @@
 package ar.edu.itba.ss.CellIndex;
 
-import ar.edu.itba.ss.Types.Vector;
-
 /**
  * Created by giulianoscaglioni on 14/10/18.
  */
@@ -12,8 +10,14 @@ import ar.edu.itba.ss.Types.Vector;
  */
 public interface Locatable {
     /**
-     * Returns the position of the object
+     * Returns the x coordinate of the object
      * @return
      */
-    public Vector getPosition();
+    public Double getPositionX();
+
+    /**
+     * Returns the y coordinate of the object
+     * @return
+     */
+    public Double getPositionY();
 }

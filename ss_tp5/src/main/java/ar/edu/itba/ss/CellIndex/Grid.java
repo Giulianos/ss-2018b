@@ -65,8 +65,8 @@ public class Grid<E extends Locatable> {
     }
 
     private Cell<E> getCell(E element) {
-        Long row = Math.round(element.getPosition().y / length);
-        Long column = Math.round(element.getPosition().x / length);
+        Long row = Math.round(element.getPositionY() / length);
+        Long column = Math.round(element.getPositionX() / length);
 
         Cell obtainedCell = new Cell<>(row, column, length);
 

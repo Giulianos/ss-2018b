@@ -61,7 +61,7 @@ public class Main {
                     kn = Double.parseDouble(aux[1]);
                     double m = (minRadius+maxRadius)/2;
                     // dt es el paso de la simulación
-                    dt = 0.00003;
+                    dt = 0.00001;
                     break;
                 case "tf" : tf = Double.parseDouble(aux[1]); break;
                 default:

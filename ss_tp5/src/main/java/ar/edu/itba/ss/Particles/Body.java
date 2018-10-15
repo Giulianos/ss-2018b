@@ -1,28 +1,33 @@
 package ar.edu.itba.ss.Particles;
 
 import ar.edu.itba.ss.CellIndex.Locatable;
-import ar.edu.itba.ss.Types.Vector;
-
-import java.util.Objects;
-import java.util.Set;
 
 public class Body implements Locatable {
     private static Integer nextID = 0;
 
     // Position vectors
-    private Vector previousPosition;
-    private Vector currentPosition;
-    private Vector futurePosition;
+    private Double previousPositionX;
+    private Double previousPositionY;
+    private Double currentPositionX;
+    private Double currentPositionY;
+    private Double futurePositionX;
+    private Double futurePositionY;
 
     // Velocity vectors
-    private Vector previousVelocity;
-    private Vector currentVelocity;
-    private Vector futureVelocity;
+    private Double previousVelocityX;
+    private Double previousVelocityY;
+    private Double currentVelocityX;
+    private Double currentVelocityY;
+    private Double futureVelocityX;
+    private Double futureVelocityY;
 
     // Acceleration vectors
-    private Vector previousAcceleration;
-    private Vector currentAcceleration;
-    private Vector futureAcceleration;
+    private Double previousAccelerationX;
+    private Double previousAccelerationY;
+    private Double currentAccelerationX;
+    private Double currentAccelerationY;
+    private Double futureAccelerationX;
+    private Double futureAccelerationY;
 
     // State info
     private Double dtBetweenStates;
@@ -33,23 +38,22 @@ public class Body implements Locatable {
     private Double radius;
     private Integer id;
 
-
-    // Constructors
-    public Body(Vector position, Vector velocity, Double mass, Double radius) {
-        this.currentPosition = position;
-        this.currentVelocity = velocity;
-        this.mass = mass;
-        this.radius = radius;
-        this.id = nextID++;
-    }
-
     public Body(Double x, Double y, Double vx, Double vy, Double mass, Double radius) {
-        this.currentPosition =  new Vector(x, y);
-        this.previousPosition = this.currentPosition;
-        this.currentVelocity = new Vector(vx, vy);
-        this.previousVelocity = this.currentVelocity;
-        this.currentAcceleration = Vector.getNullVector();
-        this.previousAcceleration = this.currentAcceleration;
+        this.currentPositionX = x;
+        this.currentPositionY = y;
+        this.previousPositionX = x;
+        this.previousPositionY = y;
+
+        this.currentVelocityX = vx;
+        this.currentVelocityY = vy;
+        this.previousPositionX = vx;
+        this.previousPositionY = vy;
+
+        this.currentAccelerationX = 0d;
+        this.currentAccelerationY = 0d;
+        this.previousAccelerationX = 0d;
+        this.previousAccelerationY = 0d;
+
         this.mass = mass;
         this.radius = radius;
         this.id = nextID++;
@@ -58,17 +62,31 @@ public class Body implements Locatable {
 
     // Getters and setters
     @Override
-    public Vector getPosition() {
-        return currentPosition;
+    public Double getPositionX() {
+        return currentPositionX;
     }
 
-    public Vector getVelocity() {
-        return currentVelocity;
+    public Double getVelocityX() {
+        return currentVelocityX;
     }
 
-    public Vector getAcceleration() {
-        return currentAcceleration;
+    public Double getAccelerationX() {
+        return currentAccelerationX;
     }
+
+    @Override
+    public Double getPositionY() {
+        return currentPositionY;
+    }
+
+    public Double getVelocityY() {
+        return currentVelocityY;
+    }
+
+    public Double getAccelerationY() {
+        return currentAccelerationY;
+    }
+
 
     public double getMass() {
         return mass;
@@ -78,40 +96,72 @@ public class Body implements Locatable {
         return radius;
     }
 
-    public Vector getPreviousPosition() {
-        return previousPosition;
+    public Double getPreviousPositionX() {
+        return previousPositionX;
     }
 
-    public Vector getPreviousVelocity() {
-        return previousVelocity;
+    public Double getPreviousVelocityX() {
+        return previousVelocityX;
     }
 
-    public Vector getPreviousAcceleration() {
-        return previousAcceleration;
+    public Double getPreviousAccelerationX() {
+        return previousAccelerationX;
     }
 
-    public Vector getFuturePosition() {
-        return futurePosition;
+    public Double getPreviousPositionY() {
+        return previousPositionY;
     }
 
-    public Vector getFutureVelocity() {
-        return futureVelocity;
+    public Double getPreviousVelocityY() {
+        return previousVelocityY;
     }
 
-    public Vector getFutureAcceleration() {
-        return futureAcceleration;
+    public Double getPreviousAccelerationY() {
+        return previousAccelerationY;
+    }
+
+    public Double getFuturePositionX() {
+        return futurePositionX;
+    }
+
+    public Double getFutureVelocityX() {
+        return futureVelocityX;
+    }
+
+    public Double getFutureAccelerationX() {
+        return futureAccelerationX;
+    }
+
+    public Double getFuturePositionY() {
+        return futurePositionY;
+    }
+
+    public Double getFutureVelocityY() {
+        return futureVelocityY;
+    }
+
+    public Double getFutureAccelerationY() {
+        return futureAccelerationY;
     }
 
     public Double getDtBetweenStates() {
         return dtBetweenStates;
     }
 
-    public void setPosition(Vector position) { this.futurePosition = position; }
+    public void setPositionX(Double positionX) { this.futurePositionX = positionX; }
 
-    public void setVelocity(Vector velocity) { this.futureVelocity = velocity; }
+    public void setVelocityX(Double velocityX) { this.futureVelocityX = velocityX; }
 
-    public void setAcceleration(Vector acceleration) {
-        this.futureAcceleration = acceleration;
+    public void setAccelerationX(Double accelerationX) {
+        this.futureAccelerationX = accelerationX;
+    }
+
+    public void setPositionY(Double positionY) { this.futurePositionY = positionY; }
+
+    public void setVelocityY(Double velocityY) { this.futureVelocityY = velocityY; }
+
+    public void setAccelerationY(Double accelerationY) {
+        this.futureAccelerationY = accelerationY;
     }
 
     public void setDtBetweenStates(Double dtBetweenStates) {
@@ -120,25 +170,35 @@ public class Body implements Locatable {
 
     // Other methods
     public void update() {
-        if(this.futurePosition == null || this.futureVelocity == null || this.futureAcceleration == null) {
+        if(this.futurePositionX == null || this.futureVelocityX == null || this.futureAccelerationX == null ||
+                this.futurePositionY == null || this.futureVelocityY == null || this.futureAccelerationY == null) {
             throw new IllegalStateException("Updating body without future state!");
         }
 
         // Update position
-        this.previousPosition = this.currentPosition;
-        this.currentPosition = this.futurePosition;
-        this.futurePosition = null;
+        this.previousPositionX = this.currentPositionX;
+        this.currentPositionX = this.futurePositionX;
+        this.futurePositionX = null;
+        this.previousPositionY = this.currentPositionY;
+        this.currentPositionY = this.futurePositionY;
+        this.futurePositionY = null;
 
         if(shouldResetMovement) {
             // Update velocity
-            this.previousVelocity = Vector.getNullVector();
-            this.currentVelocity = Vector.getNullVector();
-            this.futureVelocity = null;
+            this.previousVelocityX = 0d;
+            this.currentVelocityX = 0d;
+            this.futureVelocityX = null;
+            this.previousVelocityY = 0d;
+            this.currentVelocityY = 0d;
+            this.futureVelocityY = null;
 
             // Update acceleration
-            this.previousAcceleration = Vector.getNullVector();
-            this.currentAcceleration = Vector.getNullVector();
-            this.futureAcceleration = null;
+            this.previousAccelerationX = 0d;
+            this.currentAccelerationX = 0d;
+            this.futureAccelerationX = null;
+            this.previousAccelerationY = 0d;
+            this.currentAccelerationY = 0d;
+            this.futureAccelerationY = null;
 
             shouldResetMovement = false;
 
@@ -146,14 +206,20 @@ public class Body implements Locatable {
         }
 
         // Update velocity
-        this.previousVelocity = this.currentVelocity;
-        this.currentVelocity = this.futureVelocity;
-        this.futureVelocity = null;
+        this.previousVelocityX = this.currentVelocityX;
+        this.currentVelocityX = this.futureVelocityX;
+        this.futureVelocityX = null;
+        this.previousVelocityY = this.currentVelocityY;
+        this.currentVelocityY = this.futureVelocityY;
+        this.futureVelocityY = null;
 
         // Update acceleration
-        this.previousAcceleration = this.currentAcceleration;
-        this.currentAcceleration = this.futureAcceleration;
-        this.futureAcceleration = null;
+        this.previousAccelerationX = this.currentAccelerationX;
+        this.currentAccelerationX = this.futureAccelerationX;
+        this.futureAccelerationX = null;
+        this.previousAccelerationY = this.currentAccelerationY;
+        this.currentAccelerationY = this.futureAccelerationY;
+        this.futureAccelerationY = null;
     }
 
     public void shouldResetMovement() {
@@ -161,29 +227,23 @@ public class Body implements Locatable {
     }
 
     public boolean touches(Body b){
-        if(b == this){
+        if(equals(b)){
             return false;
         }
-        Double distance = currentPosition.distanceTo(b.currentPosition);
+        Double distanceX = currentPositionX-b.currentPositionX;
+        Double distanceY = currentPositionY-b.currentPositionY;
         double minDistance = radius + b.radius;
-        return distance < minDistance;
+        return Math.sqrt(distanceX*distanceX + distanceY*distanceY) < minDistance;
     }
 
     public String toString(){
-        return this.getPosition().x +"\t"+this.getPosition().y + "\t" + this.getRadius();
+        return currentPositionX +"\t"+currentPositionY + "\t" + this.getRadius();
     }
 
     public Boolean isFixed() {
         return false;
     }
 
-
-    // HashCode and Equals
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(getPosition(), getVelocity(), getMass(), getRadius());
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -192,6 +252,11 @@ public class Body implements Locatable {
 
         Body body = (Body) o;
 
-        return id.equals(body.id);
+        return id != null ? id.equals(body.id) : body.id == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }

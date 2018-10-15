@@ -1,7 +1,6 @@
 package ar.edu.itba.ss.Containers;
 
 import ar.edu.itba.ss.Particles.Body;
-import ar.edu.itba.ss.Types.Collision;
 
 import java.util.Set;
 
