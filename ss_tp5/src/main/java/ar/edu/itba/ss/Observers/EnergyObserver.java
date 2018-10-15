@@ -8,7 +8,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Set;
 
-public class OVITOObserver implements SpaceObserver {
+/**
+ * Created by giulianoscaglioni on 15/10/18.
+ */
+public class EnergyObserver implements SpaceObserver {
     private BufferedWriter writer;
     private Double totalTime;
 
@@ -22,10 +25,10 @@ public class OVITOObserver implements SpaceObserver {
 
     private Long progress = null;
 
-    public OVITOObserver(String filename, Double totalTime, Double FPS) throws IOException{
+    public EnergyObserver(String filename, Double totalTime, Double dt) throws IOException {
         this.writer = new BufferedWriter(new FileWriter(filename));
         this.totalTime = totalTime;
-        this.dt = 1.0/FPS;
+        this.dt = dt;
         this.lastObservation = null;
     }
 
@@ -42,14 +45,18 @@ public class OVITOObserver implements SpaceObserver {
 
     @Override
     public void observe() throws IOException {
+
+        Double energy = 0.0;
+
+        for (Body b : bodies) {
+            if (!b.isFixed()) {
+                energy += getEnergy(b);
+            }
+        }
+
         if(lastObservation == null || time-lastObservation > dt) {
             lastObservation = time;
-            writer.write(bodies.size() - 2 + "\n\n");
-            for (Body b : bodies) {
-                if (!b.isFixed()) {
-                    writer.write(b + "\n");
-                }
-            }
+            writer.write(time + "\t" + energy);
         }
     }
 
@@ -63,5 +70,10 @@ public class OVITOObserver implements SpaceObserver {
             return true;
         }
         return false;
+    }
+
+    private Double getEnergy(Body b) {
+        double speedMod = Math.sqrt(b.getVelocityX()*b.getVelocityX() + b.getVelocityY()*b.getVelocityY());
+        return (1.0/2.0)*b.getMass()*Math.pow(speedMod, 2);
     }
 }

@@ -1,4 +1,4 @@
-diameter = 0.15
+diameter = 0
 width = 0.5
 height = 2
 friction = 0.1

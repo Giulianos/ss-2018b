@@ -2,6 +2,8 @@ package ar.edu.itba.ss;
 
 import ar.edu.itba.ss.Containers.Box;
 import ar.edu.itba.ss.Containers.Container;
+import ar.edu.itba.ss.Observers.EnergyObserver;
+import ar.edu.itba.ss.Observers.FlowObserver;
 import ar.edu.itba.ss.Observers.OVITOObserver;
 import ar.edu.itba.ss.Observers.SpaceObserver;
 
@@ -10,7 +12,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Main {
-    private static Double diameter, width, height, friction, minRadius, maxRadius, mass, kn, dt, tf;
+    private static Double diameter, width, height, friction, minRadius, maxRadius, mass, kn, dt, tf, dtObserver;
     private static int N;
 
     public static void main( String[] args ) throws Exception {
@@ -18,20 +20,24 @@ public class Main {
         parse("params.txt");
         Logger.log("Arguments parsed!");
 
-        // Create observer
-        SpaceObserver observer = new OVITOObserver("ovito_out/ovito.xyz", tf, 25.0);
+        // Create observers
+        SpaceObserver observerOVITO = new OVITOObserver("ovito_out/ovito.xyz", tf, 25.0);
+        SpaceObserver observerEnergy = new EnergyObserver("energy_out/energy.csv", tf, dtObserver);
+        SpaceObserver observerFlow = new FlowObserver("flow_out/flow.csv", tf, dtObserver);
         Logger.log("Observer created!");
 
         // Create space
-        Space space = new Space(width, height, diameter, N);
+        Space space = new Space(width, height, diameter, N, friction, kn);
         Logger.log("Space created!");
 
         // Attach observer to space
-        space.attachObserver(observer);
-        Logger.log("Observer attached to space!");
+        space.attachObserver(observerOVITO);
+        space.attachObserver(observerEnergy);
+        space.attachObserver(observerFlow);
+        Logger.log("Observers attached to space!");
 
-        // Create simulator
-        Simulator simulator = new Simulator(space, observer, dt);
+        // Create simulator (pass ovito observer to end the simulation on time)
+        Simulator simulator = new Simulator(space, observerOVITO, dt);
         Logger.log("Simulator created!");
 
         // Simulate
@@ -57,6 +63,7 @@ public class Main {
                 case "maxradius" : maxRadius = Double.parseDouble(aux[1]); break;
                 case "n" : N = Integer.parseInt(aux[1]); break;
                 case "mass" : mass = Double.parseDouble(aux[1]); break;
+                case "dt_observer": dtObserver = Double.parseDouble(aux[1]); break;
                 case "kn" :
                     kn = Double.parseDouble(aux[1]);
                     double m = (minRadius+maxRadius)/2;

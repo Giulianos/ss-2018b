@@ -13,7 +13,7 @@ public interface SpaceObserver {
      * @param container
      * @param time
      */
-    public void injectData(Set<Body> bodies, Container container, Double time);
+    public void injectData(Set<Body> bodies, Container container, Double time, Integer translatedParticles);
 
     /**
      * Observes the space using the data.

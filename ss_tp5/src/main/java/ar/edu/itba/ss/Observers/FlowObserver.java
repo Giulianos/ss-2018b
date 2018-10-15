@@ -8,13 +8,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Set;
 
-public class OVITOObserver implements SpaceObserver {
+/**
+ * Created by giulianoscaglioni on 15/10/18.
+ */
+public class FlowObserver implements SpaceObserver {
     private BufferedWriter writer;
     private Double totalTime;
 
     private Set<Body> bodies;
-    private Container container;
+    private Integer translatedParticles;
     private Double time;
+
+    // Window
+    private Integer currentTranslatedParticles = 0;
+    private Double elapsedTime = 0.0;
+    private static Integer particleWindow = 20;
 
     // Time variables
     private Double dt;
@@ -22,10 +30,10 @@ public class OVITOObserver implements SpaceObserver {
 
     private Long progress = null;
 
-    public OVITOObserver(String filename, Double totalTime, Double FPS) throws IOException{
+    public FlowObserver(String filename, Double totalTime, Double dt) throws IOException {
         this.writer = new BufferedWriter(new FileWriter(filename));
         this.totalTime = totalTime;
-        this.dt = 1.0/FPS;
+        this.dt = dt;
         this.lastObservation = null;
     }
 
@@ -36,20 +44,18 @@ public class OVITOObserver implements SpaceObserver {
     @Override
     public void injectData(Set<Body> bodies, Container container, Double time, Integer translatedParticles) {
         this.bodies = bodies;
-        this.container = container;
+        this.translatedParticles = translatedParticles;
         this.time = time;
     }
 
     @Override
     public void observe() throws IOException {
-        if(lastObservation == null || time-lastObservation > dt) {
-            lastObservation = time;
-            writer.write(bodies.size() - 2 + "\n\n");
-            for (Body b : bodies) {
-                if (!b.isFixed()) {
-                    writer.write(b + "\n");
-                }
-            }
+        currentTranslatedParticles += translatedParticles;
+        elapsedTime += 0.00001;
+        if(currentTranslatedParticles > particleWindow) {
+            writer.write(time + "\t" + currentTranslatedParticles/elapsedTime);
+            currentTranslatedParticles = 0;
+            elapsedTime = 0.0;
         }
     }
 

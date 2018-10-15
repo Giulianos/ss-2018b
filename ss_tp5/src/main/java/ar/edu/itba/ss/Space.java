@@ -24,13 +24,16 @@ public class Space {
 
     // Utilities
     private Integrator integrator;
-    private SpaceObserver observer;
+    private List<SpaceObserver> observers = new ArrayList<>();
     private Grid<Body> grid;
+
+    // Space properties
+    private Integer translatedParticles = 0;
 
     // Concurrency
      ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-    public Space(Double width, Double height, Double diameter, Integer particleQuantity) {
+    public Space(Double width, Double height, Double diameter, Integer particleQuantity, Double friction, Double kn) {
         // Create container
         this.container = new Box(diameter, height, width);
 
@@ -51,17 +54,23 @@ public class Space {
 
         // Create integrator
         this.integrator = new Beeman();
+
+        // Update collision parameters
+        ParticleCollisionForce.setFriction(friction);
+        ParticleCollisionForce.setKn(kn);
     }
 
     public void attachObserver(SpaceObserver observer) {
-        this.observer = observer;
+        observers.add(observer);
 
         // Inject initial data to observer
-        observer.injectData(bodies, container, elapsedTime);
+        observer.injectData(bodies, container, elapsedTime, translatedParticles);
     }
 
     public void simulationStep(Double dt) throws InterruptedException {
         Long startTime = System.currentTimeMillis();
+
+        translatedParticles = 0;
 
         List<Callable<Object>> tasks = new ArrayList<>(bodies.size());
 
@@ -83,9 +92,8 @@ public class Space {
         // Update time
         this.elapsedTime += dt;
 
-        // Update observer
-        if(observer != null) {
-            observer.injectData(bodies, container, elapsedTime);
+        for(SpaceObserver observer : observers) {
+            observer.injectData(bodies, container, elapsedTime, translatedParticles);
         }
 
         // System.out.println("Time taken for 1 step: " + (System.currentTimeMillis()-startTime) + "ms");
@@ -167,6 +175,7 @@ public class Space {
         if(b.getPositionY() < container.getHeight()*(-0.1)) {
             b.setPositionY(container.getHeight());
             b.shouldResetMovement();
+            translatedParticles++;
             // Logger.log("Updated body position!");
         }
     }

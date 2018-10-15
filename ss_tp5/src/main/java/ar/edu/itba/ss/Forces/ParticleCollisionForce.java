@@ -5,7 +5,7 @@ import ar.edu.itba.ss.Particles.Body;
 public class ParticleCollisionForce implements Force{
     private static Double kn = 1e5;
     private static Double gamma = 100.0;
-    private static Double friction = 0.1;
+    private static Double friction = 0.7;
     private Body b1;
     private Body b2;
 
@@ -54,24 +54,18 @@ public class ParticleCollisionForce implements Force{
 
         // Geometric variables
         Double epsilon = b1.getRadius() + b2.getRadius() - rmod;
-        Double dEpsilonDt = 0.0;
-        if(b1.getPreviousPositionY() != null && b2.getPreviousPositionY() != null) {
-            Double rxP = b2.getPreviousPositionX() - b1.getPreviousPositionX();
-            Double ryP = b2.getPreviousPositionY() - b1.getPreviousPositionY();
-            Double rmodP = Math.sqrt(rxP*rxP * ryP*ryP);
-            Double epsilonP = b1.getRadius() + b2.getRadius() - rmodP;
-            dEpsilonDt = (epsilon-epsilonP)/b1.getDtBetweenStates();
-        }
+        Double epsilondt = 0.0;
+
 
         Double relativeVelocity = vx*etX + vy*etY;
 
-        Double fn = -kn * epsilon -gamma*dEpsilonDt;
+        Double fn = -kn * epsilon - gamma*epsilondt;
         Double ft = -friction * fn * Math.signum(relativeVelocity);
 
-         average = average*(quantity/(quantity+1.0)) + fn/(quantity+1.0);
-         quantity++;
+         //average = average*(quantity/(quantity+1.0)) + fn/(quantity+1.0);
+         //quantity++;
 
-         System.out.println("Average: " + average);
+         //System.out.println("Average: " + average);
 
         x = fn*enX + ft*etX;
         y = fn*enY + ft*etY;
