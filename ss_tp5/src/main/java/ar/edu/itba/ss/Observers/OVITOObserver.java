@@ -18,7 +18,7 @@ public class OVITOObserver implements SpaceObserver {
 
     // Time variables
     private Double dt;
-    private Double lastObservation;
+    private Double lastObservation = null;
 
     private Long progress = null;
 
@@ -63,5 +63,10 @@ public class OVITOObserver implements SpaceObserver {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void finalizeObserver() throws IOException {
+        writer.close();
     }
 }

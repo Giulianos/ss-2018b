@@ -40,6 +40,10 @@ public class Main {
         Simulator simulator = new Simulator(space, observerOVITO, dt);
         Logger.log("Simulator created!");
 
+        // Add the rest of the observers
+        simulator.attachObserver(observerEnergy);
+        simulator.attachObserver(observerFlow);
+
         // Simulate
         Logger.log("Simulating...");
         simulator.simulate();

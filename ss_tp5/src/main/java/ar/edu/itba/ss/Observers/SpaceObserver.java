@@ -3,6 +3,7 @@ package ar.edu.itba.ss.Observers;
 import ar.edu.itba.ss.Containers.Container;
 import ar.edu.itba.ss.Particles.Body;
 
+import java.io.IOException;
 import java.util.Set;
 
 public interface SpaceObserver {
@@ -27,4 +28,9 @@ public interface SpaceObserver {
      * @return true if the simulation must end, false otherwise
      */
     public Boolean simulationMustEnd();
+
+    /**
+     * Allows the observers to close any files if necessary
+     */
+    public void finalizeObserver() throws IOException;
 }
