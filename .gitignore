@@ -3,3 +3,5 @@ ss_tp1/bin
 .idea
 */.idea
 .DS_Store
+*.iml
+ss_tp5/.idea/*
