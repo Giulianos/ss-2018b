@@ -37,6 +37,7 @@ public class Body implements Locatable {
     private Double mass;
     private Double radius;
     private Integer id;
+    private Double pressure;
 
     public Body(Double x, Double y, Double vx, Double vy, Double mass, Double radius) {
         this.currentPositionX = x;
@@ -57,8 +58,12 @@ public class Body implements Locatable {
         this.mass = mass;
         this.radius = radius;
         this.id = nextID++;
+        this.pressure = 0.0;
     }
 
+    public void setPressure(Double pressure) {
+        this.pressure = pressure;
+    }
 
     // Getters and setters
     @Override
@@ -233,11 +238,11 @@ public class Body implements Locatable {
         Double distanceX = currentPositionX-b.currentPositionX;
         Double distanceY = currentPositionY-b.currentPositionY;
         double minDistance = radius + b.radius;
-        return Math.sqrt(distanceX*distanceX + distanceY*distanceY) < minDistance;
+        return Math.sqrt(distanceX*distanceX + distanceY*distanceY) <= minDistance;
     }
 
     public String toString(){
-        return currentPositionX +"\t"+currentPositionY + "\t" + this.getRadius();
+        return currentPositionX +"\t"+currentPositionY + "\t" + this.getRadius() + "\t" + this.pressure;
     }
 
     public Boolean isFixed() {

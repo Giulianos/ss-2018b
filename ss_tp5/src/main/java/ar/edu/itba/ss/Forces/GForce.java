@@ -33,4 +33,9 @@ public class GForce implements Force {
     public Double getY() {
         return y;
     }
+
+    @Override
+    public Double getModule() {
+        return Math.sqrt(x*x + y*y);
+    }
 }

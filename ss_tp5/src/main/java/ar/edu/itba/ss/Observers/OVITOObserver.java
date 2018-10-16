@@ -44,7 +44,7 @@ public class OVITOObserver implements SpaceObserver {
     public void observe() throws IOException {
         if(lastObservation == null || time-lastObservation > dt) {
             lastObservation = time;
-            writer.write(bodies.size() - 2 + "\n\n");
+            writer.write(bodies.size() + "\n\n");
             for (Body b : bodies) {
                 if (!b.isFixed()) {
                     writer.write(b + "\n");

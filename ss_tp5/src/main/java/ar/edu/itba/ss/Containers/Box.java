@@ -69,7 +69,6 @@ public class Box implements Container {
         if(y-r <= 0.0) {
             return 0.0;
         }
-
         return null;
     }
 

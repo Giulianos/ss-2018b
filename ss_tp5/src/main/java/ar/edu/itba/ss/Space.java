@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class Space {
 
     // Space domain
-    private Container container;
+    private static Container container;
     private Set<Body> bodies;
     private Double elapsedTime = 0.0;
 
@@ -34,6 +34,7 @@ public class Space {
      ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     public Space(Double width, Double height, Double diameter, Integer particleQuantity, Double friction, Double kn) {
+
         // Create container
         this.container = new Box(diameter, height, width);
 
@@ -58,6 +59,7 @@ public class Space {
         // Update collision parameters
         ParticleCollisionForce.setFriction(friction);
         ParticleCollisionForce.setKn(kn);
+
     }
 
     public void attachObserver(SpaceObserver observer) {
@@ -136,6 +138,8 @@ public class Space {
 
         // Update periodic
         updatePeriodic(body);
+
+        body.setPressure(appliedForce.getModule()/(2*body.getRadius()*Math.PI));
     }
 
     private Set<Body> getNeighbours(Body body) {
@@ -152,15 +156,16 @@ public class Space {
         Integer currentQuantity = 0;
         while(currentQuantity < quantity) {
             Body newBody = new Body(
-                rand.nextDouble()*container.getWidth(0.0),
-                rand.nextDouble()*container.getHeight(),
+  //                  0.3,
+                    rand.nextDouble() * (container.getWidth(0.0) - 2 * 0.015) + 0.015,
+                    rand.nextDouble() * (container.getHeight() - 2 * 0.015) + 0.015,
                 0.0,
                 0.0,
                 0.01,
                 (rand.nextDouble()*0.01+0.02)/2.0
             );
             // Check that newBody doesn't touch any other body
-            if(bodies.stream().noneMatch(newBody::touches) && !container.touchesWall(newBody)) {
+            if(bodies.stream().noneMatch(newBody::touches)) {
                 bodies.add(newBody);
                 Logger.log("Particle "+currentQuantity+"/"+quantity+" added!");
                 currentQuantity++;
@@ -173,7 +178,8 @@ public class Space {
             return;
         }
         if(b.getPositionY() < container.getHeight()*(-0.1)) {
-            b.setPositionY(container.getHeight());
+            b.setPositionX(new Random().nextDouble() * (container.getWidth(0.0) - 2 * 0.015) + 0.015);
+            b.setPositionY(new Random().nextDouble() * (container.getHeight()*0.2 - 2 * 0.015) + 0.015 + container.getHeight()*0.8);
             b.shouldResetMovement();
             translatedParticles++;
             // Logger.log("Updated body position!");

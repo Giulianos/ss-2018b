@@ -2,22 +2,42 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ca8b211c-da57-431e-8aa2-28bab51f04f8" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/energy_out/energy.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/flow_out/flow.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/energy_out/energy0.5e5.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/energy_out/energy1.5e5.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/energy_out/energy1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/energy_out/energy1e5.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/energy_out/energy1e6.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/energy_out/energy2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/energy_out/energy3.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/energy_out/energy4.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flow_out/flow0.5e5.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flow_out/flow1.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flow_out/flow1e6.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flow_out/flow2.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flow_out/flow3.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flow_out/flow4.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flow_out/graphs/compareBeverloo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flow_out/graphs/constanteC.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flow_out/graphs/errorbar.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flow_out/graphs/flow1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flow_out/graphs/flow2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flow_out/graphs/flow3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flow_out/graphs/flow4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/flow_out/graphs/flowCompare.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/params.txt" beforeDir="false" afterPath="$PROJECT_DIR$/params.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Logger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Logger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Containers/Box.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Containers/Box.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/Force.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/Force.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/GForce.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/GForce.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/ParticleCollisionForce.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/ParticleCollisionForce.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/SumForce.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/SumForce.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Observers/OVITOObserver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Observers/OVITOObserver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Particles/Body.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Particles/Body.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Space.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Space.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/ar/edu/itba/ss/Containers/Box.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ar/edu/itba/ss/Containers/Box.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ar/edu/itba/ss/Containers/Container.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ar/edu/itba/ss/Containers/Container.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ar/edu/itba/ss/Forces/Force.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ar/edu/itba/ss/Forces/Force.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ar/edu/itba/ss/Forces/GForce.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ar/edu/itba/ss/Forces/GForce.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/ar/edu/itba/ss/Forces/ParticleCollisionForce.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ar/edu/itba/ss/Forces/ParticleCollisionForce.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ar/edu/itba/ss/Forces/SumForce.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ar/edu/itba/ss/Forces/SumForce.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ar/edu/itba/ss/Integrators/Integrator.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ar/edu/itba/ss/Integrators/Integrator.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/ar/edu/itba/ss/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ar/edu/itba/ss/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/ar/edu/itba/ss/Particles/Body.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ar/edu/itba/ss/Particles/Body.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/ar/edu/itba/ss/Space.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/ar/edu/itba/ss/Space.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -32,41 +52,54 @@
     <session id="1724589974">
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="csv" value="25" />
-          <entry key="java" value="5" />
+          <entry key="csv" value="26" />
+          <entry key="java" value="37" />
           <entry key="png" value="6" />
-          <entry key="xyz" value="6" />
+          <entry key="txt" value="1" />
+          <entry key="xyz" value="14" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="CSV" value="25" />
+          <entry key="CSV" value="26" />
           <entry key="Image" value="6" />
-          <entry key="JAVA" value="5" />
-          <entry key="PLAIN_TEXT" value="6" />
+          <entry key="JAVA" value="37" />
+          <entry key="PLAIN_TEXT" value="15" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="54" />
-          <entry key="txt" value="51" />
+          <entry key="java" value="1754" />
+          <entry key="txt" value="94" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="54" />
-          <entry key="PLAIN_TEXT" value="51" />
+          <entry key="JAVA" value="1754" />
+          <entry key="PLAIN_TEXT" value="94" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/params.txt">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Space.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="12" lean-forward="true" selection-start-column="12" selection-end-column="12" />
+            <state relative-caret-position="673">
+              <caret line="169" column="44" selection-start-line="169" selection-start-column="44" selection-end-line="169" selection-end-column="44" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ovito_out/ovito.xyz">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-200044">
+              <caret line="81941" column="74" selection-start-line="81941" selection-start-column="74" selection-end-line="81941" selection-end-column="74" />
             </state>
           </provider>
         </entry>
@@ -74,8 +107,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="25" column="69" selection-start-line="25" selection-start-column="69" selection-end-line="25" selection-end-column="69" />
+            <state relative-caret-position="-353">
+              <caret line="48" selection-start-line="48" selection-end-line="48" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Logger.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-173">
+              <caret line="7" column="43" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Particles/FixedBody.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-229">
+              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -83,8 +134,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/ParticleCollisionForce.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="750">
-              <caret line="56" column="31" selection-start-line="56" selection-start-column="31" selection-end-line="56" selection-end-column="31" />
+            <state relative-caret-position="149">
+              <caret line="55" column="19" selection-start-line="55" selection-start-column="19" selection-end-line="55" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/params.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="6" column="8" selection-start-line="6" selection-start-column="8" selection-end-line="6" selection-end-column="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Simulator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="29" selection-start-line="29" selection-end-line="29" />
             </state>
           </provider>
         </entry>
@@ -100,11 +169,12 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Particle</find>
       <find>b1</find>
       <find>dt</find>
       <find>close</find>
       <find>observe</find>
+      <find>Particle</find>
+      <find>//</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -126,21 +196,14 @@
         <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Integrators/Real.java" />
         <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Integrators/Verlet.java" />
         <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Body.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/Force.java" />
         <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Cell.java" />
         <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/CellMethodIndex.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/SumForce.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/GForce.java" />
         <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/SpringForce.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Containers/Box.java" />
         <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Containers/Container.java" />
         <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Integrators/GearPredictorCorrector.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Particles/Body.java" />
         <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Spring.java" />
-        <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/ParticleCollisionForce.java" />
         <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/WallCollisionForce.java" />
         <option value="$PROJECT_DIR$/src/params.txt" />
-        <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Space.java" />
         <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Logger.java" />
         <option value="$PROJECT_DIR$/energy_out/energy1.csv" />
         <option value="$PROJECT_DIR$/energy_out/energy2.csv" />
@@ -150,7 +213,16 @@
         <option value="$PROJECT_DIR$/energy_out/energy1.5e5.csv" />
         <option value="$PROJECT_DIR$/energy_out/energy1e5.csv" />
         <option value="$PROJECT_DIR$/energy_out/energy0.5e5.csv" />
+        <option value="$PROJECT_DIR$/energy_out/energy1e6.csv" />
+        <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Containers/Box.java" />
         <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Observers/OVITOObserver.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/Force.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/GForce.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/SumForce.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Particles/Body.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/ParticleCollisionForce.java" />
+        <option value="$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Space.java" />
         <option value="$PROJECT_DIR$/params.txt" />
       </list>
     </option>
@@ -195,12 +267,12 @@
             <path>
               <item name="ss_tp5" type="b2602c69:ProjectViewProjectNode" />
               <item name="ss_tp5" type="462c0819:PsiDirectoryNode" />
-              <item name="flow_out" type="462c0819:PsiDirectoryNode" />
+              <item name="ovito_out" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ss_tp5" type="b2602c69:ProjectViewProjectNode" />
               <item name="ss_tp5" type="462c0819:PsiDirectoryNode" />
-              <item name="ovito_out" type="462c0819:PsiDirectoryNode" />
+              <item name="simulation" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ss_tp5" type="b2602c69:ProjectViewProjectNode" />
@@ -282,6 +354,12 @@
               <item name="ss" type="462c0819:PsiDirectoryNode" />
               <item name="Particles" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="ss_tp5" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ss_tp5" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -293,7 +371,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1539691842290" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1539726787364" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
   </component>
@@ -384,13 +462,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="36203000" />
+    <option name="totallyTimeSpent" value="57936000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="805" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24964234" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24964234" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -399,7 +477,7 @@
       <window_info id="Capture Tool" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289855" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3289855" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.3289855" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -428,111 +506,31 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Integrators/Beeman.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Integrators/Euler.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Integrators/Real.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Integrators/Verlet.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Cell.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/CellMethodIndex.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/NullForce.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/Force.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Integrators/Integrator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Integrators/GearPredictorCorrector.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Containers/Container.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="33" column="48" selection-start-line="33" selection-start-column="48" selection-end-line="33" selection-end-column="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Containers/Box.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
-          <caret line="50" column="38" selection-start-line="50" selection-start-column="4" selection-end-line="50" selection-end-column="38" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Particles/Vector.java" />
     <entry file="file://$PROJECT_DIR$/simulation/sim_0.txt" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/SumForce.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="12" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/GForce.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="14" column="51" selection-start-line="14" selection-start-column="51" selection-end-line="14" selection-end-column="51" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#364#365#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/WallCollisionForce.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Spring.java" />
     <entry file="file://$PROJECT_DIR$/src/params.txt" />
     <entry file="file://$PROJECT_DIR$/simulation/sim_2018-10-02T13:40:17.760.txt" />
     <entry file="file://$PROJECT_DIR$/simulation/sim_2018-10-02T13:46:45.217.txt" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Simulator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" selection-start-line="27" selection-end-line="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/flow_out/caudal.png">
       <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Logger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="43" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Observers/FlowObserver.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="185">
           <caret line="59" selection-start-line="59" selection-end-line="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Observers/EnergyObserver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-154">
-          <caret line="52" column="32" selection-start-line="52" selection-start-column="32" selection-end-line="52" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Observers/OVITOObserver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-36">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
         </state>
       </provider>
     </entry>
@@ -557,11 +555,6 @@
     <entry file="file://$PROJECT_DIR$/flow_out/flow3.csv">
       <provider selected="true" editor-type-id="csv-text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/ovito_out/ovito2.xyz">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1503429" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ovito_out/ovito3.xyz">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-538017" />
@@ -576,26 +569,9 @@
     <entry file="file://$PROJECT_DIR$/energy_out/energy3.csv">
       <provider selected="true" editor-type-id="csv-text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Space.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="558">
-          <caret line="159" column="49" selection-start-line="159" selection-start-column="49" selection-end-line="159" selection-end-column="49" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/energy_out/energy4.csv">
       <provider selected="true" editor-type-id="csv-text-editor">
         <state relative-caret-position="-2" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Particles/Body.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/energy_out/energy1e5.csv">
@@ -622,24 +598,170 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/ParticleCollisionForce.java">
+    <entry file="file://$PROJECT_DIR$/energy_out/energy1e6.csv">
+      <provider selected="true" editor-type-id="csv-text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ovito_out/ovito2.xyz">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="750">
-          <caret line="56" column="31" selection-start-line="56" selection-start-column="31" selection-end-line="56" selection-end-column="31" />
+        <state relative-caret-position="-1503429" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Observers/OVITOObserver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="533">
+          <caret line="49" selection-start-line="49" selection-end-line="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Observers/EnergyObserver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1035">
+          <caret line="75" selection-start-line="75" selection-end-line="75" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/src.zip!/java/lang/Iterable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="146">
+          <caret line="74" selection-start-line="74" selection-end-line="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/CellIndex/Cell.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/CellIndex/Grid.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-878">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/CellIndex/Locatable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Containers/Box.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-458">
+          <caret line="70" column="9" selection-start-line="70" selection-start-column="9" selection-end-line="70" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Containers/Container.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="33" column="7" lean-forward="true" selection-start-line="33" selection-start-column="7" selection-end-line="33" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/Force.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="30" selection-start-line="6" selection-start-column="30" selection-end-line="6" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/SumForce.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="232">
+          <caret line="41" column="22" selection-start-line="41" selection-start-column="22" selection-end-line="41" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="25" column="69" selection-start-line="25" selection-start-column="69" selection-end-line="25" selection-end-column="69" />
+        <state relative-caret-position="-353">
+          <caret line="48" selection-start-line="48" selection-end-line="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Logger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-173">
+          <caret line="7" column="43" selection-start-line="7" selection-start-column="43" selection-end-line="7" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/ParticleCollisionForce.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="55" column="19" selection-start-line="55" selection-start-column="19" selection-end-line="55" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Forces/GForce.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="36" selection-start-line="36" selection-end-line="39" selection-end-column="5" />
+          <folding>
+            <element signature="e#660#661#0" expanded="true" />
+            <element signature="e#703#704#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Particles/Body.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="177" selection-start-line="177" selection-end-line="180" selection-end-column="3" />
+          <folding>
+            <element signature="e#1863#1864#0" expanded="true" />
+            <element signature="e#1903#1904#0" expanded="true" />
+            <element signature="e#7366#7367#0" expanded="true" />
+            <element signature="e#7419#7420#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Particles/FixedBody.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-229">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/params.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="12" lean-forward="true" selection-start-column="12" selection-end-column="12" />
+        <state relative-caret-position="90">
+          <caret line="6" column="8" selection-start-line="6" selection-start-column="8" selection-end-line="6" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Simulator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="29" selection-start-line="29" selection-end-line="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/ar/edu/itba/ss/Space.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="673">
+          <caret line="169" column="44" selection-start-line="169" selection-start-column="44" selection-end-line="169" selection-end-column="44" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ovito_out/ovito.xyz">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-200044">
+          <caret line="81941" column="74" selection-start-line="81941" selection-start-column="74" selection-end-line="81941" selection-end-column="74" />
         </state>
       </provider>
     </entry>

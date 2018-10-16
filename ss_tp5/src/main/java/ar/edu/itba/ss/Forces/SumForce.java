@@ -32,4 +32,13 @@ public class SumForce implements Force {
     public Double getY() {
         return y;
     }
+
+    @Override
+    public Double getModule() {
+        Double module = 0.0;
+        for(Force force: forces){
+            module += force.getModule();
+        }
+        return module;
+    }
 }

@@ -24,25 +24,20 @@ public class ParticleCollisionForce implements Force{
         ParticleCollisionForce.kn = kn;
     }
 
-    public static void setGamma(Double gamma) {
-        ParticleCollisionForce.gamma = gamma;
-    }
-
     public static void setFriction(Double friction) {
         ParticleCollisionForce.friction = friction;
     }
 
     @Override
     public void evaluate() {
-
-        // Distance
-        Double rx = b2.getPositionX() - b1.getPositionX();
-        Double ry = b2.getPositionY() - b1.getPositionY();
-        Double rmod = Math.sqrt(rx*rx + ry*ry);
-
         // Relative velocity
         Double vx = b1.getVelocityX() - b2.getVelocityX();
         Double vy = b1.getVelocityY() - b2.getVelocityY();
+
+        // Distance distance
+        Double rx = b2.getPositionX() - b1.getPositionX();
+        Double ry = b2.getPositionY() - b1.getPositionY();
+        Double rmod = Math.sqrt(rx*rx + ry*ry);
 
         // Calculate normal direction
         Double enX = rx/rmod;
@@ -52,23 +47,24 @@ public class ParticleCollisionForce implements Force{
         Double etX = -enY;
         Double etY = enX;
 
-        // Geometric variables
-        Double epsilon = b1.getRadius() + b2.getRadius() - rmod;
-        Double epsilondt = 0.0;
-
-
         Double relativeVelocity = vx*etX + vy*etY;
 
-        Double fn = -kn * epsilon - gamma*epsilondt;
-        Double ft = -friction * fn * Math.signum(relativeVelocity);
+        // Geometric variables
+        Double epsilon = b1.getRadius() + b2.getRadius() - rmod;
 
-         //average = average*(quantity/(quantity+1.0)) + fn/(quantity+1.0);
-         //quantity++;
+        if(epsilon < 0){
+            x = 0.0;
+            y = 0.0;
+            return;
+        }
 
-         //System.out.println("Average: " + average);
+        Double epsilonDerivated = b1.getVelocityX()*enX + b1.getVelocityY()*enY - b2.getVelocityX()*enX - b2.getVelocityY()*enY;
 
-        x = fn*enX + ft*etX;
-        y = fn*enY + ft*etY;
+        Double fn = -kn * epsilon - gamma*epsilonDerivated;
+        Double ft = -friction * Math.abs(fn) * Math.signum(relativeVelocity);
+
+        x = fn*enX - ft*enY;
+        y = fn*enY + ft*etX;
     }
 
     @Override
@@ -80,4 +76,10 @@ public class ParticleCollisionForce implements Force{
     public Double getY() {
         return y;
     }
+
+    @Override
+    public Double getModule() {
+        return Math.sqrt(x*x + y*y);
+    }
+
 }

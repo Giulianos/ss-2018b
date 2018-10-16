@@ -21,9 +21,9 @@ public class Main {
         Logger.log("Arguments parsed!");
 
         // Create observers
-        SpaceObserver observerOVITO = new OVITOObserver("ovito_out/ovito1e6.xyz", tf, 25.0);
-        SpaceObserver observerEnergy = new EnergyObserver("energy_out/energy1e6.csv", tf, dtObserver);
-        SpaceObserver observerFlow = new FlowObserver("flow_out/flow1e6.csv", tf, dtObserver);
+        SpaceObserver observerOVITO = new OVITOObserver("ovito_out/ovito.xyz", tf, 25.0);
+        SpaceObserver observerEnergy = new EnergyObserver("energy_out/energy.csv", tf, dtObserver);
+        SpaceObserver observerFlow = new FlowObserver("flow_out/flow.csv", tf, dtObserver);
         Logger.log("Observer created!");
 
         // Create space
