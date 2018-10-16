@@ -5,7 +5,7 @@ public class Logger {
         INFO, WARNING, ERROR, TIMING
     }
 
-    private static Boolean disabled = true;
+    private static Boolean disabled = false;
 
     static public void log(String msg, LogType type) {
 
