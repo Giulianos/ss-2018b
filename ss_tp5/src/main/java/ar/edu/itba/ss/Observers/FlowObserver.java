@@ -22,7 +22,7 @@ public class FlowObserver implements SpaceObserver {
     // Window
     private Integer currentTranslatedParticles = 0;
     private Double elapsedTime = 0.0;
-    private static Integer particleWindow = 20;
+    private static Integer particleWindow = 50;
 
     // Time variables
     private Double dt;

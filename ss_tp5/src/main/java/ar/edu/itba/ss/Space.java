@@ -179,7 +179,7 @@ public class Space {
         }
         if(b.getPositionY() < container.getHeight()*(-0.1)) {
             b.setPositionX(new Random().nextDouble() * (container.getWidth(0.0) - 2 * 0.015) + 0.015);
-            b.setPositionY(new Random().nextDouble() * (container.getHeight()*0.2 - 2 * 0.015) + 0.015 + container.getHeight()*0.8);
+            b.setPositionY(new Random().nextDouble() * (container.getHeight()*0.3 - 2 * 0.015) + 0.015 + container.getHeight()*0.7);
             b.shouldResetMovement();
             translatedParticles++;
             // Logger.log("Updated body position!");
